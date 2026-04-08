@@ -5,6 +5,7 @@
 
 import React, { ReactNode } from "react";
 import { motion } from "motion/react";
+import DevOpsLogo from "./components/DevOpsLogo";
 import { 
   Github, 
   Linkedin, 
@@ -132,16 +133,18 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen font-sans">
+    <div id="top" className="min-h-screen font-sans">
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 glass border-b-0 py-4">
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-xl font-bold tracking-tighter text-white"
+            className="text-white"
           >
-            MP<span className="text-blue-500">.</span>
+            <a href="#top" className="block">
+              <DevOpsLogo />
+            </a>
           </motion.div>
           <div className="flex gap-6 text-sm font-medium text-slate-400">
             <a href="#about" className="hover:text-white transition-colors">About</a>
