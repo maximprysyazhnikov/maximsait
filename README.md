@@ -1,4 +1,4 @@
-# Maksym Prysyazhnikov Portfolio
+# Maksym Prysiazhnikov Portfolio
 
 ## Local development
 

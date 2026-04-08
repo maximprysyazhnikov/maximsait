@@ -173,7 +173,7 @@ export default function App() {
                 Available for opportunities
               </span>
               <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-                Maksym <span className="text-gradient">Prysyazhnikov</span>
+                Maksym <span className="text-gradient">Prysiazhnikov</span>
               </h1>
               <p className="text-xl md:text-2xl text-slate-400 mb-8 leading-relaxed">
                 Junior DevOps Engineer & Cloud Specialist focused on building resilient, automated infrastructure.
@@ -521,7 +521,7 @@ export default function App() {
           </div>
 
           <p className="text-slate-500 text-sm">
-            © {new Date().getFullYear()} Maksym Prysyazhnikov. Built with React & Tailwind CSS.
+            © {new Date().getFullYear()} Maksym Prysiazhnikov. Built with React & Tailwind CSS.
           </p>
         </div>
       </footer>
