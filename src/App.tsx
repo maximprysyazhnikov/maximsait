@@ -167,7 +167,6 @@ const copy = {
     contact: {
       title: "Контакти",
       subtitle: "Відкритий до нових проєктів, співпраці та професійних можливостей.",
-      email: "Написати на пошту",
       linkedin: "LinkedIn",
       github: "GitHub",
       footer: "Створено за допомогою React і Tailwind CSS.",
@@ -280,7 +279,6 @@ const copy = {
     contact: {
       title: "Let's Connect",
       subtitle: "I am always open to discussing new projects, collaboration, and career opportunities.",
-      email: "Email Me",
       linkedin: "LinkedIn",
       github: "GitHub",
       footer: "Built with React & Tailwind CSS.",
@@ -548,12 +546,6 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 text-center">
           <SectionTitle subtitle={t.contact.subtitle}>{t.contact.title}</SectionTitle>
           <div className="flex flex-wrap justify-center gap-8 mb-12">
-            <a href="mailto:maxisky2595@gmail.com" className="flex flex-col items-center gap-4 group">
-              <div className="w-16 h-16 rounded-2xl glass flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                <Mail className="w-8 h-8" />
-              </div>
-              <span className="text-slate-400 group-hover:text-white transition-colors">{t.contact.email}</span>
-            </a>
             <a href="https://linkedin.com/in/maxim-prysyazhnikov-b46196163" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-4 group">
               <div className="w-16 h-16 rounded-2xl glass flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
                 <Linkedin className="w-8 h-8" />
