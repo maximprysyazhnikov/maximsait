@@ -8,15 +8,19 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-200 antialiased selection:bg-blue-500/30;
+    @apply bg-[#07110f] text-zinc-100 antialiased selection:bg-emerald-400/30;
+    background-image:
+      radial-gradient(circle at top left, rgba(16, 185, 129, 0.14), transparent 28%),
+      radial-gradient(circle at bottom right, rgba(20, 184, 166, 0.12), transparent 30%),
+      linear-gradient(180deg, #07110f 0%, #091513 48%, #06100e 100%);
   }
 }
 
 @layer utilities {
   .glass {
-    @apply bg-slate-900/50 backdrop-blur-md border border-slate-800/50;
+    @apply bg-[#0f1d1a]/72 backdrop-blur-md border border-emerald-950/70;
   }
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-teal-300 to-cyan-200;
   }
 }
