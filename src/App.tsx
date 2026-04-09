@@ -53,23 +53,23 @@ const floatingOrbs = [
   { className: "left-[72%] top-[10%] h-32 w-32 bg-teal-100/8 blur-[58px]", x: [0, -14, 16, 0], y: [0, 14, -10, 0], scale: [1, 1.14, 0.98, 1], duration: 12 },
 ];
 
-const floatingParticles = [
-  { left: "12%", top: "28%", size: "h-3 w-3", color: "bg-emerald-200/65", duration: 9, x: [0, 10, -8, 0], y: [0, -14, 12, 0] },
-  { left: "26%", top: "62%", size: "h-2 w-2", color: "bg-teal-200/70", duration: 11, x: [0, -12, 9, 0], y: [0, 16, -10, 0] },
-  { left: "54%", top: "18%", size: "h-2.5 w-2.5", color: "bg-cyan-100/70", duration: 10, x: [0, 14, -6, 0], y: [0, -12, 18, 0] },
-  { left: "68%", top: "38%", size: "h-3 w-3", color: "bg-emerald-100/60", duration: 12, x: [0, -10, 12, 0], y: [0, 18, -12, 0] },
-  { left: "82%", top: "66%", size: "h-2 w-2", color: "bg-teal-100/75", duration: 8, x: [0, 8, -10, 0], y: [0, -10, 8, 0] },
-  { left: "38%", top: "78%", size: "h-2.5 w-2.5", color: "bg-cyan-100/65", duration: 13, x: [0, 12, -14, 0], y: [0, -18, 12, 0] },
-  { left: "8%", top: "46%", size: "h-2 w-2", color: "bg-emerald-100/70", duration: 10, x: [0, 9, -7, 0], y: [0, -16, 10, 0] },
-  { left: "18%", top: "18%", size: "h-2.5 w-2.5", color: "bg-teal-100/70", duration: 12, x: [0, -8, 11, 0], y: [0, 10, -14, 0] },
-  { left: "32%", top: "34%", size: "h-3 w-3", color: "bg-cyan-100/60", duration: 9, x: [0, 13, -9, 0], y: [0, -12, 15, 0] },
-  { left: "44%", top: "56%", size: "h-2 w-2", color: "bg-emerald-200/70", duration: 14, x: [0, -14, 8, 0], y: [0, 15, -11, 0] },
-  { left: "57%", top: "72%", size: "h-2.5 w-2.5", color: "bg-teal-200/65", duration: 11, x: [0, 10, -12, 0], y: [0, -17, 9, 0] },
-  { left: "64%", top: "26%", size: "h-2 w-2", color: "bg-cyan-200/70", duration: 8, x: [0, -11, 10, 0], y: [0, 11, -9, 0] },
-  { left: "74%", top: "52%", size: "h-3 w-3", color: "bg-emerald-100/60", duration: 13, x: [0, 12, -10, 0], y: [0, -13, 16, 0] },
-  { left: "88%", top: "24%", size: "h-2.5 w-2.5", color: "bg-teal-100/75", duration: 10, x: [0, -9, 12, 0], y: [0, 13, -10, 0] },
-  { left: "86%", top: "80%", size: "h-2 w-2", color: "bg-cyan-100/60", duration: 15, x: [0, 7, -9, 0], y: [0, -12, 8, 0] },
-  { left: "48%", top: "8%", size: "h-2 w-2", color: "bg-emerald-100/75", duration: 11, x: [0, 11, -8, 0], y: [0, 14, -12, 0] },
+const floatingInfinities = [
+  { left: "12%", top: "28%", size: "text-lg", color: "text-emerald-200/45", duration: 9, x: [0, 10, -8, 0], y: [0, -14, 12, 0], rotate: [0, 8, -6, 0] },
+  { left: "26%", top: "62%", size: "text-sm", color: "text-teal-200/45", duration: 11, x: [0, -12, 9, 0], y: [0, 16, -10, 0], rotate: [0, -10, 8, 0] },
+  { left: "54%", top: "18%", size: "text-base", color: "text-cyan-100/50", duration: 10, x: [0, 14, -6, 0], y: [0, -12, 18, 0], rotate: [0, 12, -8, 0] },
+  { left: "68%", top: "38%", size: "text-lg", color: "text-emerald-100/40", duration: 12, x: [0, -10, 12, 0], y: [0, 18, -12, 0], rotate: [0, -8, 10, 0] },
+  { left: "82%", top: "66%", size: "text-sm", color: "text-teal-100/50", duration: 8, x: [0, 8, -10, 0], y: [0, -10, 8, 0], rotate: [0, 10, -8, 0] },
+  { left: "38%", top: "78%", size: "text-base", color: "text-cyan-100/45", duration: 13, x: [0, 12, -14, 0], y: [0, -18, 12, 0], rotate: [0, -12, 6, 0] },
+  { left: "8%", top: "46%", size: "text-sm", color: "text-emerald-100/50", duration: 10, x: [0, 9, -7, 0], y: [0, -16, 10, 0], rotate: [0, 9, -7, 0] },
+  { left: "18%", top: "18%", size: "text-base", color: "text-teal-100/45", duration: 12, x: [0, -8, 11, 0], y: [0, 10, -14, 0], rotate: [0, -9, 7, 0] },
+  { left: "32%", top: "34%", size: "text-lg", color: "text-cyan-100/40", duration: 9, x: [0, 13, -9, 0], y: [0, -12, 15, 0], rotate: [0, 8, -10, 0] },
+  { left: "44%", top: "56%", size: "text-sm", color: "text-emerald-200/50", duration: 14, x: [0, -14, 8, 0], y: [0, 15, -11, 0], rotate: [0, -11, 9, 0] },
+  { left: "57%", top: "72%", size: "text-base", color: "text-teal-200/45", duration: 11, x: [0, 10, -12, 0], y: [0, -17, 9, 0], rotate: [0, 10, -8, 0] },
+  { left: "64%", top: "26%", size: "text-sm", color: "text-cyan-200/50", duration: 8, x: [0, -11, 10, 0], y: [0, 11, -9, 0], rotate: [0, -10, 8, 0] },
+  { left: "74%", top: "52%", size: "text-lg", color: "text-emerald-100/40", duration: 13, x: [0, 12, -10, 0], y: [0, -13, 16, 0], rotate: [0, 12, -8, 0] },
+  { left: "88%", top: "24%", size: "text-base", color: "text-teal-100/50", duration: 10, x: [0, -9, 12, 0], y: [0, 13, -10, 0], rotate: [0, -8, 9, 0] },
+  { left: "86%", top: "80%", size: "text-sm", color: "text-cyan-100/40", duration: 15, x: [0, 7, -9, 0], y: [0, -12, 8, 0], rotate: [0, 11, -6, 0] },
+  { left: "48%", top: "8%", size: "text-sm", color: "text-emerald-100/50", duration: 11, x: [0, 11, -8, 0], y: [0, 14, -12, 0], rotate: [0, -12, 8, 0] },
 ];
 
 const BackgroundScene = () => (
@@ -85,14 +85,16 @@ const BackgroundScene = () => (
       />
     ))}
 
-    {floatingParticles.map((particle) => (
+    {floatingInfinities.map((particle) => (
       <motion.div
         key={`${particle.left}-${particle.top}`}
-        animate={{ x: particle.x, y: particle.y, opacity: [0.35, 0.85, 0.45, 0.35] }}
+        animate={{ x: particle.x, y: particle.y, rotate: particle.rotate, opacity: [0.22, 0.55, 0.3, 0.22] }}
         transition={{ duration: particle.duration, repeat: Infinity, ease: "easeInOut" }}
-        className={`absolute rounded-full shadow-[0_0_22px_rgba(255,255,255,0.12)] ${particle.size} ${particle.color}`}
+        className={`absolute select-none font-semibold leading-none drop-shadow-[0_0_10px_rgba(167,243,208,0.18)] ${particle.size} ${particle.color}`}
         style={{ left: particle.left, top: particle.top }}
-      />
+      >
+        ∞
+      </motion.div>
     ))}
 
     <motion.div

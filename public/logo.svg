@@ -1,74 +1,64 @@
 <svg width="512" height="512" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#E2E8F0" />
-      <stop offset="100%" stop-color="#94A3B8" />
+    <radialGradient id="bg" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(80 80) rotate(90) scale(80)">
+      <stop offset="0%" stop-color="#132a24" />
+      <stop offset="70%" stop-color="#0b1714" />
+      <stop offset="100%" stop-color="#07110f" />
+    </radialGradient>
+    <linearGradient id="ring" x1="20" y1="20" x2="140" y2="140" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A7F3D0" />
+      <stop offset="50%" stop-color="#5EEAD4" />
+      <stop offset="100%" stop-color="#99F6E4" />
     </linearGradient>
-    <linearGradient id="core" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F8FAFC" />
-      <stop offset="100%" stop-color="#CBD5E1" />
+    <linearGradient id="infinity" x1="28" y1="80" x2="132" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6EE7B7" />
+      <stop offset="50%" stop-color="#2DD4BF" />
+      <stop offset="100%" stop-color="#A5F3FC" />
     </linearGradient>
-    <linearGradient id="flow" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#1E3A8A" />
-      <stop offset="50%" stop-color="#475569" />
-      <stop offset="100%" stop-color="#1E3A8A" />
-    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
   </defs>
 
-  <circle cx="80" cy="80" r="74" fill="url(#ring)" />
-  <circle cx="80" cy="80" r="66" fill="#0F172A" />
-  <circle cx="80" cy="80" r="60" fill="url(#core)" />
+  <circle cx="80" cy="80" r="74" fill="url(#bg)" />
+  <circle cx="80" cy="80" r="72" stroke="url(#ring)" stroke-opacity="0.45" stroke-width="2.5" />
+  <circle cx="80" cy="80" r="63" stroke="#A7F3D0" stroke-opacity="0.08" stroke-width="1.5" />
 
   <path
-    d="M44 62C44 47 56 35 71 35C75 24 86 17 98 17C114 17 127 28 129 43C141 44 151 54 151 67V83H44V62Z"
-    stroke="#1E3A8A"
-    stroke-width="7"
+    d="M30 80C30 57 49 38 72 38C87 38 101 47 113 60C123 71 131 80 142 80C131 80 123 89 113 100C101 113 87 122 72 122C49 122 30 103 30 80Z"
+    stroke="url(#infinity)"
+    stroke-width="11"
     stroke-linecap="round"
     stroke-linejoin="round"
-  />
-
-  <path
-    d="M42 85C54 73 65 67 74 67C85 67 93 74 100 83C108 93 115 101 126 101C135 101 144 95 154 83"
-    stroke="#94A3B8"
-    stroke-width="18"
-    stroke-linecap="round"
-    opacity="0.85"
+    filter="url(#glow)"
   />
   <path
-    d="M42 85C54 73 65 67 74 67C85 67 93 74 100 83C108 93 115 101 126 101C135 101 144 95 154 83"
-    stroke="url(#flow)"
+    d="M130 80C130 103 111 122 88 122C73 122 59 113 47 100C37 89 29 80 18 80C29 80 37 71 47 60C59 47 73 38 88 38C111 38 130 57 130 80Z"
+    transform="translate(12 0)"
+    stroke="url(#infinity)"
     stroke-width="11"
     stroke-linecap="round"
-  />
-  <path
-    d="M42 99C54 111 65 117 74 117C85 117 93 110 100 101C108 91 115 83 126 83C135 83 144 89 154 101"
-    stroke="#94A3B8"
-    stroke-width="18"
-    stroke-linecap="round"
-    opacity="0.85"
-  />
-  <path
-    d="M42 99C54 111 65 117 74 117C85 117 93 110 100 101C108 91 115 83 126 83C135 83 144 89 154 101"
-    stroke="url(#flow)"
-    stroke-width="11"
-    stroke-linecap="round"
+    stroke-linejoin="round"
+    filter="url(#glow)"
   />
 
-  <path d="M34 117H126" stroke="#64748B" stroke-width="5" stroke-linecap="round" opacity="0.65" />
-  <path d="M34 126H126" stroke="#94A3B8" stroke-width="3" stroke-linecap="round" opacity="0.45" />
-  <g fill="#CBD5E1">
-    <circle cx="53" cy="117" r="4" />
-    <circle cx="75" cy="126" r="4" />
-    <circle cx="97" cy="117" r="4" />
-    <circle cx="119" cy="126" r="4" />
-  </g>
-  <g stroke="#94A3B8" stroke-width="3" stroke-linecap="round">
-    <path d="M53 117V105" />
-    <path d="M75 126V110" />
-    <path d="M97 117V103" />
-    <path d="M119 126V115" />
-  </g>
-
-  <path d="M50 84L59 93L50 102" stroke="#1E3A8A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M65 102H78" stroke="#1E3A8A" stroke-width="5" stroke-linecap="round" />
+  <path
+    d="M33 80C33 59 50 42 71 42C85 42 98 50 109 62C120 74 128 80 139 80"
+    stroke="#ECFDF5"
+    stroke-opacity="0.2"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+  <path
+    d="M127 80C127 101 110 118 89 118C75 118 62 110 51 98C40 86 32 80 21 80"
+    transform="translate(12 0)"
+    stroke="#ECFDF5"
+    stroke-opacity="0.16"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
 </svg>
