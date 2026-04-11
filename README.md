@@ -1,10 +1,15 @@
 # Maksym Prysiazhnikov Portfolio
 
+Personal portfolio website built with React and Express.
+The site includes a floating AI assistant powered by OpenRouter, clickable technology detail pages, and learning platform sections connected to Maksym's background.
+
 ## Local development
 
 1. Install dependencies:
    `npm install`
-2. Start the dev server:
+2. Create `.env` from `.env.example` and set both `OPENROUTER_KEYS` and `OPENROUTER_MODEL` if you want the AI chat widget enabled.
+   `OPENROUTER_KEYS` can contain one key or multiple keys separated by commas, semicolons, or new lines.
+3. Start the dev server:
    `npm run dev`
 
 ## Production build
@@ -15,6 +20,7 @@
    `npm run start`
 
 The production server serves the `dist` folder and exposes a health endpoint at `/health`.
+It also exposes `POST /api/chat` as a server-side proxy for the floating OpenRouter chat widget.
 
 ## Docker
 
@@ -24,7 +30,7 @@ Build the image:
 
 Run it locally:
 
-`docker run --rm -p 3000:3000 maksym-prysyazhnikov-portfolio`
+`docker run --rm -p 3000:3000 -e OPENROUTER_KEYS=key_one,key_two -e OPENROUTER_MODEL=deepseek/deepseek-chat maksym-prysyazhnikov-portfolio`
 
 ## Railway
 
