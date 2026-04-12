@@ -18,6 +18,7 @@ RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
 COPY server.mjs ./server.mjs
+COPY --from=build /app/CV ./CV
 
 EXPOSE 3000
 
