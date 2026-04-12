@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from 'express';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -8,11 +9,15 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = Number(process.env.PORT || 3000);
 const distDir = path.join(__dirname, 'dist');
+const cvFileName = 'Maksym_Prysyazhnikov_CV.pdf';
+const cvFilePath = path.join(__dirname, 'CV', cvFileName);
 const openRouterApiKeys = (process.env.OPENROUTER_KEYS || '')
   .split(/[\n,;]+/)
   .map((key) => key.trim())
   .filter(Boolean);
 const openRouterModel = process.env.OPENROUTER_MODEL;
+const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
+const telegramChatId = process.env.TELEGRAM_CHAT_ID;
 const portfolioFacts = `
 Maksym Prysiazhnikov (Ukrainian: Максим Присяжніков) is a Junior DevOps / Cloud Engineer from Ukraine.
 Core stack shown in the portfolio: Linux, Docker, Kubernetes, Azure, Terraform, CI/CD, GitHub Actions, Python, MySQL, PostgreSQL, Liquibase, Bash, SIEM, IDS/IPS.
@@ -34,12 +39,67 @@ const shuffle = (items) => {
   return result;
 };
 
+const sendTelegramNotification = async (message) => {
+  if (!telegramBotToken || !telegramChatId) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: telegramChatId,
+        text: message,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Telegram notification failed:', errorText);
+    }
+  } catch (error) {
+    console.error('Telegram notification error:', error);
+  }
+};
+
 app.disable('x-powered-by');
 app.use(express.json({ limit: '1mb' }));
 app.use(express.static(distDir, { index: 'index.html' }));
 
 app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'ok' });
+});
+
+app.get('/download/cv', (req, res) => {
+  if (!fs.existsSync(cvFilePath)) {
+    return res.status(404).json({ error: 'CV file was not found on the server.' });
+  }
+
+  res.download(cvFilePath, cvFileName, async (error) => {
+    if (error) {
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Failed to download CV.' });
+      }
+
+      console.error('CV download error:', error);
+      return;
+    }
+
+    const timestamp = new Intl.DateTimeFormat('uk-UA', {
+      dateStyle: 'medium',
+      timeStyle: 'medium',
+      timeZone: process.env.TZ || 'Europe/Kiev',
+    }).format(new Date());
+    const forwardedFor = req.headers['x-forwarded-for'];
+    const ipAddress = Array.isArray(forwardedFor)
+      ? forwardedFor[0]
+      : forwardedFor?.split(',')[0]?.trim() || req.ip || 'unknown';
+
+    await sendTelegramNotification(
+      `Ваше резюме було завантажене.\nФайл: ${cvFileName}\nЧас: ${timestamp}\nIP: ${ipAddress}`,
+    );
+  });
 });
 
 app.post('/api/chat', async (req, res) => {
