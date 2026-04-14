@@ -333,7 +333,10 @@ export default function App() {
         description={activeSkill.description[language]}
         bullets={activeSkill.bullets[language]}
         asideTitle={t.techPage.related}
-        asideContent={<div className="space-y-3">{skills.filter((item) => item.slug !== activeSkill.slug).map((item) => <button key={item.slug} type="button" onClick={() => navigate({ page: "skill", slug: item.slug })} className="flex w-full items-center justify-between rounded-2xl border border-emerald-950/70 bg-[#101c19] px-4 py-3 text-left text-zinc-300 transition hover:border-emerald-400/30 hover:text-white"><span className="flex items-center gap-2">{item.icon}{item.name}</span><ChevronRight className="h-4 w-4 text-emerald-300" /></button>)}</div>}
+        asideContent={<div className="space-y-3">{skills.map((item) => {
+          const isActive = item.slug === activeSkill.slug;
+          return <button key={item.slug} type="button" onClick={() => !isActive && navigate({ page: "skill", slug: item.slug })} aria-current={isActive ? "page" : undefined} className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${isActive ? "border-emerald-400/45 bg-emerald-400/12 text-white shadow-[0_0_0_1px_rgba(52,211,153,0.08)]" : "cursor-pointer border-emerald-950/70 bg-[#101c19] text-zinc-300 hover:border-emerald-400/30 hover:text-white"}`}><span className="flex items-center gap-2">{item.icon}{item.name}</span><ChevronRight className={`h-4 w-4 ${isActive ? "text-emerald-200" : "text-emerald-300"}`} /></button>;
+        })}</div>}
       />
       <AIChatWidget language={language} />
     </>;
@@ -351,7 +354,10 @@ export default function App() {
         description={activeProvider.summary[language]}
         bullets={activeProvider.highlights[language]}
         asideTitle={t.learningPage.related}
-        asideContent={<div className="space-y-3"><a href={activeProvider.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-400/15">{t.learningPage.openSite}<ExternalLink className="h-4 w-4" /></a>{learningProviders.filter((item) => item.slug !== activeProvider.slug).map((item) => <button key={item.slug} type="button" onClick={() => navigate({ page: "provider", slug: item.slug })} className="flex w-full items-center justify-between rounded-2xl border border-emerald-950/70 bg-[#101c19] px-4 py-3 text-left text-zinc-300 transition hover:border-emerald-400/30 hover:text-white"><span>{item.title}</span><ChevronRight className="h-4 w-4 text-emerald-300" /></button>)}</div>}
+        asideContent={<div className="space-y-3"><a href={activeProvider.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-400/15">{t.learningPage.openSite}<ExternalLink className="h-4 w-4" /></a>{learningProviders.map((item) => {
+          const isActive = item.slug === activeProvider.slug;
+          return <button key={item.slug} type="button" onClick={() => !isActive && navigate({ page: "provider", slug: item.slug })} aria-current={isActive ? "page" : undefined} className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${isActive ? "border-emerald-400/45 bg-emerald-400/12 text-white shadow-[0_0_0_1px_rgba(52,211,153,0.08)]" : "cursor-pointer border-emerald-950/70 bg-[#101c19] text-zinc-300 hover:border-emerald-400/30 hover:text-white"}`}><span>{item.title}</span><ChevronRight className={`h-4 w-4 ${isActive ? "text-emerald-200" : "text-emerald-300"}`} /></button>;
+        })}</div>}
       />
       <AIChatWidget language={language} />
     </>;
@@ -416,7 +422,7 @@ export default function App() {
               <p className="mb-6 text-sm text-zinc-500">{t.about.stackHint}</p>
               <div className="flex flex-wrap gap-3">
                 {skills.map((skill, i) => (
-                  <motion.button key={skill.slug} type="button" initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} onClick={() => navigate({ page: "skill", slug: skill.slug })} className="flex items-center gap-2 rounded-xl border border-emerald-950/70 bg-[#101c19] px-4 py-3 text-sm font-medium text-zinc-100 transition-all hover:-translate-y-0.5 hover:border-emerald-400/30 hover:text-emerald-200">{skill.icon}{skill.name}</motion.button>
+                  <motion.button key={skill.slug} type="button" initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} onClick={() => navigate({ page: "skill", slug: skill.slug })} className="cursor-pointer flex items-center gap-2 rounded-xl border border-emerald-950/70 bg-[#101c19] px-4 py-3 text-sm font-medium text-zinc-100 transition-all hover:-translate-y-0.5 hover:border-emerald-400/30 hover:text-emerald-200">{skill.icon}{skill.name}</motion.button>
                 ))}
               </div>
             </div>
