@@ -4,7 +4,7 @@ export default function DevOpsLogo() {
       <img
         src="/logo.svg"
         alt="DevOps logo"
-        className="h-11 w-11 shrink-0 rounded-full border border-emerald-200/20 bg-emerald-50/5 object-cover p-0.5 drop-shadow-[0_0_18px_rgba(52,211,153,0.18)]"
+        className="h-11 w-11 shrink-0 rounded-full border border-[#b8ffff]/20 bg-[#f2ffff]/5 object-cover p-0.5 drop-shadow-[0_0_18px_rgba(0,204,204,0.18)]"
       />
 
       <div className="leading-none">

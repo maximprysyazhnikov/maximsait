@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useMemo, useState } from "react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import DevOpsLogo from "./components/DevOpsLogo";
 import {
   ArrowLeft, Award, Calendar, ChevronRight, Cloud, Code2, Container, Cpu, Database,
@@ -23,21 +23,21 @@ const SectionTitle = ({ children, subtitle }: { children: ReactNode; subtitle?: 
   <div className="mb-12">
     <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-4 text-3xl font-bold text-white md:text-4xl">{children}</motion.h2>
     {subtitle && <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="max-w-2xl text-zinc-400">{subtitle}</motion.p>}
-    <motion.div initial={{ width: 0 }} whileInView={{ width: 60 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 0.8 }} className="mt-4 h-1 rounded-full bg-emerald-400" />
+    <motion.div initial={{ width: 0 }} whileInView={{ width: 60 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 0.8 }} className="mt-4 h-1 rounded-full bg-[#00cccc]" />
   </div>
 );
 
 const Card = ({ children, className = "" }: React.PropsWithChildren<{ className?: string }>) => (
-  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className={`glass rounded-2xl p-6 transition-all duration-300 group hover:border-emerald-400/30 ${className}`}>{children}</motion.div>
+  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className={`glass rounded-2xl p-6 transition-all duration-300 group hover:border-[#00cccc]/30 ${className}`}>{children}</motion.div>
 );
 
 const BackgroundScene = () => (
   <div className="pointer-events-none absolute inset-0 overflow-hidden">
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.04),transparent_34%)]" />
-    <motion.div animate={{ x: [0, 30, -10, 0], y: [0, -20, 15, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} className="absolute left-[8%] top-[12%] h-72 w-72 rounded-full bg-emerald-300/10 blur-[90px]" />
+    <motion.div animate={{ x: [0, 30, -10, 0], y: [0, -20, 15, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} className="absolute left-[8%] top-[12%] h-72 w-72 rounded-full bg-[#66eeee]/10 blur-[90px]" />
     <motion.div animate={{ x: [0, -40, 20, 0], y: [0, 20, -25, 0] }} transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }} className="absolute right-[6%] top-[22%] h-96 w-96 rounded-full bg-cyan-200/8 blur-[110px]" />
-    <motion.div animate={{ x: [0, 20, -18, 0], y: [0, -12, 20, 0] }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }} className="absolute bottom-[8%] left-[20%] h-64 w-64 rounded-full bg-teal-300/10 blur-[80px]" />
-    <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#07110f] via-[#07110f]/75 to-transparent" />
+    <motion.div animate={{ x: [0, 20, -18, 0], y: [0, -12, 20, 0] }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }} className="absolute bottom-[8%] left-[20%] h-64 w-64 rounded-full bg-cyan-200/10 blur-[80px]" />
+    <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#030b12] via-[#030b12]/75 to-transparent" />
   </div>
 );
 
@@ -46,13 +46,61 @@ const InfinityHero = () => (
     <svg viewBox="0 0 520 240" className="h-[260px] w-[620px] overflow-visible">
       <defs>
         <linearGradient id="infinityStroke" x1="0%" y1="50%" x2="100%" y2="50%">
-          <stop offset="0%" stopColor="rgba(110,231,183,0.12)" />
-          <stop offset="50%" stopColor="rgba(94,234,212,0.32)" />
-          <stop offset="100%" stopColor="rgba(165,243,252,0.14)" />
+          <stop offset="0%" stopColor="rgba(0,204,204,0.14)" />
+          <stop offset="50%" stopColor="rgba(102,238,238,0.34)" />
+          <stop offset="100%" stopColor="rgba(184,255,255,0.16)" />
         </linearGradient>
       </defs>
       <motion.path d="M65 120C95 55 160 38 212 64C244 80 269 108 290 120C312 132 338 160 370 176C424 203 482 183 501 120C482 57 424 37 370 64C338 80 312 108 290 120C269 132 244 160 212 176C160 202 95 185 65 120Z" animate={{ pathLength: [0.78, 1, 0.82, 0.78], opacity: [0.42, 0.72, 0.48, 0.42] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }} fill="none" stroke="url(#infinityStroke)" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+  </motion.div>
+);
+
+const StartupLoader = () => (
+  <motion.div
+    initial={{ opacity: 1 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0, filter: "blur(10px)" }}
+    transition={{ duration: 0.55, ease: "easeOut" }}
+    className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-[#02070d]"
+  >
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,204,204,0.18),transparent_34%)]" />
+    <motion.div
+      initial={{ scale: 0.72, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className="relative flex flex-col items-center"
+    >
+      <div className="relative mb-8 flex h-28 w-28 items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 rounded-full border border-[#00cccc]/20 border-t-[#00cccc] shadow-[0_0_40px_rgba(0,204,204,0.28)]"
+        />
+        <motion.img
+          src="/logo.svg"
+          alt=""
+          initial={{ scale: 0.9 }}
+          animate={{ scale: [0.9, 1, 0.94, 1] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          className="h-20 w-20 rounded-full border border-[#b8ffff]/20 bg-[#071b2a] p-1"
+        />
+      </div>
+      <motion.div
+        initial={{ width: 0 }}
+        animate={{ width: 220 }}
+        transition={{ duration: 0.9, delay: 0.15, ease: "easeOut" }}
+        className="h-px bg-gradient-to-r from-transparent via-[#00cccc] to-transparent"
+      />
+      <motion.p
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.35 }}
+        className="mt-5 text-xs font-semibold uppercase tracking-[0.34em] text-[#b8ffff]"
+      >
+        Maksym DevOps
+      </motion.p>
+    </motion.div>
   </motion.div>
 );
 
@@ -92,7 +140,7 @@ const copy = {
     education: { title: "Освіта", items: [{ title: "Архітектура та містобудування", place: "Одеська державна академія будівництва та архітектури" }, { title: "Навчання за напрямами, пов'язаними з програмним забезпеченням", place: "Академія зв'язку імені О. С. Попова" }], languagesTitle: "Мови", languages: [{ label: "Українська", value: "Рідна" }, { label: "Англійська", value: "Upper-Intermediate (B2)" }], providersTitle: "Платформи та курси", providersSubtitle: "Посилання на платформи, які пов'язані з моїм навчанням і розвитком.", visitSite: "Перейти на сайт" },
     learningPage: { back: "До головного меню", openSite: "Відкрити сайт", related: "Інші платформи" },
     techPage: { back: "До головного меню", title: "Технологія", related: "Інші технології" },
-    earlier: { title: "Попередній досвід", subtitle: "Фундамент у комунікації, продажах і координації проєктів.", items: [{ period: "2019 – 2022", title: "Самозайнятість", text: "Онлайн-просування продуктів і генерація попиту. Використовував цифрові канали для підтримки продажів." }, { period: "2017 – 2019", title: "Бізнес-партнерство", text: "Комунікація з оптовими покупцями, переговори та координація угод." }, { period: "2016 – 2017", title: "Агент з нерухомості", text: "NBR Real Estate. Супровід операцій з нерухомістю та комунікація з клієнтами." }] },
+    earlier: { title: "Попередній досвід", subtitle: "Фундамент у комунікації, продажах і координації проєктів.", items: [{ period: "2022 – 2026", title: "Аутсорс та волонтерські проєкти", text: "Аутсорс-робота та ведення проєктів на волонтерській основі: координація задач, комунікація з учасниками, підтримка запусків і супровід робочих процесів." }, { period: "2019 – 2022", title: "Самозайнятість", text: "Онлайн-просування продуктів і генерація попиту. Використовував цифрові канали для підтримки продажів." }, { period: "2017 – 2019", title: "Бізнес-партнерство", text: "Комунікація з оптовими покупцями, переговори та координація угод." }, { period: "2016 – 2017", title: "Агент з нерухомості", text: "NBR Real Estate. Супровід операцій з нерухомістю та комунікація з клієнтами." }] },
     contact: { title: "Контакти", subtitle: "Відкритий до нових проєктів, співпраці та професійних можливостей.", linkedin: "LinkedIn", github: "GitHub", footer: "Створено за допомогою React і Tailwind CSS." },
     chat: { title: "AI Помічник", subtitle: "Постав питання про мій досвід, стек або проєкти.", open: "AI чат", placeholder: "Напиши повідомлення...", send: "Надіслати", loading: "AI друкує відповідь...", welcome: "Привіт! Я AI-помічник цього портфоліо. Можу коротко розповісти про стек, досвід і навчання.", error: "Не вдалося отримати відповідь. Перевір ключ OpenRouter на сервері." },
   },
@@ -107,17 +155,17 @@ const copy = {
     education: { title: "Education", items: [{ title: "Architecture and Urban Planning", place: "Odesa State Academy of Civil Engineering and Architecture" }, { title: "Software-related studies", place: "Popov Academy of Telecommunications" }], languagesTitle: "Languages", languages: [{ label: "Ukrainian", value: "Native" }, { label: "English", value: "Upper-Intermediate (B2)" }], providersTitle: "Platforms and courses", providersSubtitle: "Links to the learning platforms connected to my growth path.", visitSite: "Visit website" },
     learningPage: { back: "Main menu", openSite: "Open website", related: "Other platforms" },
     techPage: { back: "Main menu", title: "Technology", related: "Other technologies" },
-    earlier: { title: "Earlier Experience", subtitle: "A foundation in communication, sales, and project coordination.", items: [{ period: "2019 – 2022", title: "Self-employed", text: "Focused on online product promotion and demand generation, using digital channels to support sales." }, { period: "2017 – 2019", title: "Business Partnership", text: "Handled communication with wholesale buyers, negotiations, and deal coordination." }, { period: "2016 – 2017", title: "Real Estate Agent", text: "Worked at NBR Real Estate, supporting property transactions and client communication." }] },
+    earlier: { title: "Earlier Experience", subtitle: "A foundation in communication, sales, and project coordination.", items: [{ period: "2022 – 2026", title: "Outsourcing and Volunteer Projects", text: "Outsourcing work and project ownership on a volunteer basis: task coordination, stakeholder communication, launch support, and day-to-day workflow management." }, { period: "2019 – 2022", title: "Self-employed", text: "Focused on online product promotion and demand generation, using digital channels to support sales." }, { period: "2017 – 2019", title: "Business Partnership", text: "Handled communication with wholesale buyers, negotiations, and deal coordination." }, { period: "2016 – 2017", title: "Real Estate Agent", text: "Worked at NBR Real Estate, supporting property transactions and client communication." }] },
     contact: { title: "Let's Connect", subtitle: "I am always open to discussing new projects, collaboration, and career opportunities.", linkedin: "LinkedIn", github: "GitHub", footer: "Built with React & Tailwind CSS." },
     chat: { title: "AI Assistant", subtitle: "Ask about my stack, experience, or projects.", open: "AI chat", placeholder: "Type a message...", send: "Send", loading: "AI is typing...", welcome: "Hi! I am the portfolio AI assistant. I can explain my stack, experience, and learning path.", error: "Could not get a response. Check the OpenRouter server key." },
   },
 } satisfies Record<Language, any>;
 
 const blockIcons = [
-  <Container className="h-4 w-4 text-emerald-400" key="container" />,
-  <Database className="h-4 w-4 text-emerald-400" key="database" />,
-  <Cpu className="h-4 w-4 text-emerald-400" key="cpu" />,
-  <ShieldCheck className="h-4 w-4 text-emerald-400" key="shield" />,
+  <Container className="h-4 w-4 text-[#00cccc]" key="container" />,
+  <Database className="h-4 w-4 text-[#00cccc]" key="database" />,
+  <Cpu className="h-4 w-4 text-[#00cccc]" key="cpu" />,
+  <ShieldCheck className="h-4 w-4 text-[#00cccc]" key="shield" />,
 ];
 
 const getRouteFromPath = (pathname: string): Route => {
@@ -189,29 +237,29 @@ const AIChatWidget = ({ language }: { language: Language }) => {
       {isOpen && <div className="fixed inset-0 z-40 bg-black/35 sm:hidden" onClick={() => setIsOpen(false)} />}
       <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
         {isOpen && (
-          <motion.div initial={{ opacity: 0, y: 16, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="glass w-[min(92vw,380px)] overflow-hidden rounded-3xl border border-emerald-400/20 shadow-2xl shadow-black/35">
-            <div className="flex items-start justify-between gap-3 border-b border-emerald-950/70 bg-[#0b1714]/90 px-5 py-4">
+          <motion.div initial={{ opacity: 0, y: 16, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="glass w-[min(92vw,380px)] overflow-hidden rounded-3xl border border-[#00cccc]/20 shadow-2xl shadow-black/35">
+            <div className="flex items-start justify-between gap-3 border-b border-cyan-950/70 bg-[#051421]/90 px-5 py-4">
               <div>
                 <p className="text-sm font-semibold text-white">{t.title}</p>
                 <p className="text-xs text-zinc-400">{t.subtitle}</p>
               </div>
-              <button type="button" onClick={() => setIsOpen(false)} className="rounded-full p-2 text-zinc-400 transition hover:bg-[#13211d] hover:text-white"><X className="h-4 w-4" /></button>
+              <button type="button" onClick={() => setIsOpen(false)} className="rounded-full p-2 text-zinc-400 transition hover:bg-[#0a2635] hover:text-white"><X className="h-4 w-4" /></button>
             </div>
             <div className="max-h-[420px] space-y-3 overflow-y-auto px-4 py-4">
               {messages.map((message, index) => (
-                <div key={`${message.role}-${index}`} className={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "ml-auto bg-emerald-400 text-[#04100d]" : "bg-[#13211d] text-zinc-200"}`}>{message.content}</div>
+                <div key={`${message.role}-${index}`} className={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "ml-auto bg-[#00cccc] text-[#021014]" : "bg-[#0a2635] text-zinc-200"}`}>{message.content}</div>
               ))}
-              {loading && <div className="max-w-[88%] rounded-2xl bg-[#13211d] px-4 py-3 text-sm text-zinc-400">{t.loading}</div>}
+              {loading && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm text-zinc-400">{t.loading}</div>}
             </div>
-            <div className="border-t border-emerald-950/70 p-4">
-              <div className="flex items-center gap-2 rounded-2xl bg-[#091411] p-2">
+            <div className="border-t border-cyan-950/70 p-4">
+              <div className="flex items-center gap-2 rounded-2xl bg-[#04141f] p-2">
                 <input value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") void sendMessage(); }} placeholder={t.placeholder} className="w-full bg-transparent px-3 py-2 text-sm text-white outline-none placeholder:text-zinc-500" />
-                <button type="button" onClick={() => void sendMessage()} disabled={loading || !input.trim()} className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400 text-[#04100d] transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50" aria-label={t.send}><Send className="h-4 w-4" /></button>
+                <button type="button" onClick={() => void sendMessage()} disabled={loading || !input.trim()} className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#00cccc] text-[#021014] transition hover:bg-[#66eeee] disabled:cursor-not-allowed disabled:opacity-50" aria-label={t.send}><Send className="h-4 w-4" /></button>
               </div>
             </div>
           </motion.div>
         )}
-        <button type="button" onClick={() => setIsOpen((current) => !current)} className="inline-flex items-center gap-3 rounded-full bg-emerald-400 px-5 py-3 font-semibold text-[#04100d] shadow-lg shadow-emerald-500/25 transition hover:bg-emerald-300">
+        <button type="button" onClick={() => setIsOpen((current) => !current)} className="inline-flex items-center gap-3 rounded-full bg-[#00cccc] px-5 py-3 font-semibold text-[#021014] shadow-lg shadow-[#00cccc]/25 transition hover:bg-[#66eeee]">
           <MessageCircle className="h-5 w-5" />
           <span>{t.open}</span>
         </button>
@@ -233,10 +281,10 @@ const DetailLayout = ({
       <BackgroundScene />
       <nav className="fixed top-0 z-50 w-full glass border-b-0 py-4">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6">
-          <button type="button" onClick={onBack} className="inline-flex items-center gap-2 rounded-full border border-emerald-900/70 bg-[#101c19] px-4 py-2 text-sm font-medium text-zinc-200 transition hover:border-emerald-400/30 hover:text-white"><ArrowLeft className="h-4 w-4" />{backLabel}</button>
-          <div className="flex items-center rounded-full border border-emerald-950/80 bg-[#0b1815]/85 p-1">
+          <button type="button" onClick={onBack} className="inline-flex items-center gap-2 rounded-full border border-cyan-900/70 bg-[#092231] px-4 py-2 text-sm font-medium text-zinc-200 transition hover:border-[#00cccc]/30 hover:text-white"><ArrowLeft className="h-4 w-4" />{backLabel}</button>
+          <div className="flex items-center rounded-full border border-cyan-950/80 bg-[#061a26]/85 p-1">
             {(["uk", "en"] as Language[]).map((lang) => (
-              <button key={lang} type="button" onClick={() => window.dispatchEvent(new CustomEvent("portfolio-language", { detail: lang }))} className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] transition-colors ${language === lang ? "bg-emerald-500 text-[#04100d]" : "text-zinc-400 hover:text-white"}`}>{lang}</button>
+              <button key={lang} type="button" onClick={() => window.dispatchEvent(new CustomEvent("portfolio-language", { detail: lang }))} className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] transition-colors ${language === lang ? "bg-[#00cccc] text-[#021014]" : "text-zinc-400 hover:text-white"}`}>{lang}</button>
             ))}
           </div>
         </div>
@@ -244,24 +292,24 @@ const DetailLayout = ({
       <main className="mx-auto max-w-7xl px-6 pb-20 pt-32">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div>
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-300">{eyebrow}</p>
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#66eeee]">{eyebrow}</p>
             <h1 className="mb-5 text-4xl font-bold text-white md:text-6xl">{title}</h1>
             <p className="mb-6 max-w-3xl text-xl leading-relaxed text-zinc-300">{summary}</p>
-            <Card className="mb-8 bg-[#0f1d1a]/76"><p className="text-base leading-8 text-zinc-300">{description}</p></Card>
+            <Card className="mb-8 bg-[#071b2a]/76"><p className="text-base leading-8 text-zinc-300">{description}</p></Card>
             <div className="grid gap-4">
               {bullets.map((bullet, index) => {
                 const parsed = splitBullet(bullet);
                 const isOpen = openBulletIndex === index;
 
                 return (
-                  <div key={bullet} className="overflow-hidden rounded-3xl border border-emerald-950/70 bg-[#0d1916]/90">
+                  <div key={bullet} className="overflow-hidden rounded-3xl border border-cyan-950/70 bg-[#071c29]/90">
                     <button
                       type="button"
                       onClick={() => setOpenBulletIndex(isOpen ? null : index)}
-                      className="flex w-full items-start gap-4 px-6 py-5 text-left transition hover:bg-[#12211d]"
+                      className="flex w-full items-start gap-4 px-6 py-5 text-left transition hover:bg-[#0b2838]"
                     >
-                      <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-emerald-400/15 bg-emerald-400/5">
-                        <ChevronRight className={`h-4 w-4 text-emerald-400 transition-transform duration-200 ${isOpen ? "rotate-90" : "rotate-0"}`} />
+                      <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#00cccc]/15 bg-[#00cccc]/5">
+                        <ChevronRight className={`h-4 w-4 text-[#00cccc] transition-transform duration-200 ${isOpen ? "rotate-90" : "rotate-0"}`} />
                       </span>
                       <div className="min-w-0">
                         <p className="text-lg font-medium text-zinc-100">{parsed.title}</p>
@@ -269,7 +317,7 @@ const DetailLayout = ({
                     </button>
 
                     {isOpen && parsed.details && (
-                      <div className="border-t border-emerald-950/70 px-6 pb-6 pt-4">
+                      <div className="border-t border-cyan-950/70 px-6 pb-6 pt-4">
                         <div className="pl-12 text-base leading-8 text-zinc-300">
                           {parsed.details}
                         </div>
@@ -280,7 +328,7 @@ const DetailLayout = ({
               })}
             </div>
           </div>
-          <aside><Card className="sticky top-28 bg-[#0b1714]/82"><h2 className="mb-5 text-lg font-semibold text-white">{asideTitle}</h2>{asideContent}</Card></aside>
+          <aside><Card className="sticky top-28 bg-[#051421]/82"><h2 className="mb-5 text-lg font-semibold text-white">{asideTitle}</h2>{asideContent}</Card></aside>
         </div>
       </main>
     </div>
@@ -290,7 +338,13 @@ const DetailLayout = ({
 export default function App() {
   const [language, setLanguage] = useState<Language>("uk");
   const [route, setRoute] = useState<Route>(() => getRouteFromPath(window.location.pathname));
+  const [showStartupLoader, setShowStartupLoader] = useState(true);
   const t = copy[language];
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setShowStartupLoader(false), 1400);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handlePopState = () => setRoute(getRouteFromPath(window.location.pathname));
@@ -335,7 +389,7 @@ export default function App() {
         asideTitle={t.techPage.related}
         asideContent={<div className="space-y-3">{skills.map((item) => {
           const isActive = item.slug === activeSkill.slug;
-          return <button key={item.slug} type="button" onClick={() => !isActive && navigate({ page: "skill", slug: item.slug })} aria-current={isActive ? "page" : undefined} className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${isActive ? "border-emerald-400/45 bg-emerald-400/12 text-white shadow-[0_0_0_1px_rgba(52,211,153,0.08)]" : "cursor-pointer border-emerald-950/70 bg-[#101c19] text-zinc-300 hover:border-emerald-400/30 hover:text-white"}`}><span className="flex items-center gap-2">{item.icon}{item.name}</span><ChevronRight className={`h-4 w-4 ${isActive ? "text-emerald-200" : "text-emerald-300"}`} /></button>;
+          return <button key={item.slug} type="button" onClick={() => !isActive && navigate({ page: "skill", slug: item.slug })} aria-current={isActive ? "page" : undefined} className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${isActive ? "border-[#00cccc]/45 bg-[#00cccc]/12 text-white shadow-[0_0_0_1px_rgba(0,204,204,0.08)]" : "cursor-pointer border-cyan-950/70 bg-[#092231] text-zinc-300 hover:border-[#00cccc]/30 hover:text-white"}`}><span className="flex items-center gap-2">{item.icon}{item.name}</span><ChevronRight className={`h-4 w-4 ${isActive ? "text-[#b8ffff]" : "text-[#66eeee]"}`} /></button>;
         })}</div>}
       />
       <AIChatWidget language={language} />
@@ -354,9 +408,9 @@ export default function App() {
         description={activeProvider.summary[language]}
         bullets={activeProvider.highlights[language]}
         asideTitle={t.learningPage.related}
-        asideContent={<div className="space-y-3"><a href={activeProvider.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-400/15">{t.learningPage.openSite}<ExternalLink className="h-4 w-4" /></a>{learningProviders.map((item) => {
+        asideContent={<div className="space-y-3"><a href={activeProvider.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-2xl border border-[#00cccc]/20 bg-[#00cccc]/10 px-4 py-3 text-sm font-semibold text-[#b8ffff] transition hover:bg-[#00cccc]/15">{t.learningPage.openSite}<ExternalLink className="h-4 w-4" /></a>{learningProviders.map((item) => {
           const isActive = item.slug === activeProvider.slug;
-          return <button key={item.slug} type="button" onClick={() => !isActive && navigate({ page: "provider", slug: item.slug })} aria-current={isActive ? "page" : undefined} className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${isActive ? "border-emerald-400/45 bg-emerald-400/12 text-white shadow-[0_0_0_1px_rgba(52,211,153,0.08)]" : "cursor-pointer border-emerald-950/70 bg-[#101c19] text-zinc-300 hover:border-emerald-400/30 hover:text-white"}`}><span>{item.title}</span><ChevronRight className={`h-4 w-4 ${isActive ? "text-emerald-200" : "text-emerald-300"}`} /></button>;
+          return <button key={item.slug} type="button" onClick={() => !isActive && navigate({ page: "provider", slug: item.slug })} aria-current={isActive ? "page" : undefined} className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${isActive ? "border-[#00cccc]/45 bg-[#00cccc]/12 text-white shadow-[0_0_0_1px_rgba(0,204,204,0.08)]" : "cursor-pointer border-cyan-950/70 bg-[#092231] text-zinc-300 hover:border-[#00cccc]/30 hover:text-white"}`}><span>{item.title}</span><ChevronRight className={`h-4 w-4 ${isActive ? "text-[#b8ffff]" : "text-[#66eeee]"}`} /></button>;
         })}</div>}
       />
       <AIChatWidget language={language} />
@@ -365,6 +419,7 @@ export default function App() {
 
   return (
     <div id="top" className="relative isolate min-h-screen overflow-hidden font-sans">
+      <AnimatePresence>{showStartupLoader && <StartupLoader />}</AnimatePresence>
       <BackgroundScene />
       <nav className="fixed top-0 z-50 w-full glass border-b-0 py-4">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6">
@@ -377,8 +432,8 @@ export default function App() {
               <a href="#learning" className="transition-colors hover:text-white">{t.nav.learning}</a>
               <a href="#contact" className="transition-colors hover:text-white">{t.nav.contact}</a>
             </div>
-            <div className="flex items-center rounded-full border border-emerald-950/80 bg-[#0b1815]/85 p-1">
-              {(["uk", "en"] as Language[]).map((lang) => <button key={lang} type="button" onClick={() => setLanguage(lang)} className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] transition-colors ${language === lang ? "bg-emerald-500 text-[#04100d]" : "text-zinc-400 hover:text-white"}`}>{lang}</button>)}
+            <div className="flex items-center rounded-full border border-cyan-950/80 bg-[#061a26]/85 p-1">
+              {(["uk", "en"] as Language[]).map((lang) => <button key={lang} type="button" onClick={() => setLanguage(lang)} className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] transition-colors ${language === lang ? "bg-[#00cccc] text-[#021014]" : "text-zinc-400 hover:text-white"}`}>{lang}</button>)}
             </div>
           </div>
         </div>
@@ -386,25 +441,25 @@ export default function App() {
       <section className="relative overflow-hidden pb-20 pt-32">
         <InfinityHero />
         <div className="absolute left-1/2 top-0 -z-10 h-full w-full max-w-7xl -translate-x-1/2">
-          <div className="absolute left-10 top-20 h-72 w-72 rounded-full bg-emerald-500/18 blur-[120px]" />
-          <div className="absolute bottom-20 right-10 h-72 w-72 rounded-full bg-teal-400/14 blur-[120px]" />
+          <div className="absolute left-10 top-20 h-72 w-72 rounded-full bg-[#00cccc]/18 blur-[120px]" />
+          <div className="absolute bottom-20 right-10 h-72 w-72 rounded-full bg-cyan-300/14 blur-[120px]" />
         </div>
         <div className="mx-auto max-w-7xl px-6">
           <div className="max-w-3xl">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-              <span className="mb-6 inline-block rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-300">{t.hero.badge}</span>
+              <span className="mb-6 inline-block rounded-full border border-[#00cccc]/20 bg-[#00cccc]/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#66eeee]">{t.hero.badge}</span>
               <h1 className="mb-6 text-5xl font-bold tracking-tight text-white md:text-7xl">Maksym <span className="text-gradient">Prysiazhnikov</span></h1>
               <p className="mb-8 text-xl leading-relaxed text-zinc-400 md:text-2xl">{t.hero.role}</p>
               <div className="flex flex-wrap gap-4">
-                <motion.a href="#contact" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex items-center gap-2 rounded-xl bg-emerald-400 px-8 py-4 font-semibold text-[#04100d] shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-300"><Mail className="h-5 w-5" />{t.hero.contact}</motion.a>
-                <motion.a href="https://github.com/maximprysyazhnikov" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="glass flex items-center gap-2 rounded-xl px-8 py-4 font-semibold text-white transition-all hover:bg-[#162723]"><Github className="h-5 w-5" />{t.hero.github}</motion.a>
-                <motion.a href="/download/cv" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="glass flex items-center gap-2 rounded-xl border border-emerald-400/25 px-8 py-4 font-semibold text-emerald-100 transition-all hover:bg-[#162723] hover:text-white"><Download className="h-5 w-5" />{t.hero.resume}</motion.a>
+                <motion.a href="#contact" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex items-center gap-2 rounded-xl bg-[#00cccc] px-8 py-4 font-semibold text-[#021014] shadow-lg shadow-[#00cccc]/20 transition-all hover:bg-[#66eeee]"><Mail className="h-5 w-5" />{t.hero.contact}</motion.a>
+                <motion.a href="https://github.com/maximprysyazhnikov" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="glass flex items-center gap-2 rounded-xl px-8 py-4 font-semibold text-white transition-all hover:bg-[#0c2b3d]"><Github className="h-5 w-5" />{t.hero.github}</motion.a>
+                <motion.a href="/download/cv" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="glass flex items-center gap-2 rounded-xl border border-[#00cccc]/25 px-8 py-4 font-semibold text-[#e6ffff] transition-all hover:bg-[#0c2b3d] hover:text-white"><Download className="h-5 w-5" />{t.hero.resume}</motion.a>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
-      <section id="about" className="bg-[#0b1714]/45 py-20">
+      <section id="about" className="bg-[#051421]/45 py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-16 lg:grid-cols-2">
             <div>
@@ -413,16 +468,16 @@ export default function App() {
               <p className="mb-6 text-lg leading-relaxed text-zinc-400">{t.about.p2}</p>
               <p className="text-lg leading-relaxed text-zinc-400">{t.about.p3}</p>
               <div className="mt-10 grid grid-cols-2 gap-6">
-                <div className="flex items-center gap-3 text-zinc-300"><MapPin className="h-5 w-5 text-emerald-400" /><span>{t.about.country}</span></div>
-                <div className="flex items-center gap-3 text-zinc-300"><Globe className="h-5 w-5 text-emerald-400" /><span>{t.about.english}</span></div>
+                <div className="flex items-center gap-3 text-zinc-300"><MapPin className="h-5 w-5 text-[#00cccc]" /><span>{t.about.country}</span></div>
+                <div className="flex items-center gap-3 text-zinc-300"><Globe className="h-5 w-5 text-[#00cccc]" /><span>{t.about.english}</span></div>
               </div>
             </div>
             <div>
-              <h3 className="mb-2 flex items-center gap-2 text-xl font-bold text-white"><Cpu className="h-5 w-5 text-emerald-400" />{t.about.stack}</h3>
+              <h3 className="mb-2 flex items-center gap-2 text-xl font-bold text-white"><Cpu className="h-5 w-5 text-[#00cccc]" />{t.about.stack}</h3>
               <p className="mb-6 text-sm text-zinc-500">{t.about.stackHint}</p>
               <div className="flex flex-wrap gap-3">
                 {skills.map((skill, i) => (
-                  <motion.button key={skill.slug} type="button" initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} onClick={() => navigate({ page: "skill", slug: skill.slug })} className="cursor-pointer flex items-center gap-2 rounded-xl border border-emerald-950/70 bg-[#101c19] px-4 py-3 text-sm font-medium text-zinc-100 transition-all hover:-translate-y-0.5 hover:border-emerald-400/30 hover:text-emerald-200">{skill.icon}{skill.name}</motion.button>
+                  <motion.button key={skill.slug} type="button" initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} onClick={() => navigate({ page: "skill", slug: skill.slug })} className="cursor-pointer flex items-center gap-2 rounded-xl border border-cyan-950/70 bg-[#092231] px-4 py-3 text-sm font-medium text-zinc-100 transition-all hover:-translate-y-0.5 hover:border-[#00cccc]/30 hover:text-[#b8ffff]">{skill.icon}{skill.name}</motion.button>
                 ))}
               </div>
             </div>
@@ -433,16 +488,16 @@ export default function App() {
         <div className="mx-auto max-w-7xl px-6">
           <SectionTitle subtitle={t.experience.subtitle}>{t.experience.title}</SectionTitle>
           <div className="space-y-8">
-            <Card className="border-l-4 border-l-emerald-400">
+            <Card className="border-l-4 border-l-[#00cccc]">
               <div className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-                <div><h3 className="text-2xl font-bold text-white">{t.experience.volunteerTitle}</h3><p className="font-medium text-emerald-300">{t.experience.volunteerRole}</p></div>
+                <div><h3 className="text-2xl font-bold text-white">{t.experience.volunteerTitle}</h3><p className="font-medium text-[#66eeee]">{t.experience.volunteerRole}</p></div>
                 <a href="https://volunteer-site-placeholder-dev.up.railway.app/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-white"><ExternalLink className="h-4 w-4" />{t.experience.liveDemo}</a>
               </div>
-              <ul className="space-y-3 text-zinc-400">{t.experience.volunteerPoints.map((point: string) => <li key={point} className="flex gap-3"><ChevronRight className="h-5 w-5 shrink-0 text-emerald-400" />{point}</li>)}</ul>
+              <ul className="space-y-3 text-zinc-400">{t.experience.volunteerPoints.map((point: string) => <li key={point} className="flex gap-3"><ChevronRight className="h-5 w-5 shrink-0 text-[#00cccc]" />{point}</li>)}</ul>
             </Card>
             <Card>
               <h3 className="mb-2 text-2xl font-bold text-white">{t.experience.handsOnTitle}</h3>
-              <p className="mb-6 font-medium text-emerald-300">{t.experience.handsOnRole}</p>
+              <p className="mb-6 font-medium text-[#66eeee]">{t.experience.handsOnRole}</p>
               <div className="grid gap-8 md:grid-cols-2">
                 {t.experience.blocks.map((block: { title: string; text: string }, index: number) => <div key={block.title}><h4 className="mb-4 flex items-center gap-2 font-semibold text-white">{blockIcons[index]}{block.title}</h4><p className="text-sm leading-relaxed text-zinc-400">{block.text}</p></div>)}
               </div>
@@ -450,11 +505,11 @@ export default function App() {
           </div>
         </div>
       </section>
-      <section id="projects" className="bg-[#0b1714]/45 py-20">
+      <section id="projects" className="bg-[#051421]/45 py-20">
         <div className="mx-auto max-w-7xl px-6">
           <SectionTitle subtitle={t.projects.subtitle}>{t.projects.title}</SectionTitle>
           <div className="grid gap-8 md:grid-cols-3">
-            {t.projects.items.map((project: { title: string; description: string; tags: string[]; link: string }) => <div key={project.title}><Card className="flex h-full flex-col"><div className="mb-4 flex items-start justify-between"><div className="rounded-xl bg-emerald-400/10 p-3 text-emerald-300"><Code2 className="h-6 w-6" /></div><a href={project.link} target="_blank" rel="noopener noreferrer" className="text-zinc-500 transition-colors hover:text-white"><Github className="h-5 w-5" /></a></div><h3 className="mb-3 text-xl font-bold text-white">{project.title}</h3><p className="mb-6 flex-grow text-sm text-zinc-400">{project.description}</p><div className="flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="rounded-md bg-[#13211d] px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-zinc-400">{tag}</span>)}</div></Card></div>)}
+            {t.projects.items.map((project: { title: string; description: string; tags: string[]; link: string }) => <div key={project.title}><Card className="flex h-full flex-col"><div className="mb-4 flex items-start justify-between"><div className="rounded-xl bg-[#00cccc]/10 p-3 text-[#66eeee]"><Code2 className="h-6 w-6" /></div><a href={project.link} target="_blank" rel="noopener noreferrer" className="text-zinc-500 transition-colors hover:text-white"><Github className="h-5 w-5" /></a></div><h3 className="mb-3 text-xl font-bold text-white">{project.title}</h3><p className="mb-6 flex-grow text-sm text-zinc-400">{project.description}</p><div className="flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="rounded-md bg-[#0a2635] px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-zinc-400">{tag}</span>)}</div></Card></div>)}
           </div>
         </div>
       </section>
@@ -463,13 +518,13 @@ export default function App() {
           <div className="grid gap-16 lg:grid-cols-2">
             <div>
               <SectionTitle>{t.certs.title}</SectionTitle>
-              <div className="space-y-4">{t.certs.items.map((cert: { name: string; issuer: string; year: string; details?: string }) => <div key={cert.name} className="group flex gap-4 rounded-xl p-4 transition-colors hover:bg-[#0f1c18]/80"><div className="mt-1"><Award className="h-6 w-6 text-emerald-400" /></div><div><h4 className="font-bold text-white transition-colors group-hover:text-emerald-300">{cert.name}</h4><p className="text-sm text-zinc-400">{cert.issuer} • {cert.year}</p>{cert.details && <p className="mt-1 text-xs text-emerald-300/70">{cert.details}</p>}</div></div>)}</div>
+              <div className="space-y-4">{t.certs.items.map((cert: { name: string; issuer: string; year: string; details?: string }) => <div key={cert.name} className="group flex gap-4 rounded-xl p-4 transition-colors hover:bg-[#071d29]/80"><div className="mt-1"><Award className="h-6 w-6 text-[#00cccc]" /></div><div><h4 className="font-bold text-white transition-colors group-hover:text-[#66eeee]">{cert.name}</h4><p className="text-sm text-zinc-400">{cert.issuer} • {cert.year}</p>{cert.details && <p className="mt-1 text-xs text-[#66eeee]/70">{cert.details}</p>}</div></div>)}</div>
             </div>
             <div>
               <SectionTitle>{t.education.title}</SectionTitle>
-              <div className="space-y-8">{t.education.items.map((item: { title: string; place: string }) => <div key={item.title} className="relative border-l border-emerald-950/70 pl-8"><div className="absolute left-[-5px] top-0 h-[9px] w-[9px] rounded-full bg-emerald-400" /><h4 className="font-bold text-white">{item.title}</h4><p className="text-sm text-zinc-400">{item.place}</p></div>)}</div>
+              <div className="space-y-8">{t.education.items.map((item: { title: string; place: string }) => <div key={item.title} className="relative border-l border-cyan-950/70 pl-8"><div className="absolute left-[-5px] top-0 h-[9px] w-[9px] rounded-full bg-[#00cccc]" /><h4 className="font-bold text-white">{item.title}</h4><p className="text-sm text-zinc-400">{item.place}</p></div>)}</div>
               <div className="mt-12">
-                <h3 className="mb-6 flex items-center gap-2 text-xl font-bold text-white"><Globe className="h-5 w-5 text-emerald-400" />{t.education.languagesTitle}</h3>
+                <h3 className="mb-6 flex items-center gap-2 text-xl font-bold text-white"><Globe className="h-5 w-5 text-[#00cccc]" />{t.education.languagesTitle}</h3>
                 <div className="flex flex-wrap gap-4">{t.education.languages.map((item: { label: string; value: string }) => <div key={item.label} className="glass rounded-lg px-4 py-2"><p className="mb-1 text-xs font-bold uppercase tracking-widest text-zinc-500">{item.label}</p><p className="font-medium text-white">{item.value}</p></div>)}</div>
               </div>
             </div>
@@ -480,12 +535,12 @@ export default function App() {
               {learningProviders.map((provider) => (
                 <Card key={provider.slug} className="flex h-full flex-col justify-between">
                   <div>
-                    <div className="mb-4 inline-flex rounded-full border border-emerald-400/15 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-200">{provider.category[language]}</div>
+                    <div className="mb-4 inline-flex rounded-full border border-[#00cccc]/15 bg-[#00cccc]/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#b8ffff]">{provider.category[language]}</div>
                     <h3 className="mb-3 text-xl font-bold text-white">{provider.title}</h3>
                     <p className="mb-6 text-sm leading-7 text-zinc-400">{provider.summary[language]}</p>
                   </div>
                   <div className="mt-auto flex flex-col gap-3">
-                    <a href={provider.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-2xl bg-emerald-400 px-4 py-3 text-sm font-semibold text-[#04100d] transition hover:bg-emerald-300">{t.education.visitSite}<ExternalLink className="h-4 w-4" /></a>
+                    <a href={provider.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-2xl bg-[#00cccc] px-4 py-3 text-sm font-semibold text-[#021014] transition hover:bg-[#66eeee]">{t.education.visitSite}<ExternalLink className="h-4 w-4" /></a>
                   </div>
                 </Card>
               ))}
@@ -493,18 +548,18 @@ export default function App() {
           </div>
         </div>
       </section>
-      <section className="bg-[#0b1714]/45 py-20">
+      <section className="bg-[#051421]/45 py-20">
         <div className="mx-auto max-w-7xl px-6">
           <SectionTitle subtitle={t.earlier.subtitle}>{t.earlier.title}</SectionTitle>
-          <div className="grid gap-6 md:grid-cols-3">{t.earlier.items.map((item: { period: string; title: string; text: string }) => <div key={item.title}><Card><div className="mb-3 flex items-center gap-2 text-emerald-400"><Calendar className="h-4 w-4" /><span className="text-xs font-bold">{item.period}</span></div><h4 className="mb-2 font-bold text-white">{item.title}</h4><p className="text-sm text-zinc-400">{item.text}</p></Card></div>)}</div>
+          <div className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-4">{t.earlier.items.map((item: { period: string; title: string; text: string }) => <div key={item.title} className="h-full"><Card className="h-full"><div className="mb-3 flex items-center gap-2 text-[#00cccc]"><Calendar className="h-4 w-4" /><span className="text-xs font-bold">{item.period}</span></div><h4 className="mb-2 font-bold text-white">{item.title}</h4><p className="text-sm text-zinc-400">{item.text}</p></Card></div>)}</div>
         </div>
       </section>
-      <footer id="contact" className="border-t border-emerald-950/60 py-20">
+      <footer id="contact" className="border-t border-cyan-950/60 py-20">
         <div className="mx-auto max-w-7xl px-6 text-center">
           <SectionTitle subtitle={t.contact.subtitle}>{t.contact.title}</SectionTitle>
           <div className="mb-12 flex flex-wrap justify-center gap-8">
-            <a href="https://linkedin.com/in/maxim-prysyazhnikov-b46196163" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-4"><div className="glass flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300 group-hover:bg-emerald-400 group-hover:text-[#04100d]"><Linkedin className="h-8 w-8" /></div><span className="text-zinc-400 transition-colors group-hover:text-white">{t.contact.linkedin}</span></a>
-            <a href="https://github.com/maximprysyazhnikov" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-4"><div className="glass flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300 group-hover:bg-emerald-400 group-hover:text-[#04100d]"><Github className="h-8 w-8" /></div><span className="text-zinc-400 transition-colors group-hover:text-white">{t.contact.github}</span></a>
+            <a href="https://linkedin.com/in/maxim-prysyazhnikov-b46196163" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-4"><div className="glass flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300 group-hover:bg-[#00cccc] group-hover:text-[#021014]"><Linkedin className="h-8 w-8" /></div><span className="text-zinc-400 transition-colors group-hover:text-white">{t.contact.linkedin}</span></a>
+            <a href="https://github.com/maximprysyazhnikov" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-4"><div className="glass flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300 group-hover:bg-[#00cccc] group-hover:text-[#021014]"><Github className="h-8 w-8" /></div><span className="text-zinc-400 transition-colors group-hover:text-white">{t.contact.github}</span></a>
           </div>
           <p className="text-sm text-zinc-500">© {new Date().getFullYear()} Maksym Prysiazhnikov. {t.contact.footer}</p>
         </div>

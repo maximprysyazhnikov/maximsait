@@ -8,19 +8,19 @@
 
 @layer base {
   body {
-    @apply bg-[#07110f] text-zinc-100 antialiased selection:bg-emerald-400/30;
+    @apply bg-[#030b12] text-zinc-100 antialiased selection:bg-[#00cccc]/30;
     background-image:
-      radial-gradient(circle at top left, rgba(16, 185, 129, 0.14), transparent 28%),
-      radial-gradient(circle at bottom right, rgba(20, 184, 166, 0.12), transparent 30%),
-      linear-gradient(180deg, #07110f 0%, #091513 48%, #06100e 100%);
+      radial-gradient(circle at top left, rgba(0, 204, 204, 0.16), transparent 28%),
+      radial-gradient(circle at bottom right, rgba(102, 238, 238, 0.1), transparent 30%),
+      linear-gradient(180deg, #030b12 0%, #061827 48%, #02070d 100%);
   }
 }
 
 @layer utilities {
   .glass {
-    @apply bg-[#0f1d1a]/72 backdrop-blur-md border border-emerald-950/70;
+    @apply bg-[#071b2a]/72 backdrop-blur-md border border-cyan-950/70;
   }
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-teal-300 to-cyan-200;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#00cccc] via-[#66eeee] to-cyan-100;
   }
 }
