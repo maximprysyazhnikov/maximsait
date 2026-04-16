@@ -8,10 +8,10 @@
 
 @layer base {
   body {
-    @apply bg-[#030b12] text-zinc-100 antialiased selection:bg-[#00cccc]/30;
+    @apply bg-[#030b12] text-zinc-100 antialiased selection:bg-[#51aaca]/30;
     background-image:
-      radial-gradient(circle at top left, rgba(0, 204, 204, 0.16), transparent 28%),
-      radial-gradient(circle at bottom right, rgba(102, 238, 238, 0.1), transparent 30%),
+      radial-gradient(circle at top left, rgba(81, 170, 202, 0.18), transparent 28%),
+      radial-gradient(circle at bottom right, rgba(158, 216, 234, 0.1), transparent 30%),
       linear-gradient(180deg, #030b12 0%, #061827 48%, #02070d 100%);
   }
 }
@@ -21,6 +21,6 @@
     @apply bg-[#071b2a]/72 backdrop-blur-md border border-cyan-950/70;
   }
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#00cccc] via-[#66eeee] to-cyan-100;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#51aaca] via-[#9ed8ea] to-cyan-100;
   }
 }

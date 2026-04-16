@@ -1,19 +1,19 @@
 <svg width="512" height="512" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <radialGradient id="bg" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(80 80) rotate(90) scale(80)">
-      <stop offset="0%" stop-color="#083747" />
+      <stop offset="0%" stop-color="#163e56" />
       <stop offset="70%" stop-color="#061827" />
       <stop offset="100%" stop-color="#030b12" />
     </radialGradient>
     <linearGradient id="ring" x1="20" y1="20" x2="140" y2="140" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#B8FFFF" />
-      <stop offset="50%" stop-color="#00CCCC" />
-      <stop offset="100%" stop-color="#66EEEE" />
+      <stop offset="0%" stop-color="#D8F3FB" />
+      <stop offset="50%" stop-color="#51AACA" />
+      <stop offset="100%" stop-color="#9ED8EA" />
     </linearGradient>
     <linearGradient id="infinity" x1="28" y1="80" x2="132" y2="80" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#66EEEE" />
-      <stop offset="50%" stop-color="#00CCCC" />
-      <stop offset="100%" stop-color="#B8FFFF" />
+      <stop offset="0%" stop-color="#9ED8EA" />
+      <stop offset="50%" stop-color="#51AACA" />
+      <stop offset="100%" stop-color="#D8F3FB" />
     </linearGradient>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
       <feGaussianBlur stdDeviation="4" result="blur" />
@@ -26,7 +26,7 @@
 
   <circle cx="80" cy="80" r="74" fill="url(#bg)" />
   <circle cx="80" cy="80" r="72" stroke="url(#ring)" stroke-opacity="0.45" stroke-width="2.5" />
-  <circle cx="80" cy="80" r="63" stroke="#B8FFFF" stroke-opacity="0.08" stroke-width="1.5" />
+  <circle cx="80" cy="80" r="63" stroke="#D8F3FB" stroke-opacity="0.08" stroke-width="1.5" />
 
   <path
     d="M30 80C30 57 49 38 72 38C87 38 101 47 113 60C123 71 131 80 142 80C131 80 123 89 113 100C101 113 87 122 72 122C49 122 30 103 30 80Z"
@@ -48,7 +48,7 @@
 
   <path
     d="M33 80C33 59 50 42 71 42C85 42 98 50 109 62C120 74 128 80 139 80"
-    stroke="#E6FFFF"
+    stroke="#EFFAFF"
     stroke-opacity="0.2"
     stroke-width="2"
     stroke-linecap="round"
@@ -56,7 +56,7 @@
   <path
     d="M127 80C127 101 110 118 89 118C75 118 62 110 51 98C40 86 32 80 21 80"
     transform="translate(12 0)"
-    stroke="#E6FFFF"
+    stroke="#EFFAFF"
     stroke-opacity="0.16"
     stroke-width="2"
     stroke-linecap="round"
