@@ -10,6 +10,8 @@ import {
 type Language = "uk" | "en";
 type Route = { page: "home" } | { page: "skill"; slug: string } | { page: "provider"; slug: string };
 type ChatMessage = { role: "user" | "assistant"; content: string };
+type LeadForm = { name: string; email: string; phone: string; message: string };
+type SupportMessage = { id: string; role: "user" | "operator"; text: string; createdAt: string };
 type Skill = {
   slug: string; name: string; icon: ReactNode; summary: Record<Language, string>;
   description: Record<Language, string>; bullets: Record<Language, string[]>;
@@ -142,7 +144,7 @@ const copy = {
     techPage: { back: "До головного меню", title: "Технологія", related: "Інші технології" },
     earlier: { title: "Попередній досвід", subtitle: "Фундамент у комунікації, продажах і координації проєктів.", items: [{ period: "2022 – 2026", title: "Аутсорс та волонтерські проєкти", text: "Аутсорс-робота та ведення проєктів на волонтерській основі: координація задач, комунікація з учасниками, підтримка запусків і супровід робочих процесів." }, { period: "2019 – 2022", title: "Самозайнятість", text: "Онлайн-просування продуктів і генерація попиту. Використовував цифрові канали для підтримки продажів." }, { period: "2017 – 2019", title: "Бізнес-партнерство", text: "Комунікація з оптовими покупцями, переговори та координація угод." }, { period: "2016 – 2017", title: "Агент з нерухомості", text: "NBR Real Estate. Супровід операцій з нерухомістю та комунікація з клієнтами." }] },
     contact: { title: "Контакти", subtitle: "Відкритий до нових проєктів, співпраці та професійних можливостей.", linkedin: "LinkedIn", github: "GitHub", footer: "Створено за допомогою React і Tailwind CSS." },
-    chat: { title: "AI Помічник", subtitle: "Постав питання про мій досвід, стек або проєкти.", open: "AI чат", placeholder: "Напиши повідомлення...", send: "Надіслати", loading: "AI друкує відповідь...", welcome: "Привіт! Я AI-помічник цього портфоліо. Можу коротко розповісти про стек, досвід і навчання.", error: "Не вдалося отримати відповідь. Перевір ключ OpenRouter на сервері." },
+    chat: { title: "AI Помічник", subtitle: "Постав питання про мій досвід, стек або проєкти.", open: "AI Помічник", placeholder: "Напиши повідомлення...", send: "Надіслати", loading: "AI друкує відповідь...", welcome: "Привіт! Я AI-помічник цього портфоліо. Можу коротко розповісти про стек, досвід і навчання.", error: "Не вдалося отримати відповідь. Перевір ключ OpenRouter на сервері.", supportButton: "Зворотний звʼязок", supportTitle: "Зворотний звʼязок", supportSubtitle: "Напиши повідомлення напряму або залиш контакти, щоб я міг відповісти пізніше.", supportPlaceholder: "Напиши повідомлення...", supportEmpty: "Почни діалог. Повідомлення прилетить мені в Telegram.", supportSent: "Повідомлення відправлено.", supportError: "Не вдалося відправити. Спробуй ще раз.", supportOffline: "Якщо ти будеш не в мережі, я побачу це в Telegram.", leadTitle: "Контакти для відповіді", leadName: "Імʼя", leadEmail: "Email", leadPhone: "Телефон", leadMessage: "Коротко про запит", leadSubmit: "Надіслати контакти", leadRequired: "Вкажи імʼя та email або телефон.", leadSuccess: "Дякую! Контакти відправлено.", leadError: "Не вдалося відправити контакти. Спробуй ще раз." },
   },
   en: {
     title: "Maksym Prysiazhnikov | DevOps Portfolio",
@@ -157,7 +159,7 @@ const copy = {
     techPage: { back: "Main menu", title: "Technology", related: "Other technologies" },
     earlier: { title: "Earlier Experience", subtitle: "A foundation in communication, sales, and project coordination.", items: [{ period: "2022 – 2026", title: "Outsourcing and Volunteer Projects", text: "Outsourcing work and project ownership on a volunteer basis: task coordination, stakeholder communication, launch support, and day-to-day workflow management." }, { period: "2019 – 2022", title: "Self-employed", text: "Focused on online product promotion and demand generation, using digital channels to support sales." }, { period: "2017 – 2019", title: "Business Partnership", text: "Handled communication with wholesale buyers, negotiations, and deal coordination." }, { period: "2016 – 2017", title: "Real Estate Agent", text: "Worked at NBR Real Estate, supporting property transactions and client communication." }] },
     contact: { title: "Let's Connect", subtitle: "I am always open to discussing new projects, collaboration, and career opportunities.", linkedin: "LinkedIn", github: "GitHub", footer: "Built with React & Tailwind CSS." },
-    chat: { title: "AI Assistant", subtitle: "Ask about my stack, experience, or projects.", open: "AI chat", placeholder: "Type a message...", send: "Send", loading: "AI is typing...", welcome: "Hi! I am the portfolio AI assistant. I can explain my stack, experience, and learning path.", error: "Could not get a response. Check the OpenRouter server key." },
+    chat: { title: "AI Assistant", subtitle: "Ask about my stack, experience, or projects.", open: "AI Assistant", placeholder: "Type a message...", send: "Send", loading: "AI is typing...", welcome: "Hi! I am the portfolio AI assistant. I can explain my stack, experience, and learning path.", error: "Could not get a response. Check the OpenRouter server key.", supportButton: "Contact back", supportTitle: "Contact back", supportSubtitle: "Send a direct message or leave your contact details so I can reply later.", supportPlaceholder: "Write a message...", supportEmpty: "Start the conversation. Your message will go to my Telegram.", supportSent: "Message sent.", supportError: "Could not send. Please try again.", supportOffline: "If you go offline, I will see that in Telegram.", leadTitle: "Contact details", leadName: "Name", leadEmail: "Email", leadPhone: "Phone", leadMessage: "Short request", leadSubmit: "Send contacts", leadRequired: "Add your name and email or phone.", leadSuccess: "Thank you! Your contacts were sent.", leadError: "Could not send your contacts. Please try again." },
   },
 } satisfies Record<Language, any>;
 
@@ -199,13 +201,66 @@ const splitBullet = (bullet: string) => {
 const AIChatWidget = ({ language }: { language: Language }) => {
   const t = copy[language].chat;
   const [isOpen, setIsOpen] = useState(false);
+  const [mode, setMode] = useState<"ai" | "support">("ai");
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [supportInput, setSupportInput] = useState("");
+  const [supportMessages, setSupportMessages] = useState<SupportMessage[]>([]);
+  const [supportLoading, setSupportLoading] = useState(false);
+  const [supportStatus, setSupportStatus] = useState<"idle" | "sent" | "error">("idle");
+  const [leadForm, setLeadForm] = useState<LeadForm>({ name: "", email: "", phone: "", message: "" });
+  const [leadLoading, setLeadLoading] = useState(false);
+  const [leadStatus, setLeadStatus] = useState<"idle" | "success" | "error" | "required">("idle");
   const [messages, setMessages] = useState<ChatMessage[]>([{ role: "assistant", content: t.welcome }]);
+  const [supportSessionId] = useState(() => {
+    const key = "portfolio-support-session-id";
+    const existing = window.localStorage.getItem(key);
+
+    if (existing) return existing;
+
+    const created = typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    window.localStorage.setItem(key, created);
+    return created;
+  });
 
   useEffect(() => {
     setMessages([{ role: "assistant", content: t.welcome }]);
   }, [t.welcome]);
+
+  useEffect(() => {
+    if (!isOpen || mode !== "support") return;
+
+    let cancelled = false;
+
+    const syncSupport = async () => {
+      try {
+        await fetch("/api/support/heartbeat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId: supportSessionId, language }),
+        });
+
+        const response = await fetch(`/api/support/messages?sessionId=${encodeURIComponent(supportSessionId)}`);
+        const data = await response.json();
+
+        if (!cancelled && response.ok && Array.isArray(data.messages)) {
+          setSupportMessages(data.messages);
+        }
+      } catch {
+        if (!cancelled) setSupportStatus("error");
+      }
+    };
+
+    void syncSupport();
+    const interval = window.setInterval(() => void syncSupport(), 3000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
+  }, [isOpen, language, mode, supportSessionId]);
 
   const sendMessage = async () => {
     const trimmed = input.trim();
@@ -232,6 +287,72 @@ const AIChatWidget = ({ language }: { language: Language }) => {
     }
   };
 
+  const sendSupportMessage = async () => {
+    const trimmed = supportInput.trim();
+    if (!trimmed || supportLoading) return;
+
+    setSupportInput("");
+    setSupportLoading(true);
+    setSupportStatus("idle");
+
+    try {
+      const response = await fetch("/api/support/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId: supportSessionId, text: trimmed, language }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) throw new Error("support_failed");
+      if (Array.isArray(data.messages)) setSupportMessages(data.messages);
+      setSupportStatus("sent");
+    } catch {
+      setSupportStatus("error");
+    } finally {
+      setSupportLoading(false);
+    }
+  };
+
+  const updateLeadForm = (field: keyof LeadForm, value: string) => {
+    setLeadForm((current) => ({ ...current, [field]: value }));
+    setLeadStatus("idle");
+  };
+
+  const submitLead = async () => {
+    const payload = {
+      sessionId: supportSessionId,
+      name: leadForm.name.trim(),
+      email: leadForm.email.trim(),
+      phone: leadForm.phone.trim(),
+      message: leadForm.message.trim(),
+      language,
+    };
+
+    if (!payload.name || (!payload.email && !payload.phone)) {
+      setLeadStatus("required");
+      return;
+    }
+
+    setLeadLoading(true);
+    setLeadStatus("idle");
+
+    try {
+      const response = await fetch("/api/support/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error("lead_failed");
+      setLeadForm({ name: "", email: "", phone: "", message: "" });
+      setLeadStatus("success");
+    } catch {
+      setLeadStatus("error");
+    } finally {
+      setLeadLoading(false);
+    }
+  };
+
   return (
     <>
       {isOpen && <div className="fixed inset-0 z-40 bg-black/35 sm:hidden" onClick={() => setIsOpen(false)} />}
@@ -240,29 +361,61 @@ const AIChatWidget = ({ language }: { language: Language }) => {
           <motion.div initial={{ opacity: 0, y: 16, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="glass w-[min(92vw,380px)] overflow-hidden rounded-3xl border border-[#51aaca]/20 shadow-2xl shadow-black/35">
             <div className="flex items-start justify-between gap-3 border-b border-cyan-950/70 bg-[#051421]/90 px-5 py-4">
               <div>
-                <p className="text-sm font-semibold text-white">{t.title}</p>
-                <p className="text-xs text-zinc-400">{t.subtitle}</p>
+                <p className="text-sm font-semibold text-white">{mode === "support" ? t.supportTitle : t.title}</p>
+                <p className="text-xs text-zinc-400">{mode === "support" ? t.supportSubtitle : t.subtitle}</p>
               </div>
               <button type="button" onClick={() => setIsOpen(false)} className="rounded-full p-2 text-zinc-400 transition hover:bg-[#0a2635] hover:text-white"><X className="h-4 w-4" /></button>
             </div>
             <div className="max-h-[420px] space-y-3 overflow-y-auto px-4 py-4">
-              {messages.map((message, index) => (
-                <div key={`${message.role}-${index}`} className={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "ml-auto bg-[#51aaca] text-[#021014]" : "bg-[#0a2635] text-zinc-200"}`}>{message.content}</div>
-              ))}
-              {loading && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm text-zinc-400">{t.loading}</div>}
+              {mode === "ai" ? (
+                <>
+                  {messages.map((message, index) => (
+                    <div key={`${message.role}-${index}`} className={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "ml-auto bg-[#51aaca] text-[#021014]" : "bg-[#0a2635] text-zinc-200"}`}>{message.content}</div>
+                  ))}
+                  {loading && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm text-zinc-400">{t.loading}</div>}
+                </>
+              ) : (
+                <>
+                  {supportMessages.length === 0 && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm leading-relaxed text-zinc-300">{t.supportEmpty}<br /><span className="mt-2 block text-xs text-zinc-500">{t.supportOffline}</span></div>}
+                  {supportMessages.map((message) => (
+                    <div key={message.id} className={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "ml-auto bg-[#51aaca] text-[#021014]" : "bg-[#0a2635] text-zinc-200"}`}>{message.text}</div>
+                  ))}
+                  {supportStatus === "sent" && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm text-[#9ed8ea]">{t.supportSent}</div>}
+                  {supportStatus === "error" && <div className="max-w-[88%] rounded-2xl bg-red-950/50 px-4 py-3 text-sm text-red-100">{t.supportError}</div>}
+                  <div className="rounded-2xl border border-[#51aaca]/20 bg-[#061a26]/92 p-4">
+                    <p className="mb-3 text-sm font-semibold text-white">{t.leadTitle}</p>
+                    <div className="grid gap-2">
+                      <input value={leadForm.name} onChange={(event) => updateLeadForm("name", event.target.value)} placeholder={t.leadName} className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        <input value={leadForm.email} onChange={(event) => updateLeadForm("email", event.target.value)} placeholder={t.leadEmail} type="email" className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
+                        <input value={leadForm.phone} onChange={(event) => updateLeadForm("phone", event.target.value)} placeholder={t.leadPhone} className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
+                      </div>
+                      <textarea value={leadForm.message} onChange={(event) => updateLeadForm("message", event.target.value)} placeholder={t.leadMessage} rows={2} className="resize-none rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
+                      {(leadStatus === "success" || leadStatus === "error" || leadStatus === "required") && <p className={`text-xs ${leadStatus === "success" ? "text-[#9ed8ea]" : "text-red-100"}`}>{leadStatus === "success" ? t.leadSuccess : leadStatus === "required" ? t.leadRequired : t.leadError}</p>}
+                      <button type="button" onClick={() => void submitLead()} disabled={leadLoading} className="mt-1 rounded-xl bg-[#51aaca] px-4 py-2.5 text-sm font-semibold text-[#021014] transition hover:bg-[#9ed8ea] disabled:cursor-not-allowed disabled:opacity-60">{leadLoading ? t.loading : t.leadSubmit}</button>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
             <div className="border-t border-cyan-950/70 p-4">
               <div className="flex items-center gap-2 rounded-2xl bg-[#04141f] p-2">
-                <input value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") void sendMessage(); }} placeholder={t.placeholder} className="w-full bg-transparent px-3 py-2 text-sm text-white outline-none placeholder:text-zinc-500" />
-                <button type="button" onClick={() => void sendMessage()} disabled={loading || !input.trim()} className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#51aaca] text-[#021014] transition hover:bg-[#9ed8ea] disabled:cursor-not-allowed disabled:opacity-50" aria-label={t.send}><Send className="h-4 w-4" /></button>
+                <input value={mode === "support" ? supportInput : input} onChange={(event) => mode === "support" ? setSupportInput(event.target.value) : setInput(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") void (mode === "support" ? sendSupportMessage() : sendMessage()); }} placeholder={mode === "support" ? t.supportPlaceholder : t.placeholder} className="w-full bg-transparent px-3 py-2 text-sm text-white outline-none placeholder:text-zinc-500" />
+                <button type="button" onClick={() => void (mode === "support" ? sendSupportMessage() : sendMessage())} disabled={mode === "support" ? supportLoading || !supportInput.trim() : loading || !input.trim()} className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#51aaca] text-[#021014] transition hover:bg-[#9ed8ea] disabled:cursor-not-allowed disabled:opacity-50" aria-label={t.send}><Send className="h-4 w-4" /></button>
               </div>
             </div>
           </motion.div>
         )}
-        <button type="button" onClick={() => setIsOpen((current) => !current)} className="inline-flex items-center gap-3 rounded-full bg-[#51aaca] px-5 py-3 font-semibold text-[#021014] shadow-lg shadow-[#51aaca]/25 transition hover:bg-[#9ed8ea]">
-          <MessageCircle className="h-5 w-5" />
-          <span>{t.open}</span>
-        </button>
+        <div className="flex flex-wrap justify-end gap-3">
+          <button type="button" onClick={() => { setIsOpen(true); setMode("support"); }} aria-label={t.supportButton} title={t.supportButton} className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#071b2a]/92 font-semibold text-[#d8f3fb] shadow-lg shadow-black/20 transition hover:border-[#51aaca]/45 hover:bg-[#0c2b3d] sm:h-auto sm:w-auto sm:gap-3 sm:px-5 sm:py-3">
+            <Mail className="h-5 w-5" />
+            <span className="hidden sm:inline">{t.supportButton}</span>
+          </button>
+          <button type="button" onClick={() => { setIsOpen((current) => mode === "ai" ? !current : true); setMode("ai"); }} className="inline-flex items-center gap-3 rounded-full bg-[#51aaca] px-5 py-3 font-semibold text-[#021014] shadow-lg shadow-[#51aaca]/25 transition hover:bg-[#9ed8ea]">
+            <MessageCircle className="h-5 w-5" />
+            <span>{t.open}</span>
+          </button>
+        </div>
       </div>
     </>
   );
@@ -508,7 +661,7 @@ export default function App() {
             <Card className="border-l-4 border-l-[#51aaca]">
               <div className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
                 <div><h3 className="text-2xl font-bold text-white">{t.experience.volunteerTitle}</h3><p className="font-medium text-[#9ed8ea]">{t.experience.volunteerRole}</p></div>
-                <a href="https://volunteer-site-placeholder-dev.up.railway.app/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-white"><ExternalLink className="h-4 w-4" />{t.experience.liveDemo}</a>
+                <a href="https://volunteer-site-placeholder-dev.up.railway.app/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#51aaca]/25 bg-[#51aaca]/10 px-4 py-2.5 text-sm font-semibold text-[#d8f3fb] transition hover:border-[#51aaca]/45 hover:bg-[#51aaca]/15 hover:text-white"><ExternalLink className="h-4 w-4" />{t.experience.liveDemo}</a>
               </div>
               <ul className="space-y-3 text-zinc-400">{t.experience.volunteerPoints.map((point: string) => <li key={point} className="flex gap-3"><ChevronRight className="h-5 w-5 shrink-0 text-[#51aaca]" />{point}</li>)}</ul>
             </Card>
@@ -526,7 +679,7 @@ export default function App() {
         <div className="mx-auto max-w-7xl px-6">
           <SectionTitle subtitle={t.projects.subtitle}>{t.projects.title}</SectionTitle>
           <div className="grid gap-8 md:grid-cols-3">
-            {t.projects.items.map((project: { title: string; description: string; tags: string[]; link: string }) => <div key={project.title}><Card className="flex h-full flex-col"><div className="mb-4 flex items-start justify-between"><div className="rounded-xl bg-[#51aaca]/10 p-3 text-[#9ed8ea]"><Code2 className="h-6 w-6" /></div><a href={project.link} target="_blank" rel="noopener noreferrer" className="text-zinc-500 transition-colors hover:text-white"><Github className="h-5 w-5" /></a></div><h3 className="mb-3 text-xl font-bold text-white">{project.title}</h3><p className="mb-6 flex-grow text-sm text-zinc-400">{project.description}</p><div className="flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="rounded-md bg-[#0a2635] px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-zinc-400">{tag}</span>)}</div></Card></div>)}
+            {t.projects.items.map((project: { title: string; description: string; tags: string[]; link: string }) => <div key={project.title}><Card className="flex h-full flex-col"><div className="mb-4 flex items-start justify-between"><div className="rounded-xl bg-[#51aaca]/10 p-3 text-[#9ed8ea]"><Code2 className="h-6 w-6" /></div><a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.title} on GitHub`} className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#51aaca]/20 bg-[#51aaca]/10 text-[#d8f3fb] transition hover:border-[#51aaca]/45 hover:bg-[#51aaca]/15 hover:text-white"><Github className="h-5 w-5" /></a></div><h3 className="mb-3 text-xl font-bold text-white">{project.title}</h3><p className="mb-6 flex-grow text-sm text-zinc-400">{project.description}</p><div className="mb-6 flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="rounded-md bg-[#0a2635] px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-zinc-400">{tag}</span>)}</div><a href={project.link} target="_blank" rel="noopener noreferrer" className="mt-auto inline-flex items-center justify-center gap-2 rounded-xl border border-[#51aaca]/25 bg-[#51aaca]/10 px-4 py-2.5 text-sm font-semibold text-[#d8f3fb] transition hover:border-[#51aaca]/45 hover:bg-[#51aaca]/15 hover:text-white"><Github className="h-4 w-4" />GitHub</a></Card></div>)}
           </div>
         </div>
       </section>

@@ -18,6 +18,11 @@ const openRouterApiKeys = (process.env.OPENROUTER_KEYS || '')
 const openRouterModel = process.env.OPENROUTER_MODEL;
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
 const telegramChatId = process.env.TELEGRAM_CHAT_ID;
+const supportSessions = new Map();
+const telegramMessageSessions = new Map();
+const supportOnlineWindowMs = 45_000;
+let telegramPollingOffset = 0;
+let telegramPollingActive = false;
 const portfolioFacts = `
 Maksym Prysiazhnikov (Ukrainian: Максим Присяжніков) is a Junior DevOps / Cloud Engineer from Ukraine.
 Core stack shown in the portfolio: Linux, Docker, Kubernetes, Azure, Terraform, CI/CD, GitHub Actions, Python, MySQL, PostgreSQL, Liquibase, Bash, SIEM, IDS/IPS.
@@ -87,6 +92,200 @@ const getClientIp = (req) => {
     : forwardedFor?.split(',')[0]?.trim() || req.ip || 'unknown';
 };
 
+const createSupportMessage = (role, text) => ({
+  id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+  role,
+  text: String(text || '').trim(),
+  createdAt: new Date().toISOString(),
+});
+
+const getSupportSession = (sessionId) => {
+  const key = String(sessionId || '').trim();
+
+  if (!key) {
+    return null;
+  }
+
+  if (!supportSessions.has(key)) {
+    supportSessions.set(key, {
+      messages: [],
+      lastSeen: 0,
+      language: 'uk',
+    });
+  }
+
+  return supportSessions.get(key);
+};
+
+const isSupportSessionOnline = (session) => Date.now() - Number(session?.lastSeen || 0) <= supportOnlineWindowMs;
+
+const formatSupportMessageForTelegram = ({ req, sessionId, language, text }) => {
+  const timestamp = new Intl.DateTimeFormat('uk-UA', {
+    dateStyle: 'medium',
+    timeStyle: 'medium',
+    timeZone: process.env.TZ || 'Europe/Kiev',
+  }).format(new Date());
+
+  return [
+    '<b>Live-звʼязок із сайту</b>',
+    '',
+    `<b>Час:</b> ${escapeTelegramHtml(timestamp)}`,
+    `<b>Мова:</b> ${language === 'en' ? 'EN' : 'UK'}`,
+    `<b>Session:</b> <code>${escapeTelegramHtml(sessionId)}</code>`,
+    `<b>IP:</b> <code>${escapeTelegramHtml(getClientIp(req))}</code>`,
+    '',
+    '<b>Повідомлення користувача</b>',
+    `<pre>${escapeTelegramHtml(truncateForTelegram(text, 1200))}</pre>`,
+    '',
+    '<i>Відповідай reply на це повідомлення, і відповідь зʼявиться в чаті користувача на сайті.</i>',
+  ].join('\n');
+};
+
+const formatSupportContactForTelegram = ({ req, sessionId, language, name, email, phone, message }) => {
+  const timestamp = new Intl.DateTimeFormat('uk-UA', {
+    dateStyle: 'medium',
+    timeStyle: 'medium',
+    timeZone: process.env.TZ || 'Europe/Kiev',
+  }).format(new Date());
+
+  return [
+    '<b>Контакти для зворотного звʼязку</b>',
+    '',
+    `<b>Час:</b> ${escapeTelegramHtml(timestamp)}`,
+    `<b>Мова:</b> ${language === 'en' ? 'EN' : 'UK'}`,
+    `<b>Session:</b> <code>${escapeTelegramHtml(sessionId)}</code>`,
+    `<b>IP:</b> <code>${escapeTelegramHtml(getClientIp(req))}</code>`,
+    '',
+    `<b>Імʼя:</b> ${escapeTelegramHtml(name)}`,
+    `<b>Email:</b> ${email ? escapeTelegramHtml(email) : 'не вказано'}`,
+    `<b>Телефон:</b> ${phone ? escapeTelegramHtml(phone) : 'не вказано'}`,
+    '',
+    '<b>Повідомлення</b>',
+    `<pre>${escapeTelegramHtml(truncateForTelegram(message || 'не вказано', 900))}</pre>`,
+  ].join('\n');
+};
+
+const sendSupportMessageToTelegram = async ({ req, sessionId, language, text }) => {
+  if (!telegramBotToken || !telegramChatId) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: telegramChatId,
+        text: formatSupportMessageForTelegram({ req, sessionId, language, text }),
+        parse_mode: 'HTML',
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error('Telegram support message failed:', data);
+      return null;
+    }
+
+    const messageId = data?.result?.message_id;
+
+    if (messageId) {
+      telegramMessageSessions.set(String(messageId), sessionId);
+    }
+
+    return messageId || null;
+  } catch (error) {
+    console.error('Telegram support message error:', error);
+    return null;
+  }
+};
+
+const handleTelegramSupportReply = async (telegramMessage) => {
+  const chatId = telegramMessage?.chat?.id;
+  const replyToMessageId = telegramMessage?.reply_to_message?.message_id;
+  const text = String(telegramMessage?.text || '').trim();
+
+  if (telegramChatId && String(chatId) !== String(telegramChatId)) {
+    return;
+  }
+
+  if (!replyToMessageId || !text) {
+    return;
+  }
+
+  const sessionId = telegramMessageSessions.get(String(replyToMessageId));
+  const session = getSupportSession(sessionId);
+
+  if (!session) {
+    await sendTelegramNotification('Не знайшов web-сесію для цього reply. Відповідай саме на повідомлення, яке бот надіслав із сайту.');
+    return;
+  }
+
+  session.messages.push(createSupportMessage('operator', text.slice(0, 1200)));
+
+  if (!isSupportSessionOnline(session)) {
+    await sendTelegramNotification(
+      [
+        '<b>Користувач не в мережі</b>',
+        '',
+        `<b>Session:</b> <code>${escapeTelegramHtml(sessionId)}</code>`,
+        'Відповідь збережена. Користувач побачить її, якщо повернеться на сайт із цієї ж сесії.',
+      ].join('\n'),
+      { parseMode: 'HTML' },
+    );
+  }
+};
+
+const startTelegramPolling = () => {
+  if (!telegramBotToken || telegramPollingActive || process.env.NODE_ENV === 'production') {
+    return;
+  }
+
+  telegramPollingActive = true;
+
+  const poll = async () => {
+    if (!telegramPollingActive) return;
+
+    try {
+      const url = new URL(`https://api.telegram.org/bot${telegramBotToken}/getUpdates`);
+      url.searchParams.set('timeout', '25');
+      url.searchParams.set('allowed_updates', JSON.stringify(['message']));
+      if (telegramPollingOffset) {
+        url.searchParams.set('offset', String(telegramPollingOffset));
+      }
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (!response.ok) {
+        const description = String(data?.description || '');
+
+        if (description.includes('webhook')) {
+          console.error('Telegram polling is blocked because a webhook is already set. Delete the webhook or use the production webhook endpoint.');
+          telegramPollingActive = false;
+          return;
+        }
+
+        console.error('Telegram polling failed:', data);
+        setTimeout(poll, 5000);
+        return;
+      }
+
+      for (const update of data?.result || []) {
+        telegramPollingOffset = Math.max(telegramPollingOffset, Number(update.update_id || 0) + 1);
+        await handleTelegramSupportReply(update.message);
+      }
+    } catch (error) {
+      console.error('Telegram polling error:', error);
+    }
+
+    setTimeout(poll, 750);
+  };
+
+  void poll();
+};
+
 const notifyTelegramAboutChat = async ({ req, language, userMessage, aiReply }) => {
   const timestamp = new Intl.DateTimeFormat('uk-UA', {
     dateStyle: 'medium',
@@ -146,6 +345,108 @@ app.get('/download/cv', (req, res) => {
       `Ваше резюме було завантажене.\nФайл: ${cvFileName}\nЧас: ${timestamp}\nIP: ${ipAddress}`,
     );
   });
+});
+
+app.post('/api/support/heartbeat', (req, res) => {
+  const { sessionId, language } = req.body ?? {};
+  const session = getSupportSession(sessionId);
+
+  if (!session) {
+    return res.status(400).json({ error: 'sessionId is required.' });
+  }
+
+  session.lastSeen = Date.now();
+  session.language = language === 'en' ? 'en' : 'uk';
+
+  return res.status(200).json({ ok: true });
+});
+
+app.get('/api/support/messages', (req, res) => {
+  const session = getSupportSession(req.query.sessionId);
+
+  if (!session) {
+    return res.status(400).json({ error: 'sessionId is required.' });
+  }
+
+  session.lastSeen = Date.now();
+
+  return res.status(200).json({
+    messages: session.messages,
+    online: isSupportSessionOnline(session),
+  });
+});
+
+app.post('/api/support/messages', async (req, res) => {
+  const { sessionId, text, language } = req.body ?? {};
+  const cleanSessionId = String(sessionId || '').trim();
+  const cleanText = String(text || '').trim();
+  const session = getSupportSession(cleanSessionId);
+
+  if (!session) {
+    return res.status(400).json({ error: 'sessionId is required.' });
+  }
+
+  if (!cleanText) {
+    return res.status(400).json({ error: 'text is required.' });
+  }
+
+  session.lastSeen = Date.now();
+  session.language = language === 'en' ? 'en' : 'uk';
+  session.messages.push(createSupportMessage('user', cleanText.slice(0, 1200)));
+
+  await sendSupportMessageToTelegram({
+    req,
+    sessionId: cleanSessionId,
+    language: session.language,
+    text: cleanText,
+  });
+
+  return res.status(200).json({ ok: true, messages: session.messages });
+});
+
+app.post('/api/support/contact', async (req, res) => {
+  const { sessionId, name, email, phone, message, language } = req.body ?? {};
+  const cleanSessionId = String(sessionId || '').trim();
+  const cleanName = String(name || '').trim();
+  const cleanEmail = String(email || '').trim();
+  const cleanPhone = String(phone || '').trim();
+  const cleanMessage = String(message || '').trim();
+  const session = getSupportSession(cleanSessionId);
+
+  if (!session) {
+    return res.status(400).json({ error: 'sessionId is required.' });
+  }
+
+  if (!cleanName) {
+    return res.status(400).json({ error: 'name is required.' });
+  }
+
+  if (!cleanEmail && !cleanPhone) {
+    return res.status(400).json({ error: 'email or phone is required.' });
+  }
+
+  session.lastSeen = Date.now();
+  session.language = language === 'en' ? 'en' : 'uk';
+
+  await sendTelegramNotification(
+    formatSupportContactForTelegram({
+      req,
+      sessionId: cleanSessionId,
+      language: session.language,
+      name: cleanName.slice(0, 120),
+      email: cleanEmail.slice(0, 160),
+      phone: cleanPhone.slice(0, 80),
+      message: cleanMessage.slice(0, 1200),
+    }),
+    { parseMode: 'HTML' },
+  );
+
+  return res.status(200).json({ ok: true });
+});
+
+app.post('/api/telegram/webhook', async (req, res) => {
+  await handleTelegramSupportReply(req.body?.message);
+  return res.status(200).json({ ok: true });
 });
 
 app.post('/api/chat', async (req, res) => {
@@ -249,4 +550,5 @@ app.get('*', (_req, res) => {
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`Portfolio is running on port ${port}`);
+  startTelegramPolling();
 });
