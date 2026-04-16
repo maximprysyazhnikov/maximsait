@@ -39,7 +39,7 @@ const shuffle = (items) => {
   return result;
 };
 
-const sendTelegramNotification = async (message) => {
+const sendTelegramNotification = async (message, options = {}) => {
   if (!telegramBotToken || !telegramChatId) {
     return;
   }
@@ -51,6 +51,7 @@ const sendTelegramNotification = async (message) => {
       body: JSON.stringify({
         chat_id: telegramChatId,
         text: message,
+        ...(options.parseMode ? { parse_mode: options.parseMode } : {}),
       }),
     });
 
@@ -61,6 +62,54 @@ const sendTelegramNotification = async (message) => {
   } catch (error) {
     console.error('Telegram notification error:', error);
   }
+};
+
+const escapeTelegramHtml = (text) => String(text || '')
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;');
+
+const truncateForTelegram = (text, maxLength = 1400) => {
+  const value = String(text || '').trim();
+
+  if (value.length <= maxLength) {
+    return value;
+  }
+
+  return `${value.slice(0, maxLength - 20)}\n...[truncated]`;
+};
+
+const getClientIp = (req) => {
+  const forwardedFor = req.headers['x-forwarded-for'];
+
+  return Array.isArray(forwardedFor)
+    ? forwardedFor[0]
+    : forwardedFor?.split(',')[0]?.trim() || req.ip || 'unknown';
+};
+
+const notifyTelegramAboutChat = async ({ req, language, userMessage, aiReply }) => {
+  const timestamp = new Intl.DateTimeFormat('uk-UA', {
+    dateStyle: 'medium',
+    timeStyle: 'medium',
+    timeZone: process.env.TZ || 'Europe/Kiev',
+  }).format(new Date());
+
+  await sendTelegramNotification(
+    [
+      '<b>AI-чат портфоліо</b>',
+      '',
+      `<b>Час:</b> ${escapeTelegramHtml(timestamp)}`,
+      `<b>Мова:</b> ${language === 'en' ? 'EN' : 'UK'}`,
+      `<b>IP:</b> <code>${escapeTelegramHtml(getClientIp(req))}</code>`,
+      '',
+      '<b>Користувач</b>',
+      `<pre>${escapeTelegramHtml(truncateForTelegram(userMessage))}</pre>`,
+      '',
+      '<b>Відповідь AI</b>',
+      `<pre>${escapeTelegramHtml(truncateForTelegram(aiReply))}</pre>`,
+    ].join('\n'),
+    { parseMode: 'HTML' },
+  );
 };
 
 app.disable('x-powered-by');
@@ -91,10 +140,7 @@ app.get('/download/cv', (req, res) => {
       timeStyle: 'medium',
       timeZone: process.env.TZ || 'Europe/Kiev',
     }).format(new Date());
-    const forwardedFor = req.headers['x-forwarded-for'];
-    const ipAddress = Array.isArray(forwardedFor)
-      ? forwardedFor[0]
-      : forwardedFor?.split(',')[0]?.trim() || req.ip || 'unknown';
+    const ipAddress = getClientIp(req);
 
     await sendTelegramNotification(
       `Ваше резюме було завантажене.\nФайл: ${cvFileName}\nЧас: ${timestamp}\nIP: ${ipAddress}`,
@@ -116,6 +162,8 @@ app.post('/api/chat', async (req, res) => {
   if (!Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: 'messages must be a non-empty array.' });
   }
+
+  const latestUserMessage = [...messages].reverse().find((message) => message?.role === 'user')?.content || '';
 
   const systemPrompt = language === 'en'
     ? `You are the AI assistant of Maksym Prysiazhnikov's portfolio website. Reply in English. Your primary knowledge base is the portfolio context below.
@@ -176,8 +224,16 @@ ${portfolioFacts}
       const content = Array.isArray(reply)
         ? reply.map((item) => item?.text || '').join('\n').trim()
         : String(reply || '').trim();
+      const finalReply = content || 'No response received.';
 
-      return res.status(200).json({ reply: content || 'No response received.' });
+      await notifyTelegramAboutChat({
+        req,
+        language,
+        userMessage: latestUserMessage,
+        aiReply: finalReply,
+      });
+
+      return res.status(200).json({ reply: finalReply });
     } catch (error) {
       console.error('OpenRouter chat error:', error);
       lastError = 'Failed to reach OpenRouter.';
