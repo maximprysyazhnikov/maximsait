@@ -21,6 +21,7 @@ const telegramChatId = process.env.TELEGRAM_CHAT_ID;
 const supportSessions = new Map();
 const telegramMessageSessions = new Map();
 const supportOnlineWindowMs = 45_000;
+const supportAutoReplyDelayMs = Number(process.env.SUPPORT_AUTO_REPLY_DELAY_MS || 120_000);
 let telegramPollingOffset = 0;
 let telegramPollingActive = false;
 const portfolioFacts = `
@@ -111,6 +112,8 @@ const getSupportSession = (sessionId) => {
       messages: [],
       lastSeen: 0,
       language: 'uk',
+      awaitingOperatorReply: false,
+      autoReplyTimer: null,
     });
   }
 
@@ -118,6 +121,41 @@ const getSupportSession = (sessionId) => {
 };
 
 const isSupportSessionOnline = (session) => Date.now() - Number(session?.lastSeen || 0) <= supportOnlineWindowMs;
+
+const getSupportAutoReplyText = (language) => language === 'en'
+  ? 'I cannot reply right now. Please leave your contact details, and I will get back to you later.'
+  : 'Наразі я не можу швидко відповісти. Залиште, будь ласка, контакти, і я відповім вам пізніше.';
+
+const clearSupportAutoReplyTimer = (session) => {
+  if (session?.autoReplyTimer) {
+    clearTimeout(session.autoReplyTimer);
+    session.autoReplyTimer = null;
+  }
+};
+
+const scheduleSupportAutoReply = (sessionId, session) => {
+  clearSupportAutoReplyTimer(session);
+
+  session.awaitingOperatorReply = true;
+
+  const timer = setTimeout(() => {
+    const currentSession = getSupportSession(sessionId);
+
+    if (!currentSession?.awaitingOperatorReply) {
+      return;
+    }
+
+    currentSession.messages.push(createSupportMessage('operator', getSupportAutoReplyText(currentSession.language)));
+    currentSession.awaitingOperatorReply = false;
+    currentSession.autoReplyTimer = null;
+  }, supportAutoReplyDelayMs);
+
+  if (typeof timer.unref === 'function') {
+    timer.unref();
+  }
+
+  session.autoReplyTimer = timer;
+};
 
 const formatSupportMessageForTelegram = ({ req, sessionId, language, text }) => {
   const timestamp = new Intl.DateTimeFormat('uk-UA', {
@@ -223,6 +261,8 @@ const handleTelegramSupportReply = async (telegramMessage) => {
   }
 
   session.messages.push(createSupportMessage('operator', text.slice(0, 1200)));
+  session.awaitingOperatorReply = false;
+  clearSupportAutoReplyTimer(session);
 
   if (!isSupportSessionOnline(session)) {
     await sendTelegramNotification(
@@ -393,6 +433,7 @@ app.post('/api/support/messages', async (req, res) => {
   session.lastSeen = Date.now();
   session.language = language === 'en' ? 'en' : 'uk';
   session.messages.push(createSupportMessage('user', cleanText.slice(0, 1200)));
+  scheduleSupportAutoReply(cleanSessionId, session);
 
   await sendSupportMessageToTelegram({
     req,
@@ -427,6 +468,8 @@ app.post('/api/support/contact', async (req, res) => {
 
   session.lastSeen = Date.now();
   session.language = language === 'en' ? 'en' : 'uk';
+  session.awaitingOperatorReply = false;
+  clearSupportAutoReplyTimer(session);
 
   await sendTelegramNotification(
     formatSupportContactForTelegram({

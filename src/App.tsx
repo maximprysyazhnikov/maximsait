@@ -21,6 +21,8 @@ type LearningProvider = {
   summary: Record<Language, string>; highlights: Record<Language, string[]>;
 };
 
+const VOLUNTEER_DEMO_URL = "https://volunteer-site-placeholder-dev.up.railway.app/";
+
 const SectionTitle = ({ children, subtitle }: { children: ReactNode; subtitle?: string }) => (
   <div className="mb-12">
     <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-4 text-3xl font-bold text-white md:text-4xl">{children}</motion.h2>
@@ -710,11 +712,23 @@ export default function App() {
           <SectionTitle subtitle={t.experience.subtitle}>{t.experience.title}</SectionTitle>
           <div className="space-y-8">
             <Card className="border-l-4 border-l-[#51aaca]">
-              <div className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-                <div><h3 className="text-2xl font-bold text-white">{t.experience.volunteerTitle}</h3><p className="font-medium text-[#9ed8ea]">{t.experience.volunteerRole}</p></div>
-                <a href="https://volunteer-site-placeholder-dev.up.railway.app/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#51aaca]/25 bg-[#51aaca]/10 px-4 py-2.5 text-sm font-semibold text-[#d8f3fb] transition hover:border-[#51aaca]/45 hover:bg-[#51aaca]/15 hover:text-white"><ExternalLink className="h-4 w-4" />{t.experience.liveDemo}</a>
+              <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+                <div>
+                  <div className="mb-6">
+                    <h3 className="text-2xl font-bold text-white">{t.experience.volunteerTitle}</h3>
+                    <p className="font-medium text-[#9ed8ea]">{t.experience.volunteerRole}</p>
+                  </div>
+                  <ul className="space-y-3 text-zinc-400">{t.experience.volunteerPoints.map((point: string) => <li key={point} className="flex gap-3"><ChevronRight className="h-5 w-5 shrink-0 text-[#51aaca]" />{point}</li>)}</ul>
+                  <a href={VOLUNTEER_DEMO_URL} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center justify-center gap-2 rounded-xl border border-[#51aaca]/25 bg-[#51aaca]/10 px-5 py-3 text-sm font-semibold text-[#d8f3fb] transition hover:border-[#51aaca]/45 hover:bg-[#51aaca]/15 hover:text-white"><ExternalLink className="h-4 w-4" />{t.experience.liveDemo}</a>
+                </div>
+                <a href={VOLUNTEER_DEMO_URL} target="_blank" rel="noopener noreferrer" aria-label={`${t.experience.liveDemo}: ${t.experience.volunteerTitle}`} className="group block overflow-hidden rounded-2xl border border-[#51aaca]/20 bg-[#061a26]/80 shadow-[0_18px_50px_rgba(0,0,0,0.22)] transition hover:-translate-y-0.5 hover:border-[#51aaca]/45 hover:shadow-[0_22px_60px_rgba(81,170,202,0.12)]">
+                  <img src="/volunteer-site-preview.png" alt="Volunteer Site homepage preview" className="aspect-video w-full object-cover object-top opacity-90 transition duration-300 group-hover:scale-[1.02] group-hover:opacity-100" />
+                  <span className="flex items-center justify-between border-t border-cyan-950/70 px-4 py-3 text-xs font-semibold uppercase tracking-wider text-[#d8f3fb]">
+                    {t.experience.liveDemo}
+                    <ExternalLink className="h-4 w-4" />
+                  </span>
+                </a>
               </div>
-              <ul className="space-y-3 text-zinc-400">{t.experience.volunteerPoints.map((point: string) => <li key={point} className="flex gap-3"><ChevronRight className="h-5 w-5 shrink-0 text-[#51aaca]" />{point}</li>)}</ul>
             </Card>
             <Card>
               <h3 className="mb-2 text-2xl font-bold text-white">{t.experience.handsOnTitle}</h3>
