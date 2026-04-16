@@ -719,7 +719,6 @@ export default function App() {
                     <p className="font-medium text-[#9ed8ea]">{t.experience.volunteerRole}</p>
                   </div>
                   <ul className="space-y-3 text-zinc-400">{t.experience.volunteerPoints.map((point: string) => <li key={point} className="flex gap-3"><ChevronRight className="h-5 w-5 shrink-0 text-[#51aaca]" />{point}</li>)}</ul>
-                  <a href={VOLUNTEER_DEMO_URL} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center justify-center gap-2 rounded-xl border border-[#51aaca]/25 bg-[#51aaca]/10 px-5 py-3 text-sm font-semibold text-[#d8f3fb] transition hover:border-[#51aaca]/45 hover:bg-[#51aaca]/15 hover:text-white"><ExternalLink className="h-4 w-4" />{t.experience.liveDemo}</a>
                 </div>
                 <a href={VOLUNTEER_DEMO_URL} target="_blank" rel="noopener noreferrer" aria-label={`${t.experience.liveDemo}: ${t.experience.volunteerTitle}`} className="group block overflow-hidden rounded-2xl border border-[#51aaca]/20 bg-[#061a26]/80 shadow-[0_18px_50px_rgba(0,0,0,0.22)] transition hover:-translate-y-0.5 hover:border-[#51aaca]/45 hover:shadow-[0_22px_60px_rgba(81,170,202,0.12)]">
                   <img src="/volunteer-site-preview.png" alt="Volunteer Site homepage preview" className="aspect-video w-full object-cover object-top opacity-90 transition duration-300 group-hover:scale-[1.02] group-hover:opacity-100" />
