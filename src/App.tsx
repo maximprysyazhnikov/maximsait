@@ -144,7 +144,7 @@ const copy = {
     techPage: { back: "До головного меню", title: "Технологія", related: "Інші технології" },
     earlier: { title: "Попередній досвід", subtitle: "Фундамент у комунікації, продажах і координації проєктів.", items: [{ period: "2022 – 2026", title: "Аутсорс та волонтерські проєкти", text: "Аутсорс-робота та ведення проєктів на волонтерській основі: координація задач, комунікація з учасниками, підтримка запусків і супровід робочих процесів." }, { period: "2019 – 2022", title: "Самозайнятість", text: "Онлайн-просування продуктів і генерація попиту. Використовував цифрові канали для підтримки продажів." }, { period: "2017 – 2019", title: "Бізнес-партнерство", text: "Комунікація з оптовими покупцями, переговори та координація угод." }, { period: "2016 – 2017", title: "Агент з нерухомості", text: "NBR Real Estate. Супровід операцій з нерухомістю та комунікація з клієнтами." }] },
     contact: { title: "Контакти", subtitle: "Відкритий до нових проєктів, співпраці та професійних можливостей.", linkedin: "LinkedIn", github: "GitHub", footer: "Створено за допомогою React і Tailwind CSS." },
-    chat: { title: "AI Помічник", subtitle: "Постав питання про мій досвід, стек або проєкти.", open: "AI Помічник", placeholder: "Напиши повідомлення...", send: "Надіслати", loading: "AI друкує відповідь...", welcome: "Привіт! Я AI-помічник цього портфоліо. Можу коротко розповісти про стек, досвід і навчання.", error: "Не вдалося отримати відповідь. Перевір ключ OpenRouter на сервері.", supportButton: "Зворотний звʼязок", supportTitle: "Зворотний звʼязок", supportSubtitle: "Напиши повідомлення напряму або залиш контакти, щоб я міг відповісти пізніше.", supportPlaceholder: "Напиши повідомлення...", supportEmpty: "Почни діалог. Повідомлення прилетить мені в Telegram.", supportSent: "Повідомлення відправлено.", supportError: "Не вдалося відправити. Спробуй ще раз.", supportOffline: "Якщо ти будеш не в мережі, я побачу це в Telegram.", leadTitle: "Контакти для відповіді", leadName: "Імʼя", leadEmail: "Email", leadPhone: "Телефон", leadMessage: "Коротко про запит", leadSubmit: "Надіслати контакти", leadRequired: "Вкажи імʼя та email або телефон.", leadSuccess: "Дякую! Контакти відправлено.", leadError: "Не вдалося відправити контакти. Спробуй ще раз." },
+    chat: { title: "AI Помічник", subtitle: "Постав питання про мій досвід, стек або проєкти.", open: "AI Помічник", placeholder: "Напиши повідомлення...", send: "Надіслати", loading: "AI друкує відповідь...", welcome: "Привіт! Я AI-помічник цього портфоліо. Можу коротко розповісти про стек, досвід і навчання.", error: "Не вдалося отримати відповідь. Перевір ключ OpenRouter на сервері.", supportButton: "Зворотний звʼязок", supportTitle: "Зворотний звʼязок", supportSubtitle: "Залиш контакти або напиши повідомлення напряму.", supportPlaceholder: "Напиши повідомлення...", supportEmpty: "Почни діалог. Повідомлення прилетить мені в Telegram.", supportSent: "Повідомлення відправлено.", supportError: "Не вдалося відправити. Спробуй ще раз.", supportOffline: "Якщо ти будеш не в мережі, я побачу це в Telegram.", leadTitle: "Контакти для відповіді", leadName: "Імʼя", leadEmail: "Email", leadPhone: "Телефон", leadMessage: "Коротко про запит", leadSubmit: "Надіслати контакти", leadRequired: "Вкажи імʼя та email або телефон.", leadInvalidEmail: "Email має містити @ і крапку.", leadInvalidPhone: "Телефон має містити тільки цифри.", leadSuccess: "Дякую! Контакти відправлено.", leadError: "Не вдалося відправити контакти. Спробуй ще раз." },
   },
   en: {
     title: "Maksym Prysiazhnikov | DevOps Portfolio",
@@ -159,7 +159,7 @@ const copy = {
     techPage: { back: "Main menu", title: "Technology", related: "Other technologies" },
     earlier: { title: "Earlier Experience", subtitle: "A foundation in communication, sales, and project coordination.", items: [{ period: "2022 – 2026", title: "Outsourcing and Volunteer Projects", text: "Outsourcing work and project ownership on a volunteer basis: task coordination, stakeholder communication, launch support, and day-to-day workflow management." }, { period: "2019 – 2022", title: "Self-employed", text: "Focused on online product promotion and demand generation, using digital channels to support sales." }, { period: "2017 – 2019", title: "Business Partnership", text: "Handled communication with wholesale buyers, negotiations, and deal coordination." }, { period: "2016 – 2017", title: "Real Estate Agent", text: "Worked at NBR Real Estate, supporting property transactions and client communication." }] },
     contact: { title: "Let's Connect", subtitle: "I am always open to discussing new projects, collaboration, and career opportunities.", linkedin: "LinkedIn", github: "GitHub", footer: "Built with React & Tailwind CSS." },
-    chat: { title: "AI Assistant", subtitle: "Ask about my stack, experience, or projects.", open: "AI Assistant", placeholder: "Type a message...", send: "Send", loading: "AI is typing...", welcome: "Hi! I am the portfolio AI assistant. I can explain my stack, experience, and learning path.", error: "Could not get a response. Check the OpenRouter server key.", supportButton: "Contact back", supportTitle: "Contact back", supportSubtitle: "Send a direct message or leave your contact details so I can reply later.", supportPlaceholder: "Write a message...", supportEmpty: "Start the conversation. Your message will go to my Telegram.", supportSent: "Message sent.", supportError: "Could not send. Please try again.", supportOffline: "If you go offline, I will see that in Telegram.", leadTitle: "Contact details", leadName: "Name", leadEmail: "Email", leadPhone: "Phone", leadMessage: "Short request", leadSubmit: "Send contacts", leadRequired: "Add your name and email or phone.", leadSuccess: "Thank you! Your contacts were sent.", leadError: "Could not send your contacts. Please try again." },
+    chat: { title: "AI Assistant", subtitle: "Ask about my stack, experience, or projects.", open: "AI Assistant", placeholder: "Type a message...", send: "Send", loading: "AI is typing...", welcome: "Hi! I am the portfolio AI assistant. I can explain my stack, experience, and learning path.", error: "Could not get a response. Check the OpenRouter server key.", supportButton: "Contact back", supportTitle: "Contact back", supportSubtitle: "Leave your contact details or send a direct message.", supportPlaceholder: "Write a message...", supportEmpty: "Start the conversation. Your message will go to my Telegram.", supportSent: "Message sent.", supportError: "Could not send. Please try again.", supportOffline: "If you go offline, I will see that in Telegram.", leadTitle: "Contact details", leadName: "Name", leadEmail: "Email", leadPhone: "Phone", leadMessage: "Short request", leadSubmit: "Send contacts", leadRequired: "Add your name and email or phone.", leadInvalidEmail: "Email must include @ and a dot.", leadInvalidPhone: "Phone can contain digits only.", leadSuccess: "Thank you! Your contacts were sent.", leadError: "Could not send your contacts. Please try again." },
   },
 } satisfies Record<Language, any>;
 
@@ -210,7 +210,7 @@ const AIChatWidget = ({ language }: { language: Language }) => {
   const [supportStatus, setSupportStatus] = useState<"idle" | "sent" | "error">("idle");
   const [leadForm, setLeadForm] = useState<LeadForm>({ name: "", email: "", phone: "", message: "" });
   const [leadLoading, setLeadLoading] = useState(false);
-  const [leadStatus, setLeadStatus] = useState<"idle" | "success" | "error" | "required">("idle");
+  const [leadStatus, setLeadStatus] = useState<"idle" | "success" | "error" | "required" | "invalidEmail" | "invalidPhone">("idle");
   const [messages, setMessages] = useState<ChatMessage[]>([{ role: "assistant", content: t.welcome }]);
   const [supportSessionId] = useState(() => {
     const key = "portfolio-support-session-id";
@@ -226,8 +226,25 @@ const AIChatWidget = ({ language }: { language: Language }) => {
   });
 
   useEffect(() => {
-    setMessages([{ role: "assistant", content: t.welcome }]);
-  }, [t.welcome]);
+    const storageKey = `portfolio-ai-chat-messages-${language}`;
+    const stored = window.localStorage.getItem(storageKey);
+
+    if (!stored) {
+      setMessages([{ role: "assistant", content: t.welcome }]);
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(stored) as ChatMessage[];
+      setMessages(Array.isArray(parsed) && parsed.length > 0 ? parsed : [{ role: "assistant", content: t.welcome }]);
+    } catch {
+      setMessages([{ role: "assistant", content: t.welcome }]);
+    }
+  }, [language, t.welcome]);
+
+  useEffect(() => {
+    window.localStorage.setItem(`portfolio-ai-chat-messages-${language}`, JSON.stringify(messages.slice(-30)));
+  }, [language, messages]);
 
   useEffect(() => {
     if (!isOpen || mode !== "support") return;
@@ -314,7 +331,8 @@ const AIChatWidget = ({ language }: { language: Language }) => {
   };
 
   const updateLeadForm = (field: keyof LeadForm, value: string) => {
-    setLeadForm((current) => ({ ...current, [field]: value }));
+    const nextValue = field === "phone" ? value.replace(/\D/g, "") : value;
+    setLeadForm((current) => ({ ...current, [field]: nextValue }));
     setLeadStatus("idle");
   };
 
@@ -330,6 +348,16 @@ const AIChatWidget = ({ language }: { language: Language }) => {
 
     if (!payload.name || (!payload.email && !payload.phone)) {
       setLeadStatus("required");
+      return;
+    }
+
+    if (payload.email && (!payload.email.includes("@") || !payload.email.includes("."))) {
+      setLeadStatus("invalidEmail");
+      return;
+    }
+
+    if (payload.phone && !/^\d+$/.test(payload.phone)) {
+      setLeadStatus("invalidPhone");
       return;
     }
 
@@ -376,25 +404,25 @@ const AIChatWidget = ({ language }: { language: Language }) => {
                 </>
               ) : (
                 <>
-                  {supportMessages.length === 0 && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm leading-relaxed text-zinc-300">{t.supportEmpty}<br /><span className="mt-2 block text-xs text-zinc-500">{t.supportOffline}</span></div>}
-                  {supportMessages.map((message) => (
-                    <div key={message.id} className={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "ml-auto bg-[#51aaca] text-[#021014]" : "bg-[#0a2635] text-zinc-200"}`}>{message.text}</div>
-                  ))}
-                  {supportStatus === "sent" && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm text-[#9ed8ea]">{t.supportSent}</div>}
-                  {supportStatus === "error" && <div className="max-w-[88%] rounded-2xl bg-red-950/50 px-4 py-3 text-sm text-red-100">{t.supportError}</div>}
                   <div className="rounded-2xl border border-[#51aaca]/20 bg-[#061a26]/92 p-4">
                     <p className="mb-3 text-sm font-semibold text-white">{t.leadTitle}</p>
                     <div className="grid gap-2">
                       <input value={leadForm.name} onChange={(event) => updateLeadForm("name", event.target.value)} placeholder={t.leadName} className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
                       <div className="grid gap-2 sm:grid-cols-2">
                         <input value={leadForm.email} onChange={(event) => updateLeadForm("email", event.target.value)} placeholder={t.leadEmail} type="email" className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
-                        <input value={leadForm.phone} onChange={(event) => updateLeadForm("phone", event.target.value)} placeholder={t.leadPhone} className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
+                        <input value={leadForm.phone} onChange={(event) => updateLeadForm("phone", event.target.value)} placeholder={t.leadPhone} inputMode="numeric" pattern="[0-9]*" className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
                       </div>
                       <textarea value={leadForm.message} onChange={(event) => updateLeadForm("message", event.target.value)} placeholder={t.leadMessage} rows={2} className="resize-none rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
-                      {(leadStatus === "success" || leadStatus === "error" || leadStatus === "required") && <p className={`text-xs ${leadStatus === "success" ? "text-[#9ed8ea]" : "text-red-100"}`}>{leadStatus === "success" ? t.leadSuccess : leadStatus === "required" ? t.leadRequired : t.leadError}</p>}
+                      {leadStatus !== "idle" && <p className={`text-xs ${leadStatus === "success" ? "text-[#9ed8ea]" : "text-red-100"}`}>{leadStatus === "success" ? t.leadSuccess : leadStatus === "required" ? t.leadRequired : leadStatus === "invalidEmail" ? t.leadInvalidEmail : leadStatus === "invalidPhone" ? t.leadInvalidPhone : t.leadError}</p>}
                       <button type="button" onClick={() => void submitLead()} disabled={leadLoading} className="mt-1 rounded-xl bg-[#51aaca] px-4 py-2.5 text-sm font-semibold text-[#021014] transition hover:bg-[#9ed8ea] disabled:cursor-not-allowed disabled:opacity-60">{leadLoading ? t.loading : t.leadSubmit}</button>
                     </div>
                   </div>
+                  {supportMessages.length === 0 && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm leading-relaxed text-zinc-300">{t.supportEmpty}<br /><span className="mt-2 block text-xs text-zinc-500">{t.supportOffline}</span></div>}
+                  {supportMessages.map((message) => (
+                    <div key={message.id} className={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "ml-auto bg-[#51aaca] text-[#021014]" : "bg-[#0a2635] text-zinc-200"}`}>{message.text}</div>
+                  ))}
+                  {supportStatus === "sent" && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm text-[#9ed8ea]">{t.supportSent}</div>}
+                  {supportStatus === "error" && <div className="max-w-[88%] rounded-2xl bg-red-950/50 px-4 py-3 text-sm text-red-100">{t.supportError}</div>}
                 </>
               )}
             </div>
