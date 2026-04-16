@@ -42,16 +42,16 @@ const BackgroundScene = () => (
 );
 
 const InfinityHero = () => (
-  <motion.div animate={{ x: [0, 16, -10, 0], y: [0, -12, 10, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} className="absolute right-[6%] top-[12%] hidden xl:block">
-    <svg viewBox="0 0 520 240" className="h-[260px] w-[620px] overflow-visible">
+  <motion.div animate={{ x: [0, 12, -8, 0], y: [0, -10, 8, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} className="absolute left-[24%] top-[9%] hidden opacity-[0.65] xl:block">
+    <svg viewBox="0 0 520 240" className="h-[210px] w-[460px] overflow-visible">
       <defs>
         <linearGradient id="infinityStroke" x1="0%" y1="50%" x2="100%" y2="50%">
           <stop offset="0%" stopColor="rgba(81,170,202,0.16)" />
-          <stop offset="50%" stopColor="rgba(158,216,234,0.36)" />
+          <stop offset="50%" stopColor="rgba(158,216,234,0.28)" />
           <stop offset="100%" stopColor="rgba(216,243,251,0.16)" />
         </linearGradient>
       </defs>
-      <motion.path d="M65 120C95 55 160 38 212 64C244 80 269 108 290 120C312 132 338 160 370 176C424 203 482 183 501 120C482 57 424 37 370 64C338 80 312 108 290 120C269 132 244 160 212 176C160 202 95 185 65 120Z" animate={{ pathLength: [0.78, 1, 0.82, 0.78], opacity: [0.42, 0.72, 0.48, 0.42] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }} fill="none" stroke="url(#infinityStroke)" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
+      <motion.path d="M65 120C95 55 160 38 212 64C244 80 269 108 290 120C312 132 338 160 370 176C424 203 482 183 501 120C482 57 424 37 370 64C338 80 312 108 290 120C269 132 244 160 212 176C160 202 95 185 65 120Z" animate={{ pathLength: [0.78, 1, 0.82, 0.78], opacity: [0.24, 0.48, 0.3, 0.24] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }} fill="none" stroke="url(#infinityStroke)" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   </motion.div>
 );
@@ -444,7 +444,7 @@ export default function App() {
           <div className="absolute left-10 top-20 h-72 w-72 rounded-full bg-[#51aaca]/18 blur-[120px]" />
           <div className="absolute bottom-20 right-10 h-72 w-72 rounded-full bg-cyan-300/14 blur-[120px]" />
         </div>
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px]">
           <div className="max-w-3xl">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <span className="mb-6 inline-block rounded-full border border-[#51aaca]/20 bg-[#51aaca]/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#9ed8ea]">{t.hero.badge}</span>
@@ -457,6 +457,23 @@ export default function App() {
               </div>
             </motion.div>
           </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 18 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.12, ease: "easeOut" }}
+            data-profile-photo
+            className="relative mx-auto mt-4 w-full max-w-[260px] sm:max-w-[300px] md:max-w-[340px] lg:mt-0 lg:max-w-[400px]"
+          >
+            <div className="absolute inset-4 rounded-[2rem] bg-[#51aaca]/18 blur-3xl" />
+            <div className="profile-photo-frame relative overflow-hidden rounded-[2rem] border border-[#51aaca]/20 bg-[#061a26]/80 shadow-2xl shadow-black/35">
+              <img
+                src="/profile-photo.jpg"
+                alt="Maksym Prysiazhnikov"
+                onError={(event) => event.currentTarget.closest("[data-profile-photo]")?.classList.add("hidden")}
+                className="aspect-[4/5] w-full object-cover object-center saturate-[0.92]"
+              />
+            </div>
+          </motion.div>
         </div>
       </section>
       <section id="about" className="bg-[#051421]/45 py-20">
