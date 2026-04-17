@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import DevOpsLogo from "./components/DevOpsLogo";
 import {
-  ArrowLeft, Award, Calendar, ChevronRight, Cloud, Code2, Container, Cpu, Database,
+  ArrowLeft, ArrowUp, Award, Calendar, ChevronRight, Cloud, Code2, Container, Cpu, Database,
   Download, ExternalLink, Github, Globe, Linkedin, Mail, MapPin, MessageCircle, Send, ShieldCheck,
   Terminal, X,
 } from "lucide-react";
@@ -213,6 +213,7 @@ const AIChatWidget = ({ language }: { language: Language }) => {
   const [leadForm, setLeadForm] = useState<LeadForm>({ name: "", email: "", phone: "", message: "" });
   const [leadLoading, setLeadLoading] = useState(false);
   const [leadStatus, setLeadStatus] = useState<"idle" | "success" | "error" | "required" | "invalidEmail" | "invalidPhone">("idle");
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([{ role: "assistant", content: t.welcome }]);
   const [supportSessionId] = useState(() => {
     const key = "portfolio-support-session-id";
@@ -247,6 +248,17 @@ const AIChatWidget = ({ language }: { language: Language }) => {
   useEffect(() => {
     window.localStorage.setItem(`portfolio-ai-chat-messages-${language}`, JSON.stringify(messages.slice(-30)));
   }, [language, messages]);
+
+  useEffect(() => {
+    const updateScrollTopVisibility = () => {
+      setShowScrollTop(window.scrollY > 260);
+    };
+
+    updateScrollTopVisibility();
+    window.addEventListener("scroll", updateScrollTopVisibility, { passive: true });
+
+    return () => window.removeEventListener("scroll", updateScrollTopVisibility);
+  }, []);
 
   useEffect(() => {
     if (!isOpen || mode !== "support") return;
@@ -409,6 +421,11 @@ const AIChatWidget = ({ language }: { language: Language }) => {
   return (
     <>
       {isOpen && <div className="fixed inset-0 z-40 bg-black/35 sm:hidden" onClick={() => setIsOpen(false)} />}
+      {showScrollTop && (
+        <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="До гори" title="До гори" className="fixed bottom-5 left-1/2 z-50 inline-flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full border border-[#51aaca]/18 bg-[#071b2a]/45 text-[#d8f3fb]/90 shadow-lg shadow-black/10 backdrop-blur-md transition hover:border-[#51aaca]/40 hover:bg-[#0c2b3d]/70 hover:text-white">
+          <ArrowUp className="h-5 w-5" />
+        </button>
+      )}
       <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
         {isOpen && (
           <motion.div initial={{ opacity: 0, y: 16, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="glass w-[min(92vw,380px)] overflow-hidden rounded-3xl border border-[#51aaca]/20 shadow-2xl shadow-black/35">
@@ -460,13 +477,14 @@ const AIChatWidget = ({ language }: { language: Language }) => {
           </motion.div>
         )}
         <div className="flex flex-wrap justify-end gap-3">
-          <button type="button" onClick={() => { setIsOpen(true); setMode("support"); }} aria-label={t.supportButton} title={t.supportButton} className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#071b2a]/92 font-semibold text-[#d8f3fb] shadow-lg shadow-black/20 transition hover:border-[#51aaca]/45 hover:bg-[#0c2b3d] sm:h-auto sm:w-auto sm:gap-3 sm:px-5 sm:py-3">
+          <button type="button" onClick={() => { setIsOpen((current) => mode === "support" ? !current : true); setMode("support"); }} aria-label={t.supportButton} title={t.supportButton} className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#071b2a]/92 font-semibold text-[#d8f3fb] shadow-lg shadow-black/20 transition hover:border-[#51aaca]/45 hover:bg-[#0c2b3d] sm:h-auto sm:w-auto sm:gap-3 sm:px-5 sm:py-3">
             <Mail className="h-5 w-5" />
             <span className="hidden sm:inline">{t.supportButton}</span>
           </button>
-          <button type="button" onClick={() => { setIsOpen((current) => mode === "ai" ? !current : true); setMode("ai"); }} className="inline-flex items-center gap-3 rounded-full bg-[#51aaca] px-5 py-3 font-semibold text-[#021014] shadow-lg shadow-[#51aaca]/25 transition hover:bg-[#9ed8ea]">
-            <MessageCircle className="h-5 w-5" />
-            <span>{t.open}</span>
+          <button type="button" onClick={() => { setIsOpen((current) => mode === "ai" ? !current : true); setMode("ai"); }} aria-label={t.open} title={t.open} className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#51aaca] font-bold text-[#021014] shadow-lg shadow-[#51aaca]/25 transition hover:bg-[#9ed8ea] sm:h-auto sm:w-auto sm:gap-3 sm:px-5 sm:py-3 sm:font-semibold">
+            <MessageCircle className="hidden h-5 w-5 sm:block" />
+            <span className="text-sm sm:hidden">AI</span>
+            <span className="hidden sm:inline">{t.open}</span>
           </button>
         </div>
       </div>
@@ -700,7 +718,10 @@ export default function App() {
               <p className="mb-6 text-sm text-zinc-500">{t.about.stackHint}</p>
               <div className="flex flex-wrap gap-3">
                 {skills.map((skill, i) => (
-                  <motion.button key={skill.slug} type="button" initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} onClick={() => navigate({ page: "skill", slug: skill.slug })} className="cursor-pointer flex items-center gap-2 rounded-xl border border-cyan-950/70 bg-[#092231] px-4 py-3 text-sm font-medium text-zinc-100 transition-all hover:-translate-y-0.5 hover:border-[#51aaca]/30 hover:text-[#d8f3fb]">{skill.icon}{skill.name}</motion.button>
+                  <motion.button key={skill.slug} type="button" initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} onClick={() => navigate({ page: "skill", slug: skill.slug })} className="cursor-pointer flex items-center justify-between gap-2 rounded-xl border border-[#51aaca]/28 bg-[#51aaca]/10 px-4 py-3 text-left text-sm font-semibold text-[#d8f3fb] shadow-[0_10px_28px_rgba(81,170,202,0.08)] transition-all hover:-translate-y-0.5 hover:border-[#51aaca]/45 hover:bg-[#51aaca]/14 hover:text-white sm:border-cyan-950/70 sm:bg-[#092231] sm:text-zinc-100 sm:shadow-none">
+                    <span className="flex min-w-0 items-center gap-2">{skill.icon}<span className="truncate">{skill.name}</span></span>
+                    <ChevronRight className="h-4 w-4 shrink-0 text-[#9ed8ea] sm:hidden" />
+                  </motion.button>
                 ))}
               </div>
             </div>
