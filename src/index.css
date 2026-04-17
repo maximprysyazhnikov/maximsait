@@ -24,3 +24,33 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[#51aaca] via-[#9ed8ea] to-cyan-100;
   }
 }
+
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  body {
+    background-image: linear-gradient(180deg, #030b12 0%, #061827 48%, #02070d 100%);
+  }
+
+  .glass {
+    background-color: rgba(7, 27, 42, 0.94);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .telegram-sensitive-effect {
+    display: none !important;
+  }
+}
+
+html.telegram-webview body {
+  background-image: linear-gradient(180deg, #030b12 0%, #061827 48%, #02070d 100%);
+}
+
+html.telegram-webview .glass {
+  background-color: rgba(7, 27, 42, 0.96);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html.telegram-webview .telegram-sensitive-effect {
+  display: none !important;
+}

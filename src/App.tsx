@@ -38,9 +38,9 @@ const Card = ({ children, className = "" }: React.PropsWithChildren<{ className?
 const BackgroundScene = () => (
   <div className="pointer-events-none absolute inset-0 overflow-hidden">
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.04),transparent_34%)]" />
-    <motion.div animate={{ x: [0, 30, -10, 0], y: [0, -20, 15, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} className="absolute left-[8%] top-[12%] h-72 w-72 rounded-full bg-[#9ed8ea]/10 blur-[90px]" />
-    <motion.div animate={{ x: [0, -40, 20, 0], y: [0, 20, -25, 0] }} transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }} className="absolute right-[6%] top-[22%] h-96 w-96 rounded-full bg-cyan-200/8 blur-[110px]" />
-    <motion.div animate={{ x: [0, 20, -18, 0], y: [0, -12, 20, 0] }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }} className="absolute bottom-[8%] left-[20%] h-64 w-64 rounded-full bg-cyan-200/10 blur-[80px]" />
+    <motion.div animate={{ x: [0, 30, -10, 0], y: [0, -20, 15, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} className="telegram-sensitive-effect absolute left-[8%] top-[12%] h-72 w-72 rounded-full bg-[#9ed8ea]/10 blur-[90px]" />
+    <motion.div animate={{ x: [0, -40, 20, 0], y: [0, 20, -25, 0] }} transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }} className="telegram-sensitive-effect absolute right-[6%] top-[22%] h-96 w-96 rounded-full bg-cyan-200/8 blur-[110px]" />
+    <motion.div animate={{ x: [0, 20, -18, 0], y: [0, -12, 20, 0] }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }} className="telegram-sensitive-effect absolute bottom-[8%] left-[20%] h-64 w-64 rounded-full bg-cyan-200/10 blur-[80px]" />
     <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#030b12] via-[#030b12]/75 to-transparent" />
   </div>
 );
@@ -64,7 +64,7 @@ const StartupLoader = () => (
   <motion.div
     initial={{ opacity: 1 }}
     animate={{ opacity: 1 }}
-    exit={{ opacity: 0, filter: "blur(10px)" }}
+    exit={{ opacity: 0 }}
     transition={{ duration: 0.55, ease: "easeOut" }}
     className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-[#02070d]"
   >
@@ -422,7 +422,7 @@ const AIChatWidget = ({ language }: { language: Language }) => {
     <>
       {isOpen && <div className="fixed inset-0 z-40 bg-black/35 sm:hidden" onClick={() => setIsOpen(false)} />}
       {showScrollTop && (
-        <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="До гори" title="До гори" className="fixed bottom-5 left-1/2 z-50 inline-flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full border border-[#51aaca]/18 bg-[#071b2a]/45 text-[#d8f3fb]/90 shadow-lg shadow-black/10 backdrop-blur-md transition hover:border-[#51aaca]/40 hover:bg-[#0c2b3d]/70 hover:text-white">
+        <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="До гори" title="До гори" className="fixed bottom-5 left-1/2 z-50 inline-flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full border border-[#51aaca]/18 bg-[#071b2a]/55 text-[#d8f3fb]/90 shadow-lg shadow-black/10 transition hover:border-[#51aaca]/40 hover:bg-[#0c2b3d]/75 hover:text-white">
           <ArrowUp className="h-5 w-5" />
         </button>
       )}
@@ -566,6 +566,13 @@ export default function App() {
   const t = copy[language];
 
   useEffect(() => {
+    const isTelegramWebView = /telegram|tgweb|telegrambot/i.test(window.navigator.userAgent);
+    document.documentElement.classList.toggle("telegram-webview", isTelegramWebView);
+
+    return () => document.documentElement.classList.remove("telegram-webview");
+  }, []);
+
+  useEffect(() => {
     const timer = window.setTimeout(() => setShowStartupLoader(false), 1400);
     return () => window.clearTimeout(timer);
   }, []);
@@ -665,8 +672,8 @@ export default function App() {
       <section className="relative overflow-hidden pb-20 pt-32">
         <InfinityHero />
         <div className="absolute left-1/2 top-0 -z-10 h-full w-full max-w-7xl -translate-x-1/2">
-          <div className="absolute left-10 top-20 h-72 w-72 rounded-full bg-[#51aaca]/18 blur-[120px]" />
-          <div className="absolute bottom-20 right-10 h-72 w-72 rounded-full bg-cyan-300/14 blur-[120px]" />
+          <div className="telegram-sensitive-effect absolute left-10 top-20 h-72 w-72 rounded-full bg-[#51aaca]/18 blur-[120px]" />
+          <div className="telegram-sensitive-effect absolute bottom-20 right-10 h-72 w-72 rounded-full bg-cyan-300/14 blur-[120px]" />
         </div>
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px]">
           <div className="max-w-3xl">
