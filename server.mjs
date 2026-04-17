@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = Number(process.env.PORT || 3000);
 const distDir = path.join(__dirname, 'dist');
-const cvFileName = 'Maksym_Prysyazhnikov_CV.pdf';
+const cvFileName = 'Maksym_Prysiazhnikov_CV.pdf';
 const cvFilePath = path.join(__dirname, 'CV', cvFileName);
 const openRouterApiKeys = (process.env.OPENROUTER_KEYS || '')
   .split(/[\n,;]+/)
