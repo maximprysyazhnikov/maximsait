@@ -55,7 +55,7 @@ def read_app_url() -> str:
         for line in env_path.read_text(encoding="utf-8").splitlines():
             if line.startswith("APP_URL="):
                 return line.split("=", 1)[1].strip().strip("\"'")
-    return "http://localhost:3000"
+    return "https://maksymprysiazhnikov.up.railway.app/"
 
 
 SITE_URL = read_app_url()

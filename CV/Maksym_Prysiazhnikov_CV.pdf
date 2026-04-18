@@ -27,7 +27,7 @@ endobj
 5 0 obj
 <<
 /A <<
-/S /URI /Type /Action /URI (http://localhost:3000)
+/S /URI /Type /Action /URI (https://maksymprysiazhnikov.up.railway.app/)
 >> /Border [ 0 0 0 ] /Rect [ 154.1414 694.4861 217.6336 704.5661 ] /Subtype /Link /Type /Annot
 >>
 endobj
@@ -75,7 +75,7 @@ endobj
 11 0 obj
 <<
 /A <<
-/S /URI /Type /Action /URI (http://localhost:3000)
+/S /URI /Type /Action /URI (https://maksymprysiazhnikov.up.railway.app/)
 >> /Border [ 0 0 0 ] /Rect [ 82.47542 654.685 142.9442 664.285 ] /Subtype /Link /Type /Annot
 >>
 endobj
@@ -530,7 +530,7 @@ endobj
 endobj
 31 0 obj
 <<
-/Author (Maksym Prysiazhnikov) /CreationDate (D:20260417172631+03'00') /Creator (\(unspecified\)) /Keywords (DevOps, Cloud, Linux, Docker, Kubernetes, Azure, Terraform, CI/CD, GitHub Actions, Python, MySQL, PostgreSQL, Liquibase, Bash, SIEM, IDS/IPS, AI Integration, API Integration) /ModDate (D:20260417172631+03'00') /Producer (ReportLab PDF Library - www.reportlab.com) 
+/Author (Maksym Prysiazhnikov) /CreationDate (D:20260418071002+03'00') /Creator (\(unspecified\)) /Keywords (DevOps, Cloud, Linux, Docker, Kubernetes, Azure, Terraform, CI/CD, GitHub Actions, Python, MySQL, PostgreSQL, Liquibase, Bash, SIEM, IDS/IPS, AI Integration, API Integration) /ModDate (D:20260418071002+03'00') /Producer (ReportLab PDF Library - www.reportlab.com) 
   /Subject (Junior DevOps Engineer and Cloud Specialist resume) /Title (Maksym Prysiazhnikov CV) /Trapped /False
 >>
 endobj
@@ -568,40 +568,40 @@ xref
 0000000237 00000 n 
 0000000417 00000 n 
 0000000586 00000 n 
-0000000759 00000 n 
-0000000964 00000 n 
-0000001153 00000 n 
-0000088395 00000 n 
-0000088601 00000 n 
-0000088918 00000 n 
-0000089090 00000 n 
-0000089288 00000 n 
-0000089484 00000 n 
-0000089694 00000 n 
-0000089898 00000 n 
-0000090068 00000 n 
-0000090244 00000 n 
-0000090416 00000 n 
-0000090593 00000 n 
-0000090874 00000 n 
-0000091080 00000 n 
-0000091831 00000 n 
-0000129625 00000 n 
-0000129871 00000 n 
-0000131006 00000 n 
-0000131755 00000 n 
-0000161412 00000 n 
-0000161670 00000 n 
-0000162843 00000 n 
-0000162913 00000 n 
-0000163422 00000 n 
-0000163497 00000 n 
-0000167108 00000 n 
-0000169657 00000 n 
+0000000781 00000 n 
+0000000986 00000 n 
+0000001175 00000 n 
+0000088417 00000 n 
+0000088623 00000 n 
+0000088940 00000 n 
+0000089134 00000 n 
+0000089332 00000 n 
+0000089528 00000 n 
+0000089738 00000 n 
+0000089942 00000 n 
+0000090112 00000 n 
+0000090288 00000 n 
+0000090460 00000 n 
+0000090637 00000 n 
+0000090918 00000 n 
+0000091124 00000 n 
+0000091875 00000 n 
+0000129669 00000 n 
+0000129915 00000 n 
+0000131050 00000 n 
+0000131799 00000 n 
+0000161456 00000 n 
+0000161714 00000 n 
+0000162887 00000 n 
+0000162957 00000 n 
+0000163466 00000 n 
+0000163541 00000 n 
+0000167152 00000 n 
+0000169701 00000 n 
 trailer
 <<
 /ID 
-[<93c2deac304f70d146f2c375519b731f><93c2deac304f70d146f2c375519b731f>]
+[<607b261eb6d0b84af55365d4073ff584><607b261eb6d0b84af55365d4073ff584>]
 % ReportLab generated PDF document -- digest (http://www.reportlab.com)
 
 /Info 31 0 R
@@ -609,5 +609,5 @@ trailer
 /Size 36
 >>
 startxref
-172221
+172265
 %%EOF

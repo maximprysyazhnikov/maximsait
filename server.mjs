@@ -546,7 +546,7 @@ ${portfolioFacts}
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': process.env.APP_URL || 'http://localhost:3000',
+        'HTTP-Referer': process.env.APP_URL || 'https://maksymprysiazhnikov.up.railway.app/',
         'X-Title': 'Maksym Prysiazhnikov Portfolio',
       },
       body: JSON.stringify(requestBody),
