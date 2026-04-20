@@ -38,6 +38,7 @@ LINE = colors.HexColor("#164055")
 CONTENT_WIDTH = 170 * mm
 HEADER_PHOTO_WIDTH = 54 * mm
 HEADER_TEXT_WIDTH = CONTENT_WIDTH - HEADER_PHOTO_WIDTH
+CONTINUED_PAGE_TOP_SPACER = 4 * mm
 
 CONTACTS = [
     "Ukraine",
@@ -59,6 +60,7 @@ def read_app_url() -> str:
 
 
 SITE_URL = read_app_url()
+COMMERCIAL_SITE_URL = "https://www.vidfranko.com.ua/"
 VOLUNTEER_DEMO_URL = "https://volunteer-site-placeholder-dev.up.railway.app/"
 LINKEDIN_URL = "https://linkedin.com/in/maxim-prysyazhnikov-b46196163"
 GITHUB_URL = "https://github.com/maximprysyazhnikov"
@@ -405,6 +407,7 @@ def sidebar_block():
         bullets(
             [
                 "462+ practical DevOps tasks completed.",
+                "Commercial website production launch support.",
                 "Deployment lead experience on a team web project.",
                 "Cloud, containers, databases, automation, and security fundamentals.",
             ]
@@ -419,7 +422,7 @@ def sidebar_block():
     ]
 
 
-def main_content():
+def profile_and_experience():
     story = []
 
     story.append(section("Profile"))
@@ -444,6 +447,19 @@ def main_content():
 
     story.append(section("Technical Experience"))
     story.append(soft_panel([
+        para("Commercial Project - Vid Franko", "item_title"),
+        para("DevOps / Deployment Support", "meta"),
+        bullets(
+            [
+                "Contributed to production launch support for a commercial website with a focus on stability, availability, and predictable releases.",
+                "Applied classic DevOps practices: environment configuration, production variables, build verification, deployment control, and post-release validation.",
+                "Supported repeatable deployment steps, service availability checks, log and configuration review, and quick issue response during operational handoff.",
+            ]
+        ),
+        rich_para(f"Links: {link(COMMERCIAL_SITE_URL, 'Live Site')}", "small"),
+    ]))
+    story.append(Spacer(1, 5))
+    story.append(soft_panel([
         para("Team Project - Volunteer Site", "item_title"),
         para("DevOps / Deployment Lead", "meta"),
         bullets(
@@ -455,22 +471,32 @@ def main_content():
         ),
         rich_para(f"Links: {link(VOLUNTEER_DEMO_URL, 'Live Demo')}", "small"),
     ]))
-    story.append(Spacer(1, 5))
-    story.append(soft_panel([
-        para("Hands-on DevOps Practice", "item_title"),
-        para("Mate academy training", "meta"),
-        bullets(
-            [
-                "Built Kubernetes practice projects with Pods, Services, Deployments, HPA, DaemonSets, CronJobs, ConfigMaps, Secrets, and Persistent Volumes.",
-                "Practiced MySQL administration: users, backup and restore, slow query logs, error logs, and migration rollback scenarios.",
-                "Worked with Terraform and Azure fundamentals for infrastructure provisioning, state, modules, and validation workflows.",
-                "Implemented CI/CD delivery workflows with environment-based configuration and security in mind.",
-            ]
-        ),
-    ]))
 
-    story.append(PageBreak())
-    story.append(Spacer(1, 11 * mm))
+    return story
+
+
+def hands_on_practice():
+    return [
+        soft_panel([
+            para("Hands-on DevOps Practice", "item_title"),
+            para("Mate academy training", "meta"),
+            bullets(
+                [
+                    "Built Kubernetes practice projects with Pods, Services, Deployments, HPA, DaemonSets, CronJobs, ConfigMaps, Secrets, and Persistent Volumes.",
+                    "Practiced MySQL administration: users, backup and restore, slow query logs, error logs, and migration rollback scenarios.",
+                    "Worked with Terraform and Azure fundamentals for infrastructure provisioning, state, modules, and validation workflows.",
+                    "Implemented CI/CD delivery workflows with environment-based configuration and security in mind.",
+                ]
+            ),
+        ]),
+        Spacer(1, 5),
+    ]
+
+
+def featured_projects():
+    story = []
+
+    story.extend(hands_on_practice())
     story.append(section("Featured Projects"))
     for project in PROJECTS:
         project_links = [(label, url) for label, url in project.get("extra", [])]
@@ -491,49 +517,11 @@ def main_content():
             )
         )
 
-    story.append(section("Education"))
-    story.append(
-        soft_panel(
-            [
-                bullets(
-                    [
-                        "Architecture and Urban Planning - Odesa State Academy of Civil Engineering and Architecture.",
-                        "Software-related studies - Popov Academy of Telecommunications.",
-                    ]
-                )
-            ]
-        )
-    )
-
     return story
 
 
-def build_story():
+def credentials():
     story = []
-    story.extend(build_header())
-    story.append(Spacer(1, 8))
-
-    highlights = Table(
-        [[para("462+ practical DevOps tasks completed", "chip"), para("Deployment lead on a team web project", "chip"), para("Cloud, containers, automation, and security", "chip")]],
-        colWidths=[CONTENT_WIDTH / 3, CONTENT_WIDTH / 3, CONTENT_WIDTH / 3],
-        hAlign="LEFT",
-    )
-    highlights.setStyle(
-        TableStyle(
-            [
-                ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#092231")),
-                ("BOX", (0, 0), (-1, -1), 0.55, colors.HexColor("#23566b")),
-                ("INNERGRID", (0, 0), (-1, -1), 3, PAPER),
-                ("LEFTPADDING", (0, 0), (-1, -1), 6),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 6),
-                ("TOPPADDING", (0, 0), (-1, -1), 6),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
-            ]
-        )
-    )
-    story.append(highlights)
-    story.append(Spacer(1, 3))
-    story.extend(main_content())
 
     story.append(section("Certifications"))
     story.append(soft_panel([
@@ -547,6 +535,27 @@ def build_story():
         )
     ]))
 
+    story.append(section("Languages"))
+    story.append(soft_panel([para("Ukrainian: Native. English: Upper-Intermediate (B2).", "lead")]))
+
+    story.append(
+        KeepTogether(
+            [
+                section("Education"),
+                soft_panel(
+                    [
+                        bullets(
+                            [
+                                "Architecture and Urban Planning - Odesa State Academy of Civil Engineering and Architecture.",
+                                "Software-related studies - Popov Academy of Telecommunications.",
+                            ]
+                        )
+                    ]
+                ),
+            ]
+        )
+    )
+
     story.append(section("Learning Links"))
     story.append(
         soft_panel(
@@ -559,11 +568,12 @@ def build_story():
         )
     )
 
-    story.append(section("Languages"))
-    story.append(soft_panel([para("Ukrainian: Native. English: Upper-Intermediate (B2).", "lead")]))
+    return story
 
-    story.append(PageBreak())
-    story.append(Spacer(1, 11 * mm))
+
+def background_and_keywords():
+    story = []
+
     story.append(section("Earlier Experience"))
     story.append(soft_panel([
         bullets(
@@ -588,8 +598,7 @@ def build_story():
             "My background includes project coordination, communication with stakeholders, and responsibility for delivery, which helps me "
             "stay organized under pressure and connect technical work with real project needs. Through DevOps, cybersecurity, project "
             "management, and English courses, I built a structured way of learning and working: defining goals, breaking work into steps, "
-            "creating roadmaps, tracking progress, and adjusting the plan when new information appears. This helps me approach tasks with "
-            "a clear plan instead of guessing, while still staying flexible during troubleshooting.",
+            "creating roadmaps, tracking progress, and adjusting the plan when new information appears.",
             "body",
         ),
         para(
@@ -607,6 +616,44 @@ def build_story():
             "small",
         )
     ]))
+
+    return story
+
+
+def build_story():
+    story = []
+    story.extend(build_header())
+    story.append(Spacer(1, 8))
+
+    highlights = Table(
+        [[para("Commercial production website support", "chip"), para("Deployment lead on a team web project", "chip"), para("Cloud, containers, automation, and security", "chip")]],
+        colWidths=[CONTENT_WIDTH / 3, CONTENT_WIDTH / 3, CONTENT_WIDTH / 3],
+        hAlign="LEFT",
+    )
+    highlights.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#092231")),
+                ("BOX", (0, 0), (-1, -1), 0.55, colors.HexColor("#23566b")),
+                ("INNERGRID", (0, 0), (-1, -1), 3, PAPER),
+                ("LEFTPADDING", (0, 0), (-1, -1), 6),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 6),
+                ("TOPPADDING", (0, 0), (-1, -1), 6),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+            ]
+        )
+    )
+    story.append(highlights)
+    story.append(Spacer(1, 3))
+    story.extend(profile_and_experience())
+
+    story.append(PageBreak())
+    story.append(Spacer(1, CONTINUED_PAGE_TOP_SPACER))
+    story.extend(featured_projects())
+    story.extend(credentials())
+
+    story.append(Spacer(1, 5))
+    story.extend(background_and_keywords())
 
     return story
 
@@ -638,7 +685,7 @@ def main():
         pagesize=A4,
         rightMargin=16 * mm,
         leftMargin=16 * mm,
-        topMargin=18 * mm,
+        topMargin=24 * mm,
         bottomMargin=16 * mm,
         title="Maksym Prysiazhnikov CV",
         author="Maksym Prysiazhnikov",
