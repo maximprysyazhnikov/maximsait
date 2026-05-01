@@ -515,7 +515,7 @@ const DetailLayout = ({
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6">
           <button type="button" onClick={onBack} className="inline-flex items-center gap-2 rounded-full border border-cyan-900/70 bg-[#092231] px-4 py-2 text-sm font-medium text-zinc-200 transition hover:border-[#51aaca]/30 hover:text-white"><ArrowLeft className="h-4 w-4" />{backLabel}</button>
           <div className="flex items-center rounded-full border border-cyan-950/80 bg-[#061a26]/85 p-1">
-            {(["uk", "en"] as Language[]).map((lang) => (
+            {(["en", "uk"] as Language[]).map((lang) => (
               <button key={lang} type="button" onClick={() => window.dispatchEvent(new CustomEvent("portfolio-language", { detail: lang }))} className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] transition-colors ${language === lang ? "bg-[#51aaca] text-[#021014]" : "text-zinc-400 hover:text-white"}`}>{lang}</button>
             ))}
           </div>
@@ -568,7 +568,7 @@ const DetailLayout = ({
 };
 
 export default function App() {
-  const [language, setLanguage] = useState<Language>("uk");
+  const [language, setLanguage] = useState<Language>("en");
   const [route, setRoute] = useState<Route>(() => getRouteFromPath(window.location.pathname));
   const [showStartupLoader, setShowStartupLoader] = useState(true);
   const t = copy[language];
@@ -672,7 +672,7 @@ export default function App() {
               <a href="#contact" className="transition-colors hover:text-white">{t.nav.contact}</a>
             </div>
             <div className="flex items-center rounded-full border border-cyan-950/80 bg-[#061a26]/85 p-1">
-              {(["uk", "en"] as Language[]).map((lang) => <button key={lang} type="button" onClick={() => setLanguage(lang)} className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] transition-colors ${language === lang ? "bg-[#51aaca] text-[#021014]" : "text-zinc-400 hover:text-white"}`}>{lang}</button>)}
+              {(["en", "uk"] as Language[]).map((lang) => <button key={lang} type="button" onClick={() => setLanguage(lang)} className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] transition-colors ${language === lang ? "bg-[#51aaca] text-[#021014]" : "text-zinc-400 hover:text-white"}`}>{lang}</button>)}
             </div>
           </div>
         </div>
