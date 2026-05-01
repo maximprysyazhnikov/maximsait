@@ -26,7 +26,7 @@ let telegramPollingOffset = 0;
 let telegramPollingActive = false;
 const portfolioFacts = `
 Maksym Prysiazhnikov (Ukrainian: Максим Присяжніков) is a Junior DevOps / Cloud Engineer from Ukraine.
-Core stack shown in the portfolio: Linux, Docker, Kubernetes, Azure, Terraform, CI/CD, GitHub Actions, Python, MySQL, PostgreSQL, Liquibase, Bash, SIEM, IDS/IPS.
+Core stack shown in the portfolio: Linux, Docker, Kubernetes, Azure, Terraform, CI/CD, GitHub Actions, Python, MySQL, PostgreSQL, Liquibase, Bash, Git, Railway, SQL, Jira, Confluence, Agile, Scrum, SIEM, IDS/IPS.
 Learning background in the portfolio: Mate academy DevOps program, Google Cybersecurity Certificate, Beetroot Academy Project Management in IT, English course at 12 Project.
 Projects shown in the portfolio: AI Crypto CAT Bot, KROK Worldbuilder Bot, DevOps AI Agent.
 Languages shown in the portfolio: Ukrainian native, English B2.
