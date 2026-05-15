@@ -18,10 +18,12 @@ const openRouterApiKeys = (process.env.OPENROUTER_KEYS || '')
 const openRouterModel = process.env.OPENROUTER_MODEL;
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
 const telegramChatId = process.env.TELEGRAM_CHAT_ID;
+const cvDownloadContexts = new Map();
 const supportSessions = new Map();
 const telegramMessageSessions = new Map();
 const supportOnlineWindowMs = 45_000;
 const supportAutoReplyDelayMs = Number(process.env.SUPPORT_AUTO_REPLY_DELAY_MS || 120_000);
+const cvDownloadContextTtlMs = 10 * 60_000;
 let telegramPollingOffset = 0;
 let telegramPollingActive = false;
 const portfolioFacts = `
@@ -91,6 +93,79 @@ const getClientIp = (req) => {
   return Array.isArray(forwardedFor)
     ? forwardedFor[0]
     : forwardedFor?.split(',')[0]?.trim() || req.ip || 'unknown';
+};
+
+const getHeaderValue = (req, name) => {
+  const value = req.headers[name.toLowerCase()];
+
+  return Array.isArray(value) ? value.join(', ') : value || '';
+};
+
+const cleanTelegramValue = (value, maxLength = 220) => {
+  const text = String(value || '').trim();
+
+  if (!text) {
+    return 'не вказано';
+  }
+
+  return escapeTelegramHtml(text.length > maxLength ? `${text.slice(0, maxLength - 3)}...` : text);
+};
+
+const getApproximateCountry = (req) => (
+  getHeaderValue(req, 'cf-ipcountry')
+  || getHeaderValue(req, 'x-vercel-ip-country')
+  || getHeaderValue(req, 'x-country-code')
+  || 'не вказано'
+);
+
+const pruneCvDownloadContexts = () => {
+  const now = Date.now();
+
+  for (const [key, value] of cvDownloadContexts.entries()) {
+    if (now - Number(value?.createdAt || 0) > cvDownloadContextTtlMs) {
+      cvDownloadContexts.delete(key);
+    }
+  }
+};
+
+const formatCvDownloadForTelegram = ({ req, timestamp, ipAddress, context }) => {
+  const client = context?.client || {};
+  const screen = client.screen || {};
+  const viewport = client.viewport || {};
+  const userAgent = client.userAgent || getHeaderValue(req, 'user-agent');
+  const referrer = client.referrer || getHeaderValue(req, 'referer');
+  const pageUrl = client.pageUrl || 'не вказано';
+  const language = client.language || getHeaderValue(req, 'accept-language');
+  const timezone = client.timezone || 'не вказано';
+  const platform = client.platform || 'не вказано';
+  const screenText = screen.width && screen.height
+    ? `${screen.width}x${screen.height}${screen.pixelRatio ? ` @${screen.pixelRatio}x` : ''}`
+    : 'не вказано';
+  const viewportText = viewport.width && viewport.height ? `${viewport.width}x${viewport.height}` : 'не вказано';
+
+  return [
+    '<b>Ваше резюме було завантажене</b>',
+    '',
+    `<b>Файл:</b> ${escapeTelegramHtml(cvFileName)}`,
+    `<b>Час:</b> ${escapeTelegramHtml(timestamp)}`,
+    `<b>IP:</b> <code>${escapeTelegramHtml(ipAddress)}</code>`,
+    `<b>Країна:</b> ${cleanTelegramValue(getApproximateCountry(req), 80)}`,
+    '',
+    '<b>Браузерний контекст</b>',
+    `<b>Мова сайту:</b> ${cleanTelegramValue(client.siteLanguage, 20)}`,
+    `<b>Мова браузера:</b> ${cleanTelegramValue(language, 160)}`,
+    `<b>Timezone:</b> ${cleanTelegramValue(timezone, 120)}`,
+    `<b>Платформа:</b> ${cleanTelegramValue(platform, 120)}`,
+    `<b>Екран:</b> ${cleanTelegramValue(screenText, 80)}`,
+    `<b>Viewport:</b> ${cleanTelegramValue(viewportText, 80)}`,
+    '',
+    '<b>Навігація</b>',
+    `<b>Сторінка:</b> ${cleanTelegramValue(pageUrl, 400)}`,
+    `<b>Referrer:</b> ${cleanTelegramValue(referrer, 400)}`,
+    '',
+    '<b>User-Agent</b>',
+    `<pre>${escapeTelegramHtml(truncateForTelegram(userAgent, 700))}</pre>`,
+  ].join('\n');
 };
 
 const createSupportMessage = (role, text) => ({
@@ -359,9 +434,49 @@ app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
+app.post('/api/cv-download-context', (req, res) => {
+  const downloadId = String(req.body?.downloadId || '').trim().slice(0, 120);
+
+  if (!downloadId) {
+    return res.status(400).json({ error: 'downloadId is required.' });
+  }
+
+  pruneCvDownloadContexts();
+  cvDownloadContexts.set(downloadId, {
+    createdAt: Date.now(),
+    client: {
+      siteLanguage: String(req.body?.siteLanguage || '').slice(0, 20),
+      language: String(req.body?.language || '').slice(0, 160),
+      languages: Array.isArray(req.body?.languages) ? req.body.languages.slice(0, 8).join(', ') : '',
+      timezone: String(req.body?.timezone || '').slice(0, 120),
+      platform: String(req.body?.platform || '').slice(0, 120),
+      userAgent: String(req.body?.userAgent || '').slice(0, 1000),
+      pageUrl: String(req.body?.pageUrl || '').slice(0, 500),
+      referrer: String(req.body?.referrer || '').slice(0, 500),
+      screen: {
+        width: Number(req.body?.screen?.width || 0),
+        height: Number(req.body?.screen?.height || 0),
+        pixelRatio: Number(req.body?.screen?.pixelRatio || 0),
+      },
+      viewport: {
+        width: Number(req.body?.viewport?.width || 0),
+        height: Number(req.body?.viewport?.height || 0),
+      },
+    },
+  });
+
+  return res.status(200).json({ ok: true });
+});
+
 app.get('/download/cv', (req, res) => {
   if (!fs.existsSync(cvFilePath)) {
     return res.status(404).json({ error: 'CV file was not found on the server.' });
+  }
+
+  const downloadId = String(req.query.downloadId || '').trim();
+  const context = downloadId ? cvDownloadContexts.get(downloadId) : null;
+  if (downloadId) {
+    cvDownloadContexts.delete(downloadId);
   }
 
   res.download(cvFilePath, cvFileName, async (error) => {
@@ -382,7 +497,8 @@ app.get('/download/cv', (req, res) => {
     const ipAddress = getClientIp(req);
 
     await sendTelegramNotification(
-      `Ваше резюме було завантажене.\nФайл: ${cvFileName}\nЧас: ${timestamp}\nIP: ${ipAddress}`,
+      formatCvDownloadForTelegram({ req, timestamp, ipAddress, context }),
+      { parseMode: 'HTML' },
     );
   });
 });

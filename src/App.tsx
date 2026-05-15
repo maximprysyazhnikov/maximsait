@@ -606,6 +606,50 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleCvDownload = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    const downloadId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const payload = {
+      downloadId,
+      siteLanguage: language,
+      language: window.navigator.language,
+      languages: Array.from(window.navigator.languages || []),
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      platform: window.navigator.platform,
+      userAgent: window.navigator.userAgent,
+      pageUrl: window.location.href,
+      referrer: document.referrer,
+      screen: {
+        width: window.screen.width,
+        height: window.screen.height,
+        pixelRatio: window.devicePixelRatio,
+      },
+      viewport: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      },
+    };
+    const body = JSON.stringify(payload);
+    const downloadUrl = `/download/cv?downloadId=${encodeURIComponent(downloadId)}`;
+
+    if (navigator.sendBeacon) {
+      const blob = new Blob([body], { type: "application/json" });
+      navigator.sendBeacon("/api/cv-download-context", blob);
+      window.location.href = downloadUrl;
+      return;
+    }
+
+    fetch("/api/cv-download-context", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body,
+      keepalive: true,
+    }).finally(() => {
+      window.location.href = downloadUrl;
+    });
+  };
+
   const activeSkill = useMemo(() => route.page === "skill" ? skills.find((item) => item.slug === route.slug) : undefined, [route]);
   const activeProvider = useMemo(() => route.page === "provider" ? learningProviders.find((item) => item.slug === route.slug) : undefined, [route]);
 
@@ -692,7 +736,7 @@ export default function App() {
               <div className="flex flex-wrap gap-4">
                 <motion.a href="#contact" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex items-center gap-2 rounded-xl bg-[#51aaca] px-8 py-4 font-semibold text-[#021014] shadow-lg shadow-[#51aaca]/20 transition-all hover:bg-[#9ed8ea]"><Mail className="h-5 w-5" />{t.hero.contact}</motion.a>
                 <motion.a href="https://github.com/maximprysyazhnikov" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="glass flex items-center gap-2 rounded-xl px-8 py-4 font-semibold text-white transition-all hover:bg-[#0c2b3d]"><Github className="h-5 w-5" />{t.hero.github}</motion.a>
-                <motion.a href="/download/cv" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="glass flex items-center gap-2 rounded-xl border border-[#51aaca]/25 px-8 py-4 font-semibold text-[#effaff] transition-all hover:bg-[#0c2b3d] hover:text-white"><Download className="h-5 w-5" />{t.hero.resume}</motion.a>
+                <motion.a href="/download/cv" onClick={handleCvDownload} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="glass flex items-center gap-2 rounded-xl border border-[#51aaca]/25 px-8 py-4 font-semibold text-[#effaff] transition-all hover:bg-[#0c2b3d] hover:text-white"><Download className="h-5 w-5" />{t.hero.resume}</motion.a>
               </div>
             </motion.div>
           </div>
