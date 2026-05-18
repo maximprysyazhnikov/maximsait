@@ -365,8 +365,8 @@ def resized_photo() -> PdfImage | None:
 def build_header():
     left = [
         para("Maksym Prysiazhnikov", "name"),
-        para("Junior DevOps Engineer & Cloud Specialist", "role"),
-        para("Open to Junior DevOps, Cloud, Infrastructure, CI/CD, and automation roles.", "lead"),
+        para("DevOps Engineer & Cloud Specialist", "role"),
+        para("Focused on resilient infrastructure, predictable releases, and practical automation.", "lead"),
         Spacer(1, 4),
         rich_para(
             "Ukraine | "
@@ -378,6 +378,46 @@ def build_header():
             f"{link(SITE_URL, 'Portfolio Website')} | "
             f"{link(LINKEDIN_URL, 'LinkedIn')} | "
             f"{link(GITHUB_URL, 'GitHub')}",
+            "contact",
+        ),
+    ]
+
+    photo = resized_photo()
+    if not photo:
+        return left
+
+    table = Table([[left, photo]], colWidths=[HEADER_TEXT_WIDTH, HEADER_PHOTO_WIDTH], hAlign="LEFT")
+    table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#071b2a")),
+                ("BOX", (0, 0), (-1, -1), 0.8, colors.HexColor("#23566b")),
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("ALIGN", (1, 0), (1, 0), "CENTER"),
+                ("LEFTPADDING", (0, 0), (0, 0), 8),
+                ("RIGHTPADDING", (0, 0), (0, 0), 10),
+                ("LEFTPADDING", (1, 0), (1, 0), 6),
+                ("RIGHTPADDING", (1, 0), (1, 0), 8),
+                ("TOPPADDING", (0, 0), (-1, -1), 9),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 9),
+            ]
+        )
+    )
+    return [table]
+
+
+def build_compact_header():
+    left = [
+        para("Maksym Prysiazhnikov", "name"),
+        para("DevOps Engineer & Cloud Specialist", "role"),
+        rich_para(
+            f"{link(CONTACT_TELEGRAM_URL, CONTACT_PHONE_DISPLAY)}<br/>"
+            f"{link(f'mailto:{CONTACT_EMAIL}', CONTACT_EMAIL)}<br/>"
+            f"{link(CONTACT_TELEGRAM_URL, 'Telegram')}<br/>"
+            f"{link(LINKEDIN_URL, 'LinkedIn')}<br/>"
+            f"{link(GITHUB_URL, 'GitHub')}<br/>"
+            f"{link(SITE_URL, 'Portfolio Website')}<br/>"
+            "Ukraine",
             "contact",
         ),
     ]
@@ -433,13 +473,13 @@ def profile_and_experience():
     story.append(section("Profile"))
     story.append(soft_panel([
         para(
-            "Junior DevOps / Cloud Engineer focused on resilient infrastructure, predictable releases, "
+            "DevOps / Cloud Engineer focused on resilient infrastructure, predictable releases, "
             "and automation that reduces manual operational work.",
             "lead",
         ),
         bullets(
             [
-                "Hands-on with Linux, Docker, Kubernetes, cloud deployment workflows, databases, and CI/CD.",
+                "Practical experience with Linux, Docker, Kubernetes, cloud deployment workflows, databases, and CI/CD.",
                 "Comfortable connecting infrastructure, application configuration, and release readiness.",
                 "Interested in systems that are secure, observable, repeatable, and easy for teams to maintain.",
             ]
@@ -465,7 +505,7 @@ def profile_and_experience():
     ]))
     story.append(Spacer(1, 5))
     story.append(soft_panel([
-        para("Team Project - Volunteer Site", "item_title"),
+        para("Project - Volunteer Site", "item_title"),
         para("DevOps / Deployment Lead", "meta"),
         bullets(
             [
@@ -483,7 +523,7 @@ def profile_and_experience():
 def hands_on_practice():
     return [
         soft_panel([
-            para("Hands-on DevOps Practice", "item_title"),
+            para("DevOps Training", "item_title"),
             para("Mate academy training", "meta"),
             bullets(
                 [
@@ -594,7 +634,7 @@ def background_and_keywords():
     story.append(section("About Me"))
     story.append(soft_panel([
         para(
-            "I am a Junior DevOps Engineer focused on practical infrastructure work: clear deployment flow, stable environments, "
+            "I am a DevOps Engineer focused on practical infrastructure work: clear deployment flow, stable environments, "
             "automation, and reliable handoff between development and operations. I learn through building and troubleshooting, "
             "so I pay attention to logs, configuration, repeatable steps, and the small details that make systems easier to maintain.",
             "lead",
@@ -616,7 +656,7 @@ def background_and_keywords():
     story.append(section("ATS Keywords"))
     story.append(soft_panel([
         para(
-            "Junior DevOps Engineer, Cloud Engineer, Infrastructure as Code, containerization, Kubernetes, Docker, Linux administration, "
+            "DevOps Engineer, Cloud Engineer, Infrastructure as Code, containerization, Kubernetes, Docker, Linux administration, "
             "Azure, Terraform, CI/CD, GitHub Actions, Python automation, Bash scripting, MySQL, PostgreSQL, Liquibase, monitoring, security fundamentals, SIEM, IDS/IPS.",
             "small",
         )
@@ -663,6 +703,145 @@ def build_story():
     return story
 
 
+def compact_about_and_skills():
+    story = []
+
+    story.append(section("About Me"))
+    story.append(soft_panel([
+        para(
+            "DevOps Engineer with practical experience in Linux, Docker, Kubernetes, Azure, Terraform, CI/CD, "
+            "GitHub Actions, Python automation, databases, and production-oriented deployment workflows.",
+            "lead",
+        ),
+        bullets(
+            [
+                "Completed an intensive DevOps Engineer Professional Certificate program at Mate academy with 462+ practical tasks.",
+                "Worked on commercial and volunteer web projects: environment configuration, release preparation, deployment checks, and post-release validation.",
+                "Background in project coordination helps me keep technical work organized, documented, and aligned with project goals.",
+                "English: Upper-Intermediate (B2). Ukrainian: Native.",
+            ]
+        ),
+    ]))
+
+    story.append(section("Skills"))
+    story.append(make_chip_table(SKILLS, columns=4, width=CONTENT_WIDTH))
+    story.append(Spacer(1, 3))
+
+    return story
+
+
+def compact_experience():
+    story = []
+
+    story.append(section("Experience"))
+    story.append(soft_panel([
+        para("DevOps Engineer - Vid Franko", "item_title"),
+        para("Commercial production website support", "meta"),
+        bullets(
+            [
+                "Supported production launch preparation for a commercial website with attention to availability, configuration, and release readiness.",
+                "Worked with environment variables, build verification, deployment control, service availability checks, and post-release validation.",
+                "Reviewed logs, configuration, and deployment flow to reduce manual risk during operational handoff.",
+            ]
+        ),
+        rich_para(f"Links: {link(COMMERCIAL_SITE_URL, 'Live Site')}", "small"),
+    ]))
+    story.append(Spacer(1, 5))
+
+    story.append(soft_panel([
+        para("DevOps Engineer - Volunteer Site", "item_title"),
+        para("Deployment and environment setup", "meta"),
+        bullets(
+            [
+                "Worked on deployment preparation for a production-oriented web project.",
+                "Configured cloud hosting, application settings, production variables, and release checks.",
+                "Supported backend readiness and database connectivity during launch and iteration.",
+            ]
+        ),
+        rich_para(f"Links: {link(VOLUNTEER_DEMO_URL, 'Live Demo')}", "small"),
+    ]))
+
+    return story
+
+
+def compact_projects():
+    project_items = [
+        PROJECTS[0],
+        PROJECTS[1],
+        PROJECTS[3],
+    ]
+    story = [section("Portfolio Projects")]
+
+    for project in project_items:
+        project_links = [(label, url) for label, url in project.get("extra", [])]
+        project_links.append(("Repository", project["link"]))
+        link_line = "Links: " + " | ".join(link(url, label) for label, url in project_links)
+
+        story.append(
+            KeepTogether(
+                [
+                    soft_panel([
+                        para(project["title"], "item_title"),
+                        para(project["tags"], "meta"),
+                        para(project["text"], "body"),
+                        rich_para(link_line, "small"),
+                    ]),
+                    Spacer(1, 5),
+                ]
+            )
+        )
+
+    return story
+
+
+def compact_education_and_certifications():
+    story = []
+
+    story.append(section("Education & Certifications"))
+    story.append(soft_panel([
+        bullets(
+            [
+                "DevOps Engineer Professional Certificate - Mate academy, 2026.",
+                "Google Cybersecurity Certificate - Google / Coursera, 2024.",
+                "Project Management in IT - Beetroot Academy, 2023.",
+                "English Course - 12 Project, B2 Grade A, 2024.",
+                "Architecture and Urban Planning - Odesa State Academy of Civil Engineering and Architecture.",
+                "Software-related studies - Popov Academy of Telecommunications.",
+            ]
+        ),
+        rich_para(
+            "Learning platforms: " + " | ".join(link(url, label) for label, url in LEARNING_LINKS),
+            "small",
+        ),
+    ]))
+
+    story.append(section("Additional Background"))
+    story.append(soft_panel([
+        bullets(
+            [
+                "Project coordination, stakeholder communication, task planning, launch support, and daily workflow management.",
+                "Digital promotion and online product sales experience, including communication with clients and business partners.",
+            ]
+        )
+    ]))
+
+    return story
+
+
+def build_compact_story():
+    story = []
+    story.extend(build_compact_header())
+    story.append(Spacer(1, 5))
+    story.extend(compact_about_and_skills())
+    story.extend(compact_experience())
+    story.append(PageBreak())
+    story.append(Spacer(1, 2 * mm))
+    story.extend(compact_projects())
+    story.extend(compact_education_and_certifications())
+
+    return story
+
+
 def draw_page_background(canvas, doc):
     canvas.saveState()
     canvas.setFillColor(PAPER)
@@ -683,21 +862,57 @@ def draw_page_background(canvas, doc):
     canvas.restoreState()
 
 
-def main():
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+def draw_compact_page_background(canvas, doc):
+    canvas.saveState()
+    canvas.setFillColor(PAPER)
+    canvas.rect(0, 0, PAGE_W, PAGE_H, stroke=0, fill=1)
+    canvas.setFillColor(colors.HexColor("#051421"))
+    canvas.rect(0, 0, 7 * mm, PAGE_H, stroke=0, fill=1)
+    canvas.setFillColor(TEAL)
+    canvas.rect(0, PAGE_H - 6 * mm, PAGE_W, 1.7 * mm, stroke=0, fill=1)
+    canvas.setFillColor(colors.HexColor("#0a2635"))
+    canvas.circle(PAGE_W - 13 * mm, PAGE_H - 9 * mm, 25 * mm, stroke=0, fill=1)
+    canvas.setFillColor(colors.HexColor("#0d3347"))
+    canvas.circle(9 * mm, 18 * mm, 28 * mm, stroke=0, fill=1)
+    canvas.setFillColor(MUTED)
+    canvas.setFont(FONT, 7)
+    canvas.drawRightString(PAGE_W - 15 * mm, 9 * mm, f"Maksym Prysiazhnikov Resume | Page {doc.page}")
+    canvas.restoreState()
+
+
+def build_pdf(
+    output: Path,
+    story: list,
+    title: str,
+    subject: str,
+    top_margin: float = 24 * mm,
+    on_page=draw_page_background,
+):
+    output.parent.mkdir(parents=True, exist_ok=True)
     doc = SimpleDocTemplate(
-        str(OUTPUT),
+        str(output),
         pagesize=A4,
         rightMargin=16 * mm,
         leftMargin=16 * mm,
-        topMargin=24 * mm,
+        topMargin=top_margin,
         bottomMargin=16 * mm,
-        title="Maksym Prysiazhnikov CV",
+        title=title,
         author="Maksym Prysiazhnikov",
-        subject="Junior DevOps Engineer and Cloud Specialist resume",
+        subject=subject,
         keywords=", ".join(["DevOps", "Cloud", *SKILLS]),
     )
-    doc.build(build_story(), onFirstPage=draw_page_background, onLaterPages=draw_page_background)
+    doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
+
+
+def main():
+    build_pdf(
+        OUTPUT,
+        build_compact_story(),
+        "Maksym Prysiazhnikov Resume",
+        "DevOps Engineer and Cloud Specialist resume",
+        top_margin=9 * mm,
+        on_page=draw_compact_page_background,
+    )
 
     temp_photo = OUTPUT.with_suffix(".photo.jpg")
     if temp_photo.exists():
