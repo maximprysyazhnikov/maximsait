@@ -47,6 +47,9 @@ CONTACTS = [
     "linkedin.com/in/maxim-prysyazhnikov-b46196163",
     "github.com/maximprysyazhnikov",
 ]
+CONTACT_EMAIL = "maximprysyazhnikov@gmail.com"
+CONTACT_PHONE_DISPLAY = "+380 66 012 1932"
+CONTACT_TELEGRAM_URL = "https://t.me/maximua17"
 
 
 def read_app_url() -> str:
@@ -56,7 +59,7 @@ def read_app_url() -> str:
         for line in env_path.read_text(encoding="utf-8").splitlines():
             if line.startswith("APP_URL="):
                 return line.split("=", 1)[1].strip().strip("\"'")
-    return "https://maksymprysiazhnikov.up.railway.app/"
+    return "https://maksymprysiazhnikov.business/"
 
 
 SITE_URL = read_app_url()
@@ -154,8 +157,8 @@ def make_styles():
             "Role",
             parent=styles["Normal"],
             fontName=FONT_BOLD,
-            fontSize=11.6,
-            leading=14.2,
+            fontSize=12.2,
+            leading=14.8,
             textColor=TEAL_LIGHT,
             spaceAfter=6,
         ),
@@ -163,16 +166,16 @@ def make_styles():
             "Contact",
             parent=styles["Normal"],
             fontName=FONT,
-            fontSize=8.4,
-            leading=11.8,
+            fontSize=8.9,
+            leading=12.2,
             textColor=colors.HexColor("#d8f3fb"),
         ),
         "lead": ParagraphStyle(
             "Lead",
             parent=styles["Normal"],
             fontName=FONT,
-            fontSize=9.1,
-            leading=13.1,
+            fontSize=9.6,
+            leading=13.8,
             textColor=colors.HexColor("#e5edf2"),
             spaceAfter=3,
         ),
@@ -367,12 +370,12 @@ def build_header():
         Spacer(1, 4),
         rich_para(
             "Ukraine | "
-            f"{link('mailto:maximprysyazhnikov@gmail.com', 'Email')} | "
-            f"{link('tel:+380660121932', 'Phone')} | "
-            f"{link(SITE_URL, 'Portfolio Website')}",
+            f"{link(f'mailto:{CONTACT_EMAIL}', CONTACT_EMAIL)} | "
+            f"{link(CONTACT_TELEGRAM_URL, CONTACT_PHONE_DISPLAY)}",
             "contact",
         ),
         rich_para(
+            f"{link(SITE_URL, 'Portfolio Website')} | "
             f"{link(LINKEDIN_URL, 'LinkedIn')} | "
             f"{link(GITHUB_URL, 'GitHub')}",
             "contact",
@@ -391,8 +394,10 @@ def build_header():
                 ("BOX", (0, 0), (-1, -1), 0.8, colors.HexColor("#23566b")),
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
                 ("ALIGN", (1, 0), (1, 0), "CENTER"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 8),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 8),
+                ("LEFTPADDING", (0, 0), (0, 0), 8),
+                ("RIGHTPADDING", (0, 0), (0, 0), 10),
+                ("LEFTPADDING", (1, 0), (1, 0), 6),
+                ("RIGHTPADDING", (1, 0), (1, 0), 8),
                 ("TOPPADDING", (0, 0), (-1, -1), 9),
                 ("BOTTOMPADDING", (0, 0), (-1, -1), 9),
             ]
