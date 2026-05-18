@@ -154,7 +154,7 @@ const copy = {
     learningPage: { back: "До головного меню", openSite: "Відкрити сайт", related: "Інші платформи" },
     techPage: { back: "До головного меню", title: "Технологія", related: "Інші технології" },
     earlier: { title: "Попередній досвід", subtitle: "Фундамент у комунікації, продажах і координації проєктів.", items: [{ period: "2022 – 2026", title: "Аутсорс та волонтерські проєкти", text: "Аутсорс-робота та ведення проєктів на волонтерській основі: координація задач, комунікація з учасниками, підтримка запусків і супровід робочих процесів." }, { period: "2019 – 2022", title: "Самозайнятість", text: "Онлайн-просування продуктів і генерація попиту. Використовував цифрові канали для підтримки продажів." }, { period: "2017 – 2019", title: "Бізнес-партнерство", text: "Комунікація з оптовими покупцями, переговори та координація угод." }, { period: "2016 – 2017", title: "Агент з нерухомості", text: "NBR Real Estate. Супровід операцій з нерухомістю та комунікація з клієнтами." }] },
-    contact: { title: "Контакти", subtitle: "Відкритий до нових проєктів, співпраці та професійних можливостей.", linkedin: "LinkedIn", github: "GitHub", email: "Email", footer: "Designed and built with care by Maksym Prysiazhnikov." },
+    contact: { title: "Контакти", subtitle: "Відкритий до нових проєктів, співпраці та професійних можливостей.", linkedin: "LinkedIn", github: "GitHub", email: "Email", emailCopied: "Скопійовано", footer: "Designed and built with care by Maksym Prysiazhnikov." },
     chat: { title: "AI Помічник", subtitle: "Постав питання про мій досвід, стек або проєкти.", open: "AI Помічник", placeholder: "Напиши повідомлення...", send: "Надіслати", loading: "AI друкує відповідь...", welcome: "Привіт! Я AI-помічник цього портфоліо. Можу коротко розповісти про стек, досвід і навчання.", error: "Не вдалося отримати відповідь. Перевір ключ OpenRouter на сервері.", supportButton: "Зворотний звʼязок", supportTitle: "Зворотний звʼязок", supportSubtitle: "Залиш контакти або напиши повідомлення напряму.", supportPlaceholder: "Напиши повідомлення...", supportEmpty: "Почни діалог. Повідомлення прилетить мені в Telegram.", supportSent: "Повідомлення відправлено.", supportError: "Не вдалося відправити. Спробуй ще раз.", supportOffline: "Якщо ти будеш не в мережі, я побачу це в Telegram.", leadTitle: "Контакти для відповіді", leadName: "Імʼя", leadEmail: "Email", leadPhone: "Телефон", leadMessage: "Коротко про запит", leadSubmit: "Надіслати контакти", leadRequired: "Вкажи імʼя та email або телефон.", leadInvalidEmail: "Email має містити @ і крапку.", leadInvalidPhone: "Перевір формат номера телефону.", leadSuccess: "Дякую! Контакти відправлено.", leadError: "Не вдалося відправити контакти. Спробуй ще раз." },
   },
   en: {
@@ -169,7 +169,7 @@ const copy = {
     learningPage: { back: "Main menu", openSite: "Open website", related: "Other platforms" },
     techPage: { back: "Main menu", title: "Technology", related: "Other technologies" },
     earlier: { title: "Earlier Experience", subtitle: "A foundation in communication, sales, and project coordination.", items: [{ period: "2022 – 2026", title: "Outsourcing and Volunteer Projects", text: "Outsourcing work and project ownership on a volunteer basis: task coordination, stakeholder communication, launch support, and day-to-day workflow management." }, { period: "2019 – 2022", title: "Self-employed", text: "Focused on online product promotion and demand generation, using digital channels to support sales." }, { period: "2017 – 2019", title: "Business Partnership", text: "Handled communication with wholesale buyers, negotiations, and deal coordination." }, { period: "2016 – 2017", title: "Real Estate Agent", text: "Worked at NBR Real Estate, supporting property transactions and client communication." }] },
-    contact: { title: "Let's Connect", subtitle: "I am always open to discussing new projects, collaboration, and career opportunities.", linkedin: "LinkedIn", github: "GitHub", email: "Email", footer: "Designed and built with care by Maksym Prysiazhnikov." },
+    contact: { title: "Let's Connect", subtitle: "I am always open to discussing new projects, collaboration, and career opportunities.", linkedin: "LinkedIn", github: "GitHub", email: "Email", emailCopied: "Copied", footer: "Designed and built with care by Maksym Prysiazhnikov." },
     chat: { title: "AI Assistant", subtitle: "Ask about my stack, experience, or projects.", open: "AI Assistant", placeholder: "Type a message...", send: "Send", loading: "AI is typing...", welcome: "Hi! I am the portfolio AI assistant. I can explain my stack, experience, and learning path.", error: "Could not get a response. Check the OpenRouter server key.", supportButton: "Contact back", supportTitle: "Contact back", supportSubtitle: "Leave your contact details or send a direct message.", supportPlaceholder: "Write a message...", supportEmpty: "Start the conversation. Your message will go to my Telegram.", supportSent: "Message sent.", supportError: "Could not send. Please try again.", supportOffline: "If you go offline, I will see that in Telegram.", leadTitle: "Contact details", leadName: "Name", leadEmail: "Email", leadPhone: "Phone", leadMessage: "Short request", leadSubmit: "Send contacts", leadRequired: "Add your name and email or phone.", leadInvalidEmail: "Email must include @ and a dot.", leadInvalidPhone: "Check the phone number format.", leadSuccess: "Thank you! Your contacts were sent.", leadError: "Could not send your contacts. Please try again." },
   },
 } satisfies Record<Language, any>;
@@ -572,6 +572,7 @@ export default function App() {
   const [language, setLanguage] = useState<Language>("en");
   const [route, setRoute] = useState<Route>(() => getRouteFromPath(window.location.pathname));
   const [showStartupLoader, setShowStartupLoader] = useState(true);
+  const [emailCopied, setEmailCopied] = useState(false);
   const t = copy[language];
 
   useEffect(() => {
@@ -649,6 +650,26 @@ export default function App() {
     }).finally(() => {
       window.location.href = downloadUrl;
     });
+  };
+
+  const handleEmailContact = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(CONTACT_EMAIL)}`;
+    const composeWindow = window.open(gmailComposeUrl, "_blank", "noopener,noreferrer");
+
+    if (!composeWindow) {
+      window.location.href = `mailto:${CONTACT_EMAIL}`;
+    }
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(CONTACT_EMAIL).then(() => {
+        setEmailCopied(true);
+        window.setTimeout(() => setEmailCopied(false), 2200);
+      }).catch(() => {
+        setEmailCopied(false);
+      });
+    }
   };
 
   const activeSkill = useMemo(() => route.page === "skill" ? skills.find((item) => item.slug === route.slug) : undefined, [route]);
@@ -893,7 +914,7 @@ export default function App() {
           <div className="mb-12 flex flex-wrap justify-center gap-8">
             <a href="https://linkedin.com/in/maxim-prysyazhnikov-b46196163" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-4"><div className="glass flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300 group-hover:bg-[#51aaca] group-hover:text-[#021014]"><Linkedin className="h-8 w-8" /></div><span className="text-zinc-400 transition-colors group-hover:text-white">{t.contact.linkedin}</span></a>
             <a href="https://github.com/maximprysyazhnikov" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-4"><div className="glass flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300 group-hover:bg-[#51aaca] group-hover:text-[#021014]"><Github className="h-8 w-8" /></div><span className="text-zinc-400 transition-colors group-hover:text-white">{t.contact.github}</span></a>
-            <a href={`mailto:${CONTACT_EMAIL}`} aria-label={`Email ${CONTACT_EMAIL}`} className="group flex flex-col items-center gap-4"><div className="glass flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300 group-hover:bg-[#51aaca] group-hover:text-[#021014]"><Mail className="h-8 w-8" /></div><span className="text-zinc-400 transition-colors group-hover:text-white">{t.contact.email}</span></a>
+            <a href={`mailto:${CONTACT_EMAIL}`} onClick={handleEmailContact} aria-label={`Email ${CONTACT_EMAIL}`} className="group flex flex-col items-center gap-4"><div className="glass flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300 group-hover:bg-[#51aaca] group-hover:text-[#021014]"><Mail className="h-8 w-8" /></div><span className="text-zinc-400 transition-colors group-hover:text-white">{emailCopied ? t.contact.emailCopied : t.contact.email}</span></a>
           </div>
           <p className="text-sm text-zinc-500">© {new Date().getFullYear()} {t.contact.footer}</p>
         </div>

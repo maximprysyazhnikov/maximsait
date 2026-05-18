@@ -23,7 +23,7 @@ from reportlab.platypus import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "CV" / "Maksym_Prysiazhnikov_CV.pdf"
+OUTPUT = ROOT / "CV" / "Maksym_Prysiazhnikov_DevOps.pdf"
 PHOTO = ROOT / "public" / "profile-photo.jpg"
 
 PAGE_W, PAGE_H = A4
