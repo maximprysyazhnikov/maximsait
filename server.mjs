@@ -473,6 +473,12 @@ app.get('/download/cv', (req, res) => {
     return res.status(404).json({ error: 'CV file was not found on the server.' });
   }
 
+  res.set({
+    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+    Pragma: 'no-cache',
+    Expires: '0',
+  });
+
   const downloadId = String(req.query.downloadId || '').trim();
   const context = downloadId ? cvDownloadContexts.get(downloadId) : null;
   if (downloadId) {
