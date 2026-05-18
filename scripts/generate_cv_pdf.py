@@ -42,7 +42,7 @@ CONTINUED_PAGE_TOP_SPACER = 4 * mm
 
 CONTACTS = [
     "Ukraine",
-    "maxisky2595@gmail.com",
+    "maximprysyazhnikov@gmail.com",
     "+380 66 012 1932",
     "linkedin.com/in/maxim-prysyazhnikov-b46196163",
     "github.com/maximprysyazhnikov",
@@ -60,7 +60,7 @@ def read_app_url() -> str:
 
 
 SITE_URL = read_app_url()
-COMMERCIAL_SITE_URL = "https://www.vidfranko.com.ua/"
+COMMERCIAL_SITE_URL = "https://vidfranko.com.ua"
 VOLUNTEER_DEMO_URL = "https://volunteer-site-placeholder-dev.up.railway.app/"
 LINKEDIN_URL = "https://linkedin.com/in/maxim-prysyazhnikov-b46196163"
 GITHUB_URL = "https://github.com/maximprysyazhnikov"
@@ -367,7 +367,7 @@ def build_header():
         Spacer(1, 4),
         rich_para(
             "Ukraine | "
-            f"{link('mailto:maxisky2595@gmail.com', 'Email')} | "
+            f"{link('mailto:maximprysyazhnikov@gmail.com', 'Email')} | "
             f"{link('tel:+380660121932', 'Phone')} | "
             f"{link(SITE_URL, 'Portfolio Website')}",
             "contact",
