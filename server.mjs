@@ -713,7 +713,17 @@ app.get('*', (_req, res) => {
   res.sendFile(path.join(distDir, 'index.html'));
 });
 
-app.listen(port, '0.0.0.0', () => {
+const server = app.listen(port, '0.0.0.0', () => {
   console.log(`Portfolio is running on port ${port}`);
   startTelegramPolling();
 });
+
+const shutdown = (signal) => {
+  console.log(`${signal} received, shutting down gracefully.`);
+  server.close(() => {
+    process.exit(0);
+  });
+};
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));

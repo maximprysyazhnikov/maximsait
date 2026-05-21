@@ -2,6 +2,8 @@
   "$schema": "https://railway.com/railway.schema.json",
   "deploy": {
     "healthcheckPath": "/health",
+    "healthcheckTimeout": 300,
+    "startCommand": "node server.mjs",
     "restartPolicyType": "on_failure",
     "restartPolicyMaxRetries": 10
   }
