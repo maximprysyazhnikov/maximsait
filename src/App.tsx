@@ -1106,13 +1106,14 @@ const AnimatedSkillDetail = ({
         <div className="mx-auto max-w-7xl overflow-hidden rounded-2xl border border-[#51aaca]/20 bg-[#02070d]/76 shadow-2xl shadow-black/30 backdrop-blur-xl">
           <div className="h-0.5 bg-[#51aaca]" />
           <div className="flex items-center justify-between gap-3 px-3 py-3 sm:px-5">
-            <div className="flex min-w-0 items-center gap-3">
-              <button type="button" onClick={onBack} aria-label="Back" className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#51aaca]/25 bg-[#071b2a]/80 text-zinc-300 transition hover:bg-[#51aaca] hover:text-[#021014]">
+            <div className="flex min-w-0 items-center gap-2">
+              <button type="button" onClick={onBack} className="inline-flex h-11 min-w-0 shrink-0 items-center justify-center gap-2 rounded-xl border border-[#51aaca]/25 bg-[#071b2a]/55 px-3 text-zinc-200 shadow-[0_0_24px_rgba(81,170,202,0.08)] backdrop-blur-md transition hover:border-[#51aaca]/45 hover:bg-[#51aaca] hover:text-[#021014] sm:px-4">
                 <ArrowLeft className="h-4 w-4" />
+                <span className="hidden text-xs font-black uppercase tracking-[0.14em] sm:inline">Site section</span>
               </button>
-              <button type="button" onClick={onLightVersion} className="min-w-0 text-left">
-                <span className="block truncate text-xl font-black leading-none">DEVOPS</span>
-                <span className="mt-1 block truncate text-[10px] font-bold uppercase tracking-[0.24em] text-[#9ed8ea]">Back to light version</span>
+              <button type="button" onClick={onLightVersion} className="min-w-0 rounded-xl border border-[#51aaca]/18 bg-[#071b2a]/42 px-3 py-2 text-left shadow-[0_0_24px_rgba(81,170,202,0.06)] backdrop-blur-md transition hover:border-[#51aaca]/40 hover:bg-[#0c2b3d]/82 sm:px-4">
+                <span className="block truncate text-lg font-black leading-none sm:text-xl">DEVOPS</span>
+                <span className="mt-1 block truncate text-[9px] font-bold uppercase tracking-[0.22em] text-[#9ed8ea] sm:text-[10px]">Light version</span>
               </button>
             </div>
             <div className="flex shrink-0 items-center rounded-full border border-[#51aaca]/18 bg-[#061a26]/85 p-1">
@@ -1128,6 +1129,10 @@ const AnimatedSkillDetail = ({
 
       <main className="mx-auto grid max-w-7xl gap-7 px-5 pb-24 pt-8 lg:grid-cols-[minmax(0,1fr)_340px]">
         <motion.section initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} className="rounded-3xl border border-[#51aaca]/22 bg-[#061a26]/82 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:p-8">
+          <button type="button" onClick={onBack} className="mb-6 inline-flex items-center gap-2 rounded-2xl border border-[#51aaca]/20 bg-[#071b2a]/54 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-[#d8f3fb] shadow-[0_12px_28px_rgba(0,0,0,0.18)] backdrop-blur-md transition hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]">
+            <ArrowLeft className="h-4 w-4" />
+            Back to site section
+          </button>
           <p className="mb-4 text-xs font-black uppercase tracking-[0.34em] text-[#9ed8ea]">{t.techPage.title}</p>
           <h1 className="text-5xl font-black leading-none tracking-tight sm:text-7xl">{skill.name}</h1>
           <p className="mt-6 max-w-3xl text-2xl leading-10 text-zinc-200">{skill.summary[language]}</p>
