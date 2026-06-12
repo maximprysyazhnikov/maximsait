@@ -1,0 +1,33 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" fill="#03121c"/>
+  <rect width="1200" height="760" fill="url(#grid)" opacity="0.34"/>
+  <circle cx="960" cy="108" r="260" fill="#51AACA" opacity="0.18"/>
+  <circle cx="184" cy="654" r="280" fill="#9ED8EA" opacity="0.12"/>
+  <path d="M0 524C160 416 285 475 424 379C560 285 708 78 1200 150V760H0V524Z" fill="url(#wave)" opacity="0.64"/>
+  <rect x="86" y="84" width="1028" height="592" rx="42" fill="#061A26" opacity="0.86"/>
+  <rect x="86" y="84" width="1028" height="592" rx="42" stroke="#51AACA" stroke-opacity="0.36" stroke-width="2"/>
+  <rect x="132" y="130" width="936" height="92" rx="26" fill="#02070D" opacity="0.86"/>
+  <circle cx="176" cy="176" r="15" fill="#51AACA"/>
+  <circle cx="218" cy="176" r="15" fill="#9ED8EA" opacity="0.62"/>
+  <circle cx="260" cy="176" r="15" fill="white" opacity="0.16"/>
+  <text x="132" y="314" fill="#9ED8EA" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="900" letter-spacing="10">MATE ACADEMY</text>
+  <text x="132" y="406" fill="white" font-family="Inter, Arial, sans-serif" font-size="92" font-weight="900">DevOps</text>
+  <text x="132" y="484" fill="#D8F3FB" font-family="Inter, Arial, sans-serif" font-size="54" font-weight="900">course path</text>
+  <text x="136" y="560" fill="#C8D3DA" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="700">Linux / Docker / Kubernetes / CI/CD / Cloud</text>
+  <g opacity="0.92">
+    <rect x="736" y="284" width="284" height="260" rx="30" fill="#02070D" stroke="#51AACA" stroke-opacity="0.42" stroke-width="2"/>
+    <path d="M805 384L853 432L805 480" stroke="#9ED8EA" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M882 484H950" stroke="#D8F3FB" stroke-width="18" stroke-linecap="round"/>
+    <rect x="782" y="592" width="192" height="34" rx="17" fill="#51AACA"/>
+  </g>
+  <defs>
+    <pattern id="grid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <path d="M72 0H0V72" stroke="#D8F3FB" stroke-opacity="0.22" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="wave" x1="39" y1="504" x2="1101" y2="173" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#51AACA" stop-opacity="0.14"/>
+      <stop offset="0.48" stop-color="#D8F3FB" stop-opacity="0.05"/>
+      <stop offset="1" stop-color="#51AACA" stop-opacity="0.24"/>
+    </linearGradient>
+  </defs>
+</svg>

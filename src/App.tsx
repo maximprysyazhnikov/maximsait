@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 type Language = "uk" | "en";
-type Route = { page: "home" } | { page: "skill"; slug: string } | { page: "provider"; slug: string };
+type Route = { page: "home" } | { page: "animated" } | { page: "skill"; slug: string } | { page: "provider"; slug: string };
 type ChatMessage = { role: "user" | "assistant"; content: string };
 type LeadForm = { name: string; email: string; phone: string; message: string };
 type SupportMessage = { id: string; role: "user" | "operator"; text: string; createdAt: string };
@@ -24,6 +24,7 @@ type LearningProvider = {
 const COMMERCIAL_SITE_URL = "https://vidfranko.com.ua";
 const VOLUNTEER_DEMO_URL = "https://volunteer-site-placeholder-dev.up.railway.app/";
 const CONTACT_EMAIL = "maximprysyazhnikov@gmail.com";
+const TECH_BACKGROUND_YOUTUBE_ID = "GpPUa7Red1M";
 
 const SectionTitle = ({ children, subtitle }: { children: ReactNode; subtitle?: string }) => (
   <div className="mb-12">
@@ -145,7 +146,7 @@ const copy = {
   uk: {
     title: "Maksym Prysiazhnikov | DevOps Портфоліо",
     nav: { about: "Про мене", experience: "Досвід", projects: "Проєкти", learning: "Навчання", contact: "Контакти" },
-    hero: { badge: "Відкритий до нових можливостей", role: "DevOps Engineer & Cloud Specialist, зосереджений на побудові стійкої та автоматизованої інфраструктури.", contact: "Зв'язатися", github: "GitHub", resume: "Скачати CV" },
+    hero: { badge: "Відкритий до нових можливостей", role: "DevOps Engineer & Cloud Specialist, зосереджений на побудові стійкої та автоматизованої інфраструктури.", contact: "Зв'язатися", github: "GitHub", resume: "Скачати CV", animated: "Animated version" },
     about: { title: "Про мене", p1: "DevOps / Cloud Engineer із практичним досвідом роботи з Linux, Docker, Kubernetes і процесами хмарного розгортання.", p2: "Спеціалізуюся на основах інфраструктури, роботі з базами даних, автоматизації та доставці застосунків у різні середовища.", p3: "Закінчив інтенсивну DevOps-програму в Mate academy та маю сертифікат Google Cybersecurity. Мені близькі автоматизація, CI/CD та побудова безпечних і масштабованих середовищ.", country: "Україна", english: "Англійська (B2)", stack: "Технічний стек", stackHint: "Натисни на технологію, щоб перейти на окрему сторінку з описом." },
     experience: { title: "Технічний досвід", subtitle: "Практичне застосування DevOps-підходів у реальних сценаріях.", commercialTitle: "Комерційний проєкт — Vid Franko", commercialRole: "DevOps / Deployment Support", liveSite: "Live Site", commercialPoints: ["Долучався до підтримки production-запуску комерційного вебсайту з фокусом на стабільність, доступність і передбачуваний релізний процес.", "Працював із класичними DevOps-практиками: конфігурація середовищ, production-змінні, перевірка збірки, контроль деплою та базова валідація після релізу.", "Підтримував операційний підхід до проєкту: повторювані кроки деплою, перевірка доступності сервісу, увага до логів, конфігурації та швидкого реагування на проблеми."], volunteerTitle: "Проєкт — Volunteer Site", volunteerRole: "DevOps / Deployment Lead", liveDemo: "Live Demo", volunteerPoints: ["Брав участь у деплої та налаштуванні середовища для вебпроєкту.", "Працював із хмарним хостингом, конфігурацією застосунку та production-змінними середовища.", "Забезпечував підключення до бази даних і долучався до підготовки релізів та backend-підтримки."], handsOnTitle: "DevOps Training", handsOnRole: "Mate academy", blocks: [{ title: "Kubernetes і контейнери", text: "Створював і підтримував навчальні проєкти з Pods, Services, Deployments, HPA, DaemonSets, CronJobs, ConfigMaps, Secrets і Persistent Volumes." }, { title: "Адміністрування баз даних", text: "Практикував керування користувачами MySQL, backup/restore, аналіз slow query logs, моніторинг error logs і сценарії відкату міграцій." }, { title: "Infrastructure as Code", text: "Працював із Terraform та основами Azure для provisioning інфраструктури, керування state, модулів і процесів валідації." }, { title: "CI/CD та автоматизація", text: "Реалізовував автоматизовані пайплайни доставки застосунків із фокусом на environment-based configuration та безпеку." }] },
     projects: { title: "Вибрані проєкти", subtitle: "Особисті проєкти, що демонструють автоматизацію, DevOps-підхід та інтеграцію AI.", items: [{ title: "Portfolio Website with AI Assistant", description: "Особистий сайт-портфоліо на React з плаваючим AI-помічником, сторінками технологій, навчальних платформ і серверною інтеграцією через OpenRouter API.", tags: ["React", "OpenRouter", "AI Chat", "Portfolio"], link: "https://github.com/maximprysyazhnikov/maximsait" }, { title: "AI Crypto CAT Bot", description: "Telegram-бот на Python для аналізу крипторинку з GPT-інсайтами та звітами у форматах Markdown, HTML і PDF.", tags: ["Python", "GPT API", "Market Data", "Automation"], link: "https://github.com/maximprysyazhnikov/ccbv4.0" }, { title: "KROK Worldbuilder Bot", description: "AI-асистент для всесвіту KROK з багатомовною підтримкою, переглядом лору та генерацією image prompts.", tags: ["AI", "Telegram Bot", "Prompt Engineering"], link: "https://github.com/maximprysyazhnikov/krok-worldbuilder-bot" }, { title: "DevOps AI Agent", description: "Орієнтований на автоматизацію бот, інтегрований з OpenRouter API та конфігурацією через змінні середовища.", tags: ["DevOps", "AI", "Python", "API Integration"], link: "https://github.com/maximprysyazhnikov/devops_ai_agent" }] },
@@ -160,7 +161,7 @@ const copy = {
   en: {
     title: "Maksym Prysiazhnikov | DevOps Portfolio",
     nav: { about: "About", experience: "Experience", projects: "Projects", learning: "Learning", contact: "Contact" },
-    hero: { badge: "Available for opportunities", role: "DevOps Engineer & Cloud Specialist focused on building resilient, automated infrastructure.", contact: "Get in touch", github: "GitHub", resume: "Download CV" },
+    hero: { badge: "Available for opportunities", role: "DevOps Engineer & Cloud Specialist focused on building resilient, automated infrastructure.", contact: "Get in touch", github: "GitHub", resume: "Download CV", animated: "Animated version" },
     about: { title: "About Me", p1: "DevOps / Cloud Engineer with practical experience in Linux, Docker, Kubernetes, and cloud deployment workflows.", p2: "I specialize in infrastructure fundamentals, database operations, automation, and environment-based application delivery.", p3: "I completed an intensive DevOps program at Mate academy and hold a Google Cybersecurity Certificate. I am passionate about automation, CI/CD pipelines, and building secure, scalable environments.", country: "Ukraine", english: "English (B2)", stack: "Technical Stack", stackHint: "Click a technology to open a separate page with a short explanation." },
     experience: { title: "Technical Experience", subtitle: "Practical application of DevOps principles in real-world scenarios.", commercialTitle: "Commercial Project — Vid Franko", commercialRole: "DevOps / Deployment Support", liveSite: "Live Site", commercialPoints: ["Contributed to production launch support for a commercial website with a focus on stability, availability, and a predictable release process.", "Applied classic DevOps practices: environment configuration, production variables, build verification, deployment control, and basic post-release validation.", "Supported an operational workflow with repeatable deployment steps, service availability checks, attention to logs and configuration, and quick issue response."], volunteerTitle: "Project — Volunteer Site", volunteerRole: "DevOps / Deployment Lead", liveDemo: "Live Demo", volunteerPoints: ["Contributed to deployment and environment setup for a web project.", "Worked with cloud hosting, application configuration, and production environment variables.", "Ensured database connectivity and participated in release setup and backend support."], handsOnTitle: "DevOps Training", handsOnRole: "Mate academy", blocks: [{ title: "Kubernetes & Containers", text: "Built and maintained training projects covering Pods, Services, Deployments, HPA, DaemonSets, CronJobs, ConfigMaps, Secrets, and Persistent Volumes." }, { title: "Database Administration", text: "Practiced MySQL user management, backup and restore, slow query log analysis, error log monitoring, and migration rollback scenarios." }, { title: "Infrastructure as Code", text: "Worked with Terraform and Azure fundamentals for infrastructure provisioning, state management, modules, and validation workflows." }, { title: "CI/CD & Automation", text: "Implemented automated delivery pipelines with a focus on environment-based configuration and security." }] },
     projects: { title: "Featured Projects", subtitle: "Selected personal projects showcasing automation, DevOps thinking, and AI integration.", items: [{ title: "Portfolio Website with AI Assistant", description: "A personal React portfolio website with a floating AI assistant, technology detail pages, learning platform links, and a server-side OpenRouter integration.", tags: ["React", "OpenRouter", "AI Chat", "Portfolio"], link: "https://github.com/maximprysyazhnikov/maximsait" }, { title: "AI Crypto CAT Bot", description: "A Python Telegram bot for crypto market analysis with GPT-powered insights and reports in Markdown, HTML, and PDF formats.", tags: ["Python", "GPT API", "Market Data", "Automation"], link: "https://github.com/maximprysyazhnikov/ccbv4.0" }, { title: "KROK Worldbuilder Bot", description: "An AI assistant for the KROK universe with multilingual support, lore browsing, and image prompt generation.", tags: ["AI", "Telegram Bot", "Prompt Engineering"], link: "https://github.com/maximprysyazhnikov/krok-worldbuilder-bot" }, { title: "DevOps AI Agent", description: "An automation-oriented bot integrated with the OpenRouter API and configured through environment variables.", tags: ["DevOps", "AI", "Python", "API Integration"], link: "https://github.com/maximprysyazhnikov/devops_ai_agent" }] },
@@ -183,6 +184,7 @@ const blockIcons = [
 
 const getRouteFromPath = (pathname: string): Route => {
   const parts = pathname.split("/").filter(Boolean);
+  if (parts[0] === "animated") return { page: "animated" };
   if (parts[0] === "tech" && parts[1]) return { page: "skill", slug: parts[1] };
   if (parts[0] === "learning" && parts[1]) return { page: "provider", slug: parts[1] };
   return { page: "home" };
@@ -209,6 +211,858 @@ const splitBullet = (bullet: string) => {
   };
 };
 
+const AnimatedResume = ({
+  language,
+  onBack,
+  onContact,
+  onCvDownload,
+  onOpenSkill,
+}: {
+  language: Language;
+  onBack: () => void;
+  onContact: () => void;
+  onCvDownload: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  onOpenSkill: (slug: string) => void;
+}) => {
+  const t = copy[language];
+  const [showAnimatedIntro, setShowAnimatedIntro] = useState(true);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showAnimatedTop, setShowAnimatedTop] = useState(false);
+  const [isAnimatedMobile, setIsAnimatedMobile] = useState(false);
+  const [activeAnimatedSkillSlug, setActiveAnimatedSkillSlug] = useState("terraform");
+  const story = language === "uk"
+    ? {
+      back: "Light version",
+      label: "Animated CV",
+      loading: "Loading infrastructure story",
+      loadingKicker: "DEVOPS CV",
+      loadingWords: ["Infrastructure", "Automation", "Delivery"],
+      heroTop: "I BUILD",
+      heroBottom: "RELIABLE SYSTEMS",
+      intro: "DEVOPS / CLOUD ENGINEER · AUTOMATION. DEPLOYMENT. OBSERVABILITY.",
+      whoTitle: "WHO I AM",
+      whoLead: "Я поєдную практичний DevOps, cloud deployment, бази даних, automation та security-мислення.",
+      whoText: [t.about.p1, t.about.p2, t.about.p3],
+      verbs: ["AUTOMATED", "DEPLOYED", "MONITORED", "SECURED", "SCALED"],
+      scroll: "ГОРТАЙ ВНИЗ",
+      stats: [
+        ["462+", "виконаних практичних DevOps-завдань"],
+        ["B2", "англійська для технічної комунікації"],
+        ["2026", "DevOps Engineer Certificate"],
+      ],
+      stackTitle: "A STACK FULL OF POSSIBILITIES",
+      projectsTitle: "PROJECTS IN MOTION",
+      learningTitle: "LEARNING PATH",
+      earlierTitle: "EARLIER EXPERIENCE",
+      finalTop: "JOIN",
+      finalBottom: "THE WORKFLOW",
+      contact: "Зв'язатися",
+      nav: { home: "Hero", about: "Про мене", stack: "Стек", experience: "Досвід", projects: "Проєкти", learning: "Навчання", contact: "Контакти" },
+      learnAbout: "До стеку",
+      learnStack: "До досвіду",
+      learnProjects: "До навчання",
+      resources: "Дії",
+      sitemap: "Навігація",
+      social: "Соцмережі",
+      backTop: "До початку",
+      trainingLink: "Курс Mate",
+      fullPage: "Повне пояснення",
+      technologies: "Технології",
+    }
+    : {
+      back: "Light version",
+      label: "Animated CV",
+      loading: "Loading infrastructure story",
+      loadingKicker: "DEVOPS CV",
+      loadingWords: ["Infrastructure", "Automation", "Delivery"],
+      heroTop: "I BUILD",
+      heroBottom: "RELIABLE SYSTEMS",
+      intro: "DEVOPS / CLOUD ENGINEER · AUTOMATION. DEPLOYMENT. OBSERVABILITY.",
+      whoTitle: "WHO I AM",
+      whoLead: "I connect practical DevOps, cloud deployment, databases, automation, and security-minded infrastructure.",
+      whoText: [t.about.p1, t.about.p2, t.about.p3],
+      verbs: ["AUTOMATED", "DEPLOYED", "MONITORED", "SECURED", "SCALED"],
+      scroll: "SWIPE DOWN",
+      stats: [
+        ["462+", "hands-on DevOps tasks completed"],
+        ["B2", "English for technical communication"],
+        ["2026", "DevOps Engineer Certificate"],
+      ],
+      stackTitle: "A STACK FULL OF POSSIBILITIES",
+      projectsTitle: "PROJECTS IN MOTION",
+      learningTitle: "LEARNING PATH",
+      earlierTitle: "EARLIER EXPERIENCE",
+      finalTop: "JOIN",
+      finalBottom: "THE WORKFLOW",
+      contact: "Get in touch",
+      nav: { home: "Home", about: "About", stack: "Stack", experience: "Experience", projects: "Projects", learning: "Learning", contact: "Contact" },
+      learnAbout: "View stack",
+      learnStack: "View experience",
+      learnProjects: "View learning",
+      resources: "Actions",
+      sitemap: "Navigation",
+      social: "Social",
+      backTop: "Back to Top",
+      trainingLink: "Mate course",
+      fullPage: "Full explanation",
+      technologies: "Technologies",
+    };
+  const featuredStack = skills;
+  const activeAnimatedSkill = useMemo(
+    () => skills.find((skill) => skill.slug === activeAnimatedSkillSlug) || skills[0],
+    [activeAnimatedSkillSlug],
+  );
+  const experienceScenes = [
+    {
+      title: t.experience.commercialTitle,
+      role: t.experience.commercialRole,
+      points: t.experience.commercialPoints,
+      visual: "PRODUCTION LAUNCH",
+      link: COMMERCIAL_SITE_URL,
+      linkLabel: t.experience.liveSite,
+      image: "/vid-franko-preview.png",
+    },
+    {
+      title: t.experience.volunteerTitle,
+      role: t.experience.volunteerRole,
+      points: t.experience.volunteerPoints,
+      visual: "CLOUD DEPLOYMENT",
+      link: VOLUNTEER_DEMO_URL,
+      linkLabel: t.experience.liveDemo,
+      image: "/volunteer-site-preview.png",
+    },
+    {
+      title: t.experience.handsOnTitle,
+      role: t.experience.handsOnRole,
+      points: t.experience.blocks.map((block: { title: string; text: string }) => `${block.title}: ${block.text}`),
+      visual: "DEVOPS TRAINING",
+      link: "https://mate.academy/courses/devops",
+      linkLabel: story.trainingLink,
+      image: "/mate-academy-preview.svg",
+    },
+  ];
+  const backgroundTextRows = [
+    [
+      "MAKSYM PRYSIAZHNIKOV",
+      t.hero.role,
+      t.about.p1,
+      t.about.p2,
+      t.about.p3,
+    ],
+    skills.map((skill) => skill.name),
+    [
+      t.experience.commercialTitle,
+      t.experience.commercialRole,
+      ...t.experience.commercialPoints,
+      t.experience.volunteerTitle,
+      t.experience.volunteerRole,
+      ...t.experience.volunteerPoints,
+    ],
+    t.projects.items.flatMap((project: { title: string; description: string; tags: string[] }) => [project.title, project.description, ...project.tags]),
+    [
+      ...t.certs.items.map((cert: { name: string; issuer: string; year: string; details?: string }) => `${cert.name} ${cert.issuer} ${cert.year}${cert.details ? ` ${cert.details}` : ""}`),
+      ...t.education.items.map((item: { title: string; place: string }) => `${item.title} ${item.place}`),
+      ...t.education.languages.map((item: { label: string; value: string }) => `${item.label} ${item.value}`),
+    ],
+    t.earlier.items.map((item: { period: string; title: string; text: string }) => `${item.period} ${item.title} ${item.text}`),
+  ];
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setShowAnimatedIntro(false), 3200);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const updateMobileState = () => setIsAnimatedMobile(mediaQuery.matches);
+    updateMobileState();
+    mediaQuery.addEventListener("change", updateMobileState);
+    return () => mediaQuery.removeEventListener("change", updateMobileState);
+  }, []);
+
+  useEffect(() => {
+    const updateScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0);
+      setShowAnimatedTop(window.scrollY > 720);
+    };
+    updateScroll();
+    window.addEventListener("scroll", updateScroll, { passive: true });
+    return () => window.removeEventListener("scroll", updateScroll);
+  }, []);
+
+  const scrollToAnimatedSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const switchAnimatedLanguage = (nextLanguage: Language) => {
+    window.dispatchEvent(new CustomEvent<Language>("portfolio-language", { detail: nextLanguage }));
+  };
+
+  const animatedNavItems = [
+    ["animated-hero", story.nav.home],
+    ["animated-about", story.nav.about],
+    ["animated-stack", story.nav.stack],
+    ["animated-experience", story.nav.experience],
+    ["animated-projects", story.nav.projects],
+    ["animated-learning", story.nav.learning],
+    ["animated-contact", story.nav.contact],
+  ];
+  const animatedButtonBase = "inline-flex items-center justify-center gap-2 rounded-2xl border font-black transition hover:-translate-y-0.5";
+  const animatedButtonPrimary = `${animatedButtonBase} border-[#d8f3fb]/55 bg-[#51aaca] text-[#021014] shadow-[0_0_0_1px_rgba(216,243,251,0.28),0_20px_48px_rgba(81,170,202,0.34)] hover:bg-[#9ed8ea] hover:shadow-[0_0_0_1px_rgba(216,243,251,0.45),0_24px_60px_rgba(81,170,202,0.46)]`;
+  const animatedButtonGhost = `${animatedButtonBase} border-[#51aaca]/25 bg-[#071b2a]/82 text-white shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-md hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]`;
+  const animatedButtonLight = `${animatedButtonBase} border-[#51aaca]/30 bg-[#51aaca]/10 text-[#021014] shadow-[0_12px_28px_rgba(81,170,202,0.12)] hover:bg-[#51aaca]`;
+  const animatedFloatingButton = "inline-flex items-center gap-3 rounded-full border border-[#51aaca]/25 bg-[#071b2a]/56 py-2 pl-4 pr-2 text-[10px] font-black uppercase tracking-[0.22em] text-[#d8f3fb] shadow-[0_18px_38px_rgba(0,0,0,0.28)] backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]/82 hover:text-white";
+  return (
+    <div className="relative isolate min-h-screen overflow-hidden bg-black text-white">
+      <AnimatePresence>
+        {showAnimatedIntro && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.45 }}
+            className="pointer-events-none fixed inset-0 z-[80] flex items-center justify-center overflow-hidden bg-[#02070d]/48 backdrop-blur-[1px]"
+          >
+            <video
+              aria-hidden="true"
+              src="/animated-bg.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 h-full w-full object-cover opacity-45"
+            />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(81,170,202,0.12),transparent_34%),linear-gradient(135deg,rgba(2,7,13,0.52),rgba(6,24,39,0.34)_48%,rgba(1,3,7,0.58))]" />
+            <motion.div
+              animate={{ backgroundPosition: ["0px 0px", "96px 96px"] }}
+              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0 opacity-[0.13] [background-image:linear-gradient(rgba(216,243,251,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(216,243,251,0.3)_1px,transparent_1px)] [background-size:96px_96px]"
+            />
+            <motion.div
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 0 }}
+              transition={{ delay: 2.65, duration: 0.45 }}
+              className="relative flex flex-col items-center text-center"
+            >
+              <div className="relative mb-8 flex h-40 w-40 items-center justify-center">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 rounded-full border border-[#51aaca]/20 border-t-[#51aaca] shadow-[0_0_42px_rgba(81,170,202,0.26)]"
+                />
+                <motion.div
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 5.8, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-5 rounded-full border border-dashed border-white/18"
+                />
+                <div className="flex h-24 w-24 items-center justify-center rounded-3xl border border-[#51aaca]/25 bg-[#071b2a]/78 shadow-2xl shadow-black/35">
+                  <Terminal className="h-10 w-10 text-[#d8f3fb]" />
+                </div>
+              </div>
+              <p className="mb-3 text-xs font-black uppercase tracking-[0.46em] text-[#9ed8ea]">{story.loadingKicker}</p>
+              <div className="mb-5 text-5xl font-black tracking-tight text-white md:text-7xl">DEVOPS</div>
+              <div className="mb-5 flex flex-wrap justify-center gap-2">
+                {story.loadingWords.map((word) => (
+                  <span key={word} className="rounded-full border border-[#51aaca]/20 bg-[#51aaca]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#d8f3fb]">{word}</span>
+                ))}
+              </div>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: 260 }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+                className="mb-5 h-px bg-gradient-to-r from-transparent via-[#51aaca] to-transparent"
+              />
+              <motion.p
+                animate={{ opacity: [0.45, 1, 0.45] }}
+                transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
+                className="text-xs font-bold uppercase tracking-[0.36em] text-zinc-400"
+              >
+                {story.loading}
+              </motion.p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <video
+          aria-hidden="true"
+          src="/animated-bg.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover opacity-55"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.48),rgba(3,12,18,0.18)_48%,rgba(0,0,0,0.52)),radial-gradient(circle_at_50%_20%,rgba(81,170,202,0.1),transparent_32%)]" />
+        <motion.div
+          animate={{ backgroundPosition: ["0px 0px", "120px 120px"] }}
+          transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(216,243,251,0.24)_1px,transparent_1px),linear-gradient(90deg,rgba(216,243,251,0.24)_1px,transparent_1px)] [background-size:120px_120px]"
+        />
+        <div className="absolute inset-0 overflow-hidden mix-blend-screen">
+          {backgroundTextRows.map((row, index) => (
+            <motion.div
+              key={index}
+              animate={isAnimatedMobile ? { x: index % 2 === 0 ? "-14%" : "-30%" } : { x: index % 2 === 0 ? ["0%", "-42%"] : ["-42%", "0%"] }}
+              transition={isAnimatedMobile ? { duration: 0 } : { duration: 44 + index * 7, repeat: Infinity, ease: "linear" }}
+              className={`absolute flex w-max items-center gap-8 whitespace-nowrap font-black uppercase leading-none tracking-tight text-white/10 ${index % 2 === 0 ? "-rotate-3" : "rotate-3"}`}
+              style={{
+                top: `${12 + index * 14}%`,
+                fontSize: `${index % 2 === 0 ? 76 : 48}px`,
+              }}
+            >
+              {[...row, ...row].map((text, itemIndex) => (
+                <span key={`${text}-${itemIndex}`} className={itemIndex % 3 === 0 ? "text-[#d8f3fb]/14" : "text-white/8"}>
+                  {text}
+                </span>
+              ))}
+            </motion.div>
+          ))}
+        </div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.04)_42%,rgba(0,0,0,0.28)_100%)]" />
+        <motion.div
+          animate={{ x: ["-8%", "8%", "-8%"], opacity: [0.16, 0.36, 0.16] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 h-[38rem] w-[38rem] rounded-full border border-[#51aaca]/25 blur-sm"
+        />
+        <motion.div
+          animate={{ x: ["8%", "-8%", "8%"], opacity: [0.12, 0.28, 0.12] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-0 right-0 h-[44rem] w-[44rem] rounded-full border border-white/15 blur-sm"
+        />
+      </div>
+
+      <nav className="fixed inset-x-0 top-0 z-50 px-4 pt-3">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-2xl border border-[#51aaca]/18 bg-[#02070d]/72 shadow-2xl shadow-black/30 backdrop-blur-xl">
+          <div className="h-0.5 bg-white/10">
+            <motion.div className="h-full bg-[#51aaca]" style={{ width: `${scrollProgress}%` }} />
+          </div>
+          <div className="flex items-center justify-between gap-3 px-3 py-3 sm:px-5">
+          <div className="flex min-w-0 items-center gap-3 sm:gap-5">
+            <button type="button" onClick={onBack} aria-label={story.back} className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl border border-[#51aaca]/25 bg-[#071b2a]/80 px-3 text-zinc-300 shadow-[0_0_24px_rgba(81,170,202,0.08)] transition hover:bg-[#51aaca] hover:text-[#021014] sm:px-4">
+              <ArrowLeft className="h-4 w-4" />
+              <span className="hidden text-xs font-black uppercase tracking-[0.14em] sm:inline">{story.back}</span>
+            </button>
+            <button type="button" onClick={onBack} className="min-w-0 rounded-xl px-1 text-left transition hover:text-[#d8f3fb]">
+              <span className="block truncate text-lg font-black leading-none tracking-tight sm:text-xl">DEVOPS</span>
+              <span className="mt-1 block truncate text-[9px] font-bold uppercase tracking-[0.22em] text-[#9ed8ea] sm:text-[10px]">Back to light version</span>
+            </button>
+          </div>
+          <div className="hidden items-center gap-7 text-xs font-bold uppercase tracking-[0.18em] text-zinc-400 lg:flex">
+            {animatedNavItems.map(([id, label]) => (
+              <button key={id} type="button" onClick={() => scrollToAnimatedSection(id)} className="transition hover:text-white">
+                {label}
+              </button>
+            ))}
+          </div>
+          <div className="flex shrink-0 items-center rounded-full border border-[#51aaca]/18 bg-[#061a26]/85 p-1">
+            {(["en", "uk"] as Language[]).map((lang) => (
+              <button key={lang} type="button" onClick={() => switchAnimatedLanguage(lang)} className={`rounded-full px-3 py-1.5 text-xs font-black uppercase tracking-[0.18em] transition ${language === lang ? "bg-[#51aaca] text-[#021014] shadow-[0_0_18px_rgba(81,170,202,0.32)]" : "text-zinc-400 hover:text-white"}`}>
+                {lang}
+              </button>
+            ))}
+          </div>
+          </div>
+        </div>
+      </nav>
+
+      <main>
+        <section id="animated-hero" className="relative flex min-h-screen items-center justify-center px-5 pb-16 pt-28 text-center">
+          <div className="mx-auto max-w-7xl">
+            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.55 }} className="mb-8 text-center font-bold uppercase text-[#9ed8ea]">
+              <p className="text-sm tracking-[0.34em] sm:tracking-[0.5em]">Maksym Prysiazhnikov</p>
+              <p className="mt-2 text-xs tracking-[0.42em]">DevOps Engineer</p>
+            </motion.div>
+            <motion.h1 initial={{ opacity: 0, y: 42 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.7, duration: 0.7 }} className="text-[18vw] font-black leading-[0.78] tracking-tight md:text-[11vw]">
+              {story.heroTop}
+              <span className="block text-[#d8f3fb]">{story.heroBottom}</span>
+            </motion.h1>
+            <motion.p initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.9 }} className="mx-auto mt-9 max-w-3xl text-center text-xs font-bold uppercase leading-7 tracking-[0.28em] text-[#d8f3fb] md:text-sm md:leading-8 md:tracking-[0.34em]">
+              {story.intro}
+            </motion.p>
+            <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2.05 }} className="mx-auto mt-10 grid max-w-[320px] grid-cols-2 gap-3 md:max-w-[930px] md:grid-cols-3 md:gap-4">
+              <button type="button" onClick={onContact} className={`${animatedButtonPrimary} h-14 w-full px-5 text-sm sm:px-7 sm:text-base`}>
+                <Mail className="h-5 w-5" />
+                {story.contact}
+              </button>
+              <a href="https://github.com/maximprysyazhnikov" target="_blank" rel="noopener noreferrer" className={`${animatedButtonGhost} h-14 w-full px-5 text-sm sm:px-7 sm:text-base`}>
+                <Github className="h-5 w-5" />
+                {t.hero.github}
+              </a>
+              <a href="/download/cv" onClick={onCvDownload} className={`${animatedButtonGhost} col-span-2 h-14 w-full px-5 text-sm md:col-span-1 sm:px-7 sm:text-base`}>
+                <Download className="h-5 w-5" />
+                {t.hero.resume}
+              </a>
+            </motion.div>
+          </div>
+          <motion.button
+            type="button"
+            onClick={() => scrollToAnimatedSection("animated-about")}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2.22 }}
+            className={`absolute bottom-5 left-1/2 z-10 -translate-x-1/2 sm:bottom-7 ${animatedFloatingButton}`}
+          >
+            <span>{story.scroll}</span>
+            <motion.span
+              animate={{ y: [0, 4, 0] }}
+              transition={{ duration: 1.25, repeat: Infinity, ease: "easeInOut" }}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#51aaca] text-[#021014] shadow-[0_0_22px_rgba(81,170,202,0.38)]"
+            >
+              <ArrowUp className="h-4 w-4 rotate-180" />
+            </motion.span>
+          </motion.button>
+        </section>
+
+        <section className="overflow-hidden border-y border-white/10 bg-white text-black">
+          <div className="flex w-max gap-10 py-8">
+            {[...story.verbs, ...story.verbs, ...story.verbs].map((verb, index) => (
+              <motion.span
+                key={`${verb}-${index}`}
+                animate={isAnimatedMobile ? { x: 0 } : { x: ["0%", "-50%"] }}
+                transition={isAnimatedMobile ? { duration: 0 } : { duration: 22, repeat: Infinity, ease: "linear" }}
+                className="text-5xl font-black uppercase tracking-tight md:text-8xl"
+              >
+                {verb}
+              </motion.span>
+            ))}
+          </div>
+        </section>
+
+        <section id="animated-about" className="relative px-5 py-28">
+          <button type="button" onClick={() => scrollToAnimatedSection("animated-stack")} className={`absolute bottom-6 right-6 z-10 hidden md:inline-flex ${animatedFloatingButton}`}>
+            {story.learnAbout}
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#51aaca] text-[#021014]"><ArrowUp className="h-4 w-4 rotate-180" /></span>
+          </button>
+          <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.95fr_1.05fr]">
+            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }}>
+              <p className="mb-6 text-sm font-bold uppercase tracking-[0.4em] text-[#9ed8ea]">{story.whoTitle}</p>
+              <h2 className="text-5xl font-black leading-[0.95] tracking-tight md:text-7xl">{story.whoLead}</h2>
+            </motion.div>
+            <div className="space-y-6">
+              {story.whoText.map((text, index) => (
+                <motion.p key={text} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.08 }} className="border-t border-white/15 pt-6 text-lg leading-9 text-zinc-300">
+                  {text}
+                </motion.p>
+              ))}
+              <div className="grid gap-4 pt-6 sm:grid-cols-3">
+                {story.stats.map(([value, label], index) => (
+                  <motion.div key={value} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.08 }} className="border border-white/10 bg-white/[0.05] p-5">
+                    <div className="text-4xl font-black text-[#d8f3fb]">{value}</div>
+                    <p className="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-zinc-400">{label}</p>
+                  </motion.div>
+                ))}
+              </div>
+              <button type="button" onClick={() => scrollToAnimatedSection("animated-stack")} className={`${animatedButtonGhost} mt-8 px-5 py-3 text-sm uppercase tracking-[0.18em]`}>
+                {story.learnAbout}
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section id="animated-stack" className="relative bg-white py-24 text-black">
+          <button type="button" onClick={() => scrollToAnimatedSection("animated-experience")} className={`absolute bottom-6 right-6 z-10 hidden md:inline-flex ${animatedFloatingButton} !bg-white/70 !text-[#021014] hover:!bg-white`}>
+            {story.learnStack}
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#51aaca] text-[#021014]"><ArrowUp className="h-4 w-4 rotate-180" /></span>
+          </button>
+          <div className="mx-auto max-w-7xl px-5">
+            <div className="mb-12 grid gap-6 lg:grid-cols-[0.85fr_1fr]">
+              <h2 className="text-5xl font-black leading-none tracking-tight md:text-7xl">{story.stackTitle}</h2>
+              <div>
+                <p className="text-lg leading-8 text-zinc-700">{t.about.stackHint}</p>
+                <button type="button" onClick={() => scrollToAnimatedSection("animated-experience")} className={`${animatedButtonLight} mt-6 px-5 py-3 text-sm uppercase tracking-[0.18em]`}>
+                  {story.learnStack}
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+            <div className="grid gap-8 border-y border-black/15 py-8 xl:grid-cols-[0.95fr_1.05fr]">
+              <div>
+                <div className="mb-4 text-xs font-black uppercase tracking-[0.26em] text-zinc-500">{story.technologies}</div>
+                <div className="flex flex-wrap gap-3">
+                  {featuredStack.map((skill, index) => {
+                    const isActive = skill.slug === activeAnimatedSkill.slug;
+
+                    return (
+                      <motion.button
+                        key={skill.slug}
+                        type="button"
+                        initial={{ opacity: 0, y: 14 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.025 }}
+                        onClick={() => setActiveAnimatedSkillSlug(skill.slug)}
+                        aria-current={isActive ? "true" : undefined}
+                        className={`flex min-w-[150px] items-center justify-between gap-4 rounded-xl border px-4 py-3 text-left shadow-[0_10px_28px_rgba(81,170,202,0.08)] transition hover:-translate-y-0.5 ${
+                          isActive
+                            ? "border-[#51aaca]/70 bg-[#51aaca] text-[#021014]"
+                            : "border-[#51aaca]/28 bg-[#092231] text-white hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]"
+                        }`}
+                      >
+                        <span className="flex min-w-0 items-center gap-2">
+                          {skill.icon}
+                          <span className="truncate text-sm font-black">{skill.name}</span>
+                        </span>
+                        <ChevronRight className={`h-4 w-4 shrink-0 ${isActive ? "text-[#021014]" : "text-[#9ed8ea]"}`} />
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <motion.div
+                key={activeAnimatedSkill.slug}
+                initial={{ opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.28 }}
+                className="relative overflow-hidden rounded-2xl border border-[#51aaca]/25 bg-[#061a26] p-6 text-white shadow-2xl shadow-black/20"
+              >
+                <iframe
+                  key={`tech-video-${activeAnimatedSkill.slug}`}
+                  title={`${activeAnimatedSkill.name} animated background`}
+                  src={`https://www.youtube.com/embed/${TECH_BACKGROUND_YOUTUBE_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${TECH_BACKGROUND_YOUTUBE_ID}&playsinline=1&rel=0`}
+                  allow="autoplay; encrypted-media; picture-in-picture"
+                  className="pointer-events-none absolute left-1/2 top-1/2 aspect-video min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 border-0 opacity-30"
+                />
+                <div className="absolute inset-0 bg-[#061a26]/82 backdrop-blur-[1px]" />
+                <div className="relative z-10">
+                  <p className="mb-3 text-xs font-black uppercase tracking-[0.32em] text-[#9ed8ea]">{t.techPage.title}</p>
+                  <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div>
+                      <h3 className="text-4xl font-black tracking-tight md:text-5xl">{activeAnimatedSkill.name}</h3>
+                      <p className="mt-4 text-xl leading-8 text-zinc-300">{activeAnimatedSkill.summary[language]}</p>
+                    </div>
+                    <button type="button" onClick={() => onOpenSkill(activeAnimatedSkill.slug)} className={`${animatedButtonGhost} px-4 py-3 text-sm text-[#d8f3fb]`}>
+                      {story.fullPage}
+                      <ExternalLink className="h-4 w-4" />
+                    </button>
+                  </div>
+                  <div className="mt-6 rounded-2xl border border-cyan-950/70 bg-[#071b2a]/76 p-5 backdrop-blur-md">
+                    <p className="text-base leading-8 text-zinc-300">{activeAnimatedSkill.description[language]}</p>
+                  </div>
+                  <div className="mt-6 grid gap-3">
+                    {activeAnimatedSkill.bullets[language].map((bullet) => {
+                      const parsed = splitBullet(bullet);
+
+                      return (
+                        <div key={bullet} className="rounded-2xl border border-cyan-950/70 bg-[#071c29]/90 p-5 backdrop-blur-md">
+                          <div className="flex gap-4">
+                            <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/20 bg-[#51aaca]/10">
+                              <ChevronRight className="h-4 w-4 text-[#51aaca]" />
+                            </span>
+                            <div>
+                              <p className="text-lg font-bold text-white">{parsed.title}</p>
+                              {parsed.details && <p className="mt-3 text-base leading-8 text-zinc-300">{parsed.details}</p>}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section id="animated-experience" className="relative px-5 py-28">
+          <button type="button" onClick={() => scrollToAnimatedSection("animated-projects")} className={`absolute bottom-6 right-6 z-10 hidden md:inline-flex ${animatedFloatingButton}`}>
+            {story.nav.projects}
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#51aaca] text-[#021014]"><ArrowUp className="h-4 w-4 rotate-180" /></span>
+          </button>
+          <div className="mx-auto max-w-7xl">
+            {experienceScenes.map((scene, index) => (
+              <motion.article
+                key={scene.title}
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-120px" }}
+                className="grid min-h-[82vh] items-center gap-10 border-t border-white/10 py-20 lg:grid-cols-[0.9fr_1.1fr]"
+              >
+                <a
+                  href={scene.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={scene.linkLabel}
+                  className="group relative block min-h-[420px] overflow-hidden rounded-2xl border border-[#51aaca]/20 bg-[#061a26]/76 shadow-2xl shadow-black/30 transition hover:-translate-y-1 hover:border-[#51aaca]/45"
+                >
+                  {scene.image ? (
+                    <>
+                      <img src={scene.image} alt={`${scene.title} preview`} className="absolute inset-0 h-full w-full object-cover object-top opacity-82 transition duration-500 group-hover:scale-[1.04] group-hover:opacity-100" />
+                      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,7,13,0.08),rgba(2,7,13,0.62)_58%,rgba(2,7,13,0.92))]" />
+                    </>
+                  ) : (
+                    <>
+                      <motion.div
+                        animate={{ scale: [1, 1.08, 1], opacity: [0.28, 0.48, 0.28] }}
+                        transition={{ duration: 6 + index, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute inset-10 rounded-full border border-[#51aaca]/40"
+                      />
+                      <motion.div
+                        animate={{ rotate: index % 2 === 0 ? 360 : -360 }}
+                        transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-20 rounded-full border border-dashed border-white/20"
+                      />
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(81,170,202,0.16),transparent_45%)]" />
+                    </>
+                  )}
+                  <div className="absolute inset-x-0 bottom-0 p-6">
+                    <div className="mb-4 flex items-end justify-end">
+                      <span className="rounded-full border border-[#51aaca]/20 bg-[#071b2a]/80 px-3 py-1 text-[10px] font-black uppercase tracking-[0.24em] text-[#d8f3fb] backdrop-blur-md">{scene.visual}</span>
+                    </div>
+                    <div className="rounded-2xl border border-white/10 bg-black/45 p-4 backdrop-blur-md">
+                      <p className="text-xl font-black text-white">{scene.title}</p>
+                      <p className="mt-1 text-sm font-bold text-[#9ed8ea]">{scene.role}</p>
+                    </div>
+                  </div>
+                </a>
+                <div>
+                  <h2 className="text-5xl font-black leading-none tracking-tight md:text-7xl">{scene.title}</h2>
+                  <p className="mt-5 text-xl font-bold text-[#9ed8ea]">{scene.role}</p>
+                  <ul className="mt-9 space-y-5">
+                    {scene.points.map((point: string) => (
+                      <li key={point} className="flex gap-4 border-t border-white/10 pt-5 text-base leading-8 text-zinc-300">
+                        <ChevronRight className="mt-1 h-5 w-5 shrink-0 text-[#51aaca]" />
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                  {scene.link && (
+                    <a href={scene.link} target="_blank" rel="noopener noreferrer" className={`${animatedButtonGhost} mt-8 px-5 py-3 text-sm uppercase tracking-[0.16em] text-[#d8f3fb]`}>
+                      {scene.linkLabel}
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </section>
+
+        <section id="animated-projects" className="relative bg-white px-5 py-24 text-black">
+          <button type="button" onClick={() => scrollToAnimatedSection("animated-learning")} className={`absolute bottom-6 right-6 z-10 hidden md:inline-flex ${animatedFloatingButton} !bg-white/70 !text-[#021014] hover:!bg-white`}>
+            {story.learnProjects}
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#51aaca] text-[#021014]"><ArrowUp className="h-4 w-4 rotate-180" /></span>
+          </button>
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+              <h2 className="text-5xl font-black leading-none tracking-tight md:text-7xl">{story.projectsTitle}</h2>
+              <div className="flex items-center gap-4 text-sm font-black uppercase tracking-[0.22em]">
+                <span>1</span>
+                <span className="h-px w-16 bg-black/35" />
+                <span>{t.projects.items.length}</span>
+              </div>
+            </div>
+            <div className="grid gap-5 md:grid-cols-2">
+              {t.projects.items.map((project: { title: string; description: string; tags: string[]; link: string }, index: number) => (
+                <motion.a key={project.title} href={project.link} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 38 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.07 }} className="group relative flex min-h-[340px] flex-col justify-between overflow-hidden border border-black/15 bg-zinc-950 p-7 text-white transition hover:-translate-y-1">
+                  <video
+                    aria-hidden="true"
+                    src="/animated-bg.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-24 transition duration-500 group-hover:opacity-38"
+                  />
+                  <motion.div
+                    aria-hidden="true"
+                    animate={{ backgroundPosition: ["0% 0%", "100% 100%"] }}
+                    transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 opacity-45 [background-image:radial-gradient(circle_at_18%_22%,rgba(81,170,202,0.34),transparent_28%),radial-gradient(circle_at_78%_72%,rgba(216,243,251,0.18),transparent_26%),linear-gradient(135deg,rgba(81,170,202,0.14),transparent_42%,rgba(255,255,255,0.08))] [background-size:160%_160%]"
+                  />
+                  <div className="absolute inset-0 bg-zinc-950/72 transition duration-500 group-hover:bg-zinc-950/62" />
+                  <div className="relative z-10">
+                    <div className="mb-10 flex items-center justify-between">
+                      <Github className="h-6 w-6 text-[#d8f3fb]" />
+                    </div>
+                    <h3 className="text-3xl font-black tracking-tight">{project.title}</h3>
+                    <p className="mt-5 text-base leading-8 text-zinc-300">{project.description}</p>
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      {project.tags.map((tag) => <span key={tag} className="border border-white/15 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-zinc-300">{tag}</span>)}
+                    </div>
+                  </div>
+                  <span className="relative z-10 mt-10 inline-flex items-center gap-2 text-sm font-bold text-[#9ed8ea]">
+                    GitHub <ExternalLink className="h-4 w-4 transition group-hover:translate-x-1" />
+                  </span>
+                </motion.a>
+              ))}
+            </div>
+            <button type="button" onClick={() => scrollToAnimatedSection("animated-learning")} className={`${animatedButtonLight} mt-10 px-5 py-3 text-sm uppercase tracking-[0.18em]`}>
+              {story.learnProjects}
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        </section>
+
+        <section id="animated-learning" className="relative px-5 py-24">
+          <button type="button" onClick={() => scrollToAnimatedSection("animated-contact")} className={`absolute bottom-6 right-6 z-10 hidden md:inline-flex ${animatedFloatingButton}`}>
+            {story.nav.contact}
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#51aaca] text-[#021014]"><ArrowUp className="h-4 w-4 rotate-180" /></span>
+          </button>
+          <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2">
+            <div>
+              <h2 className="mb-10 text-5xl font-black leading-none tracking-tight md:text-7xl">{story.learningTitle}</h2>
+              <div className="space-y-4">
+                {t.certs.items.map((cert: { name: string; issuer: string; year: string; details?: string }, index: number) => (
+                  <motion.div key={cert.name} initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.06 }} className="border-t border-white/10 py-5">
+                    <p className="text-xl font-black">{cert.name}</p>
+                    <p className="mt-1 text-sm text-zinc-400">{cert.issuer} / {cert.year}{cert.details ? ` / ${cert.details}` : ""}</p>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="mt-12 grid gap-4 sm:grid-cols-2">
+                {t.education.items.map((item: { title: string; place: string }, index: number) => (
+                  <motion.div key={item.title} initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.06 }} className="border border-white/10 bg-white/[0.04] p-5">
+                    <p className="text-lg font-black">{item.title}</p>
+                    <p className="mt-2 text-sm leading-7 text-zinc-400">{item.place}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h2 className="mb-10 text-5xl font-black leading-none tracking-tight md:text-7xl">{story.earlierTitle}</h2>
+              <div className="space-y-4">
+                {t.earlier.items.map((item: { period: string; title: string; text: string }, index: number) => (
+                  <motion.div key={item.title} initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.06 }} className="border-t border-white/10 py-5">
+                    <p className="text-xs font-bold text-[#51aaca]">{item.period}</p>
+                    <p className="mt-2 text-xl font-black">{item.title}</p>
+                    <p className="mt-2 text-sm leading-7 text-zinc-400">{item.text}</p>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="mt-12 grid gap-4 sm:grid-cols-2">
+                {t.education.languages.map((item: { label: string; value: string }) => (
+                  <div key={item.label} className="border border-white/10 bg-white/[0.04] p-5">
+                    <p className="text-xs font-bold uppercase tracking-[0.26em] text-[#51aaca]">{item.label}</p>
+                    <p className="mt-2 text-xl font-black">{item.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-zinc-950 px-5 py-24">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-12 grid gap-6 lg:grid-cols-[0.85fr_1fr]">
+              <h2 className="text-5xl font-black leading-none tracking-tight md:text-7xl">{t.education.providersTitle}</h2>
+              <p className="text-lg leading-8 text-zinc-400">{t.education.providersSubtitle}</p>
+            </div>
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+              {learningProviders.map((provider, index) => (
+                <motion.a key={provider.slug} href={provider.url} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.06 }} className="group flex min-h-[280px] flex-col justify-between border border-white/10 bg-white/[0.04] p-6 transition hover:-translate-y-1 hover:border-[#51aaca]/40">
+                  <div>
+                    <p className="mb-5 text-xs font-bold uppercase tracking-[0.26em] text-[#51aaca]">{provider.category[language]}</p>
+                    <h3 className="text-2xl font-black">{provider.title}</h3>
+                    <p className="mt-4 text-sm leading-7 text-zinc-400">{provider.summary[language]}</p>
+                  </div>
+                  <span className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-[#9ed8ea]">
+                    {t.education.visitSite} <ExternalLink className="h-4 w-4 transition group-hover:translate-x-1" />
+                  </span>
+                </motion.a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="animated-contact" className="flex min-h-[74vh] items-center justify-center bg-white px-5 py-24 text-center text-black">
+          <div>
+            <p className="mb-6 text-sm font-black uppercase tracking-[0.45em] text-zinc-500">{story.finalTop}</p>
+            <h2 className="text-[17vw] font-black leading-[0.8] tracking-tight md:text-[10vw]">{story.finalBottom}</h2>
+            <div className="mt-12 flex flex-wrap justify-center gap-4">
+              <button type="button" onClick={onContact} className={`${animatedButtonPrimary} px-8 py-4`}>
+                <Mail className="h-5 w-5" />
+                {story.contact}
+              </button>
+              <button type="button" onClick={onBack} className={`${animatedButtonLight} px-8 py-4 hover:!bg-black hover:!text-white`}>
+                <ArrowLeft className="h-5 w-5" />
+                {story.back}
+              </button>
+            </div>
+            <div className="mt-12 flex flex-wrap justify-center gap-3 text-sm font-black">
+              <a href="https://linkedin.com/in/maxim-prysyazhnikov-b46196163" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-black/15 bg-black px-5 py-3 text-white shadow-[0_14px_34px_rgba(0,0,0,0.12)] transition hover:-translate-y-0.5 hover:bg-[#51aaca] hover:text-[#021014]"><Linkedin className="h-5 w-5" />{t.contact.linkedin}</a>
+              <a href="https://github.com/maximprysyazhnikov" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-black/15 bg-black px-5 py-3 text-white shadow-[0_14px_34px_rgba(0,0,0,0.12)] transition hover:-translate-y-0.5 hover:bg-[#51aaca] hover:text-[#021014]"><Github className="h-5 w-5" />{t.contact.github}</a>
+              <a href={`mailto:${CONTACT_EMAIL}`} className="inline-flex items-center gap-2 rounded-full border border-black/15 bg-black px-5 py-3 text-white shadow-[0_14px_34px_rgba(0,0,0,0.12)] transition hover:-translate-y-0.5 hover:bg-[#51aaca] hover:text-[#021014]"><Mail className="h-5 w-5" />{CONTACT_EMAIL}</a>
+            </div>
+          </div>
+        </section>
+
+        <footer className="border-t border-white/10 bg-black px-5 py-16 text-white">
+          <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-4">
+            <div>
+              <button type="button" onClick={() => scrollToAnimatedSection("animated-hero")} className="text-left text-4xl font-black leading-none tracking-tight">
+                MAKSYM
+                <span className="mt-2 block text-xs font-bold uppercase tracking-[0.32em] text-[#9ed8ea]">DevOps CV</span>
+              </button>
+              <p className="mt-6 max-w-[240px] text-sm font-semibold leading-7 text-zinc-400">
+                Made for reliable systems. Cloud, automation, and delivery.
+              </p>
+              <div className="mt-8 max-w-[220px] overflow-hidden rounded-2xl border border-[#51aaca]/25 bg-[#071b2a]/80 shadow-2xl shadow-black/30">
+                <img
+                  src="/profile-photo.jpg"
+                  alt="Maksym Prysiazhnikov"
+                  className="aspect-[4/5] w-full object-cover object-center opacity-90 saturate-[0.92]"
+                />
+              </div>
+            </div>
+            <div>
+              <h3 className="mb-5 text-xs font-black uppercase tracking-[0.28em] text-zinc-500">{story.resources}</h3>
+              <div className="space-y-3 text-sm font-bold">
+                <a href="/download/cv" onClick={onCvDownload} className="flex items-center justify-between border-b border-white/10 pb-3 transition hover:text-[#9ed8ea]">{t.hero.resume}<Download className="h-4 w-4" /></a>
+                <button type="button" onClick={onBack} className="flex w-full items-center justify-between border-b border-white/10 pb-3 text-left transition hover:text-[#9ed8ea]">{story.back}<ArrowLeft className="h-4 w-4" /></button>
+                <button type="button" onClick={onContact} className="flex w-full items-center justify-between border-b border-white/10 pb-3 text-left transition hover:text-[#9ed8ea]">{story.contact}<Mail className="h-4 w-4" /></button>
+              </div>
+            </div>
+            <div>
+              <h3 className="mb-5 text-xs font-black uppercase tracking-[0.28em] text-zinc-500">{story.sitemap}</h3>
+              <div className="grid gap-3 text-sm font-bold">
+                {animatedNavItems.map(([id, label]) => (
+                  <button key={id} type="button" onClick={() => scrollToAnimatedSection(id)} className="text-left transition hover:text-[#9ed8ea]">
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3 className="mb-5 text-xs font-black uppercase tracking-[0.28em] text-zinc-500">{story.social}</h3>
+              <div className="space-y-3 text-sm font-bold">
+                <a href="https://linkedin.com/in/maxim-prysyazhnikov-b46196163" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between border-b border-white/10 pb-3 transition hover:text-[#9ed8ea]">{t.contact.linkedin}<ExternalLink className="h-4 w-4" /></a>
+                <a href="https://github.com/maximprysyazhnikov" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between border-b border-white/10 pb-3 transition hover:text-[#9ed8ea]">{t.contact.github}<ExternalLink className="h-4 w-4" /></a>
+                <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-center justify-between border-b border-white/10 pb-3 transition hover:text-[#9ed8ea]">{CONTACT_EMAIL}<Mail className="h-4 w-4" /></a>
+              </div>
+            </div>
+          </div>
+          <div className="mx-auto mt-12 flex max-w-7xl flex-col justify-between gap-4 border-t border-white/10 pt-6 text-xs font-bold uppercase tracking-[0.22em] text-zinc-500 md:flex-row">
+            <span>© {new Date().getFullYear()} Maksym Prysiazhnikov</span>
+            <button type="button" onClick={() => scrollToAnimatedSection("animated-hero")} className="text-left transition hover:text-white md:text-right">{story.backTop}</button>
+          </div>
+        </footer>
+      </main>
+
+      <AnimatePresence>
+        {showAnimatedTop && (
+          <motion.button
+            type="button"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            onClick={() => scrollToAnimatedSection("animated-hero")}
+            aria-label={story.backTop}
+            title={story.backTop}
+            className={`fixed bottom-6 left-6 z-50 hidden h-12 w-12 rounded-full !p-0 md:inline-flex ${animatedButtonGhost}`}
+          >
+            <ArrowUp className="h-4 w-4" />
+          </motion.button>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const AIChatWidget = ({ language }: { language: Language }) => {
   const t = copy[language].chat;
   const [isOpen, setIsOpen] = useState(false);
@@ -222,6 +1076,7 @@ const AIChatWidget = ({ language }: { language: Language }) => {
   const [leadForm, setLeadForm] = useState<LeadForm>({ name: "", email: "", phone: "", message: "" });
   const [leadLoading, setLeadLoading] = useState(false);
   const [leadStatus, setLeadStatus] = useState<"idle" | "success" | "error" | "required" | "invalidEmail" | "invalidPhone">("idle");
+  const [showLeadForm, setShowLeadForm] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([{ role: "assistant", content: t.welcome }]);
   const [supportSessionId] = useState(() => {
@@ -420,6 +1275,7 @@ const AIChatWidget = ({ language }: { language: Language }) => {
       if (!response.ok) throw new Error("lead_failed");
       setLeadForm({ name: "", email: "", phone: "", message: "" });
       setLeadStatus("success");
+      setShowLeadForm(false);
     } catch {
       setLeadStatus("error");
     } finally {
@@ -456,17 +1312,40 @@ const AIChatWidget = ({ language }: { language: Language }) => {
               ) : (
                 <>
                   <div className="rounded-2xl border border-[#51aaca]/20 bg-[#061a26]/92 p-4">
-                    <p className="mb-3 text-sm font-semibold text-white">{t.leadTitle}</p>
-                    <div className="grid gap-2">
-                      <input value={leadForm.name} onChange={(event) => updateLeadForm("name", event.target.value)} placeholder={t.leadName} className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
-                      <div className="grid gap-2 sm:grid-cols-2">
-                        <input value={leadForm.email} onChange={(event) => updateLeadForm("email", event.target.value)} placeholder={t.leadEmail} type="email" className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
-                        <input value={leadForm.phone} onChange={(event) => updateLeadForm("phone", event.target.value)} placeholder={t.leadPhone} inputMode="tel" autoComplete="tel" className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
+                    <button
+                      type="button"
+                      onClick={() => setShowLeadForm((current) => !current)}
+                      aria-expanded={showLeadForm}
+                      className="flex w-full items-center justify-between gap-3 rounded-xl border border-[#51aaca]/15 bg-[#071b2a]/82 px-4 py-3 text-left transition hover:border-[#51aaca]/35 hover:bg-[#0c2b3d]"
+                    >
+                      <div>
+                        <p className="text-sm font-semibold text-white">{t.leadTitle}</p>
+                        <p className="mt-1 text-xs text-zinc-400">{showLeadForm ? t.supportSubtitle : t.leadSubmit}</p>
                       </div>
-                      <textarea value={leadForm.message} onChange={(event) => updateLeadForm("message", event.target.value)} placeholder={t.leadMessage} rows={2} className="resize-none rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
-                      {leadStatus !== "idle" && <p className={`text-xs ${leadStatus === "success" ? "text-[#9ed8ea]" : "text-red-100"}`}>{leadStatus === "success" ? t.leadSuccess : leadStatus === "required" ? t.leadRequired : leadStatus === "invalidEmail" ? t.leadInvalidEmail : leadStatus === "invalidPhone" ? t.leadInvalidPhone : t.leadError}</p>}
-                      <button type="button" onClick={() => void submitLead()} disabled={leadLoading} className="mt-1 rounded-xl bg-[#51aaca] px-4 py-2.5 text-sm font-semibold text-[#021014] transition hover:bg-[#9ed8ea] disabled:cursor-not-allowed disabled:opacity-60">{leadLoading ? t.loading : t.leadSubmit}</button>
-                    </div>
+                      <ChevronRight className={`h-5 w-5 shrink-0 text-[#9ed8ea] transition-transform ${showLeadForm ? "rotate-90" : "rotate-0"}`} />
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {showLeadForm && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.24, ease: "easeOut" }}
+                          className="overflow-hidden"
+                        >
+                          <div className="grid gap-2 pt-3">
+                            <input value={leadForm.name} onChange={(event) => updateLeadForm("name", event.target.value)} placeholder={t.leadName} className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
+                            <div className="grid gap-2 sm:grid-cols-2">
+                              <input value={leadForm.email} onChange={(event) => updateLeadForm("email", event.target.value)} placeholder={t.leadEmail} type="email" className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
+                              <input value={leadForm.phone} onChange={(event) => updateLeadForm("phone", event.target.value)} placeholder={t.leadPhone} inputMode="tel" autoComplete="tel" className="rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
+                            </div>
+                            <textarea value={leadForm.message} onChange={(event) => updateLeadForm("message", event.target.value)} placeholder={t.leadMessage} rows={2} className="resize-none rounded-xl border border-cyan-950/70 bg-[#04141f] px-3 py-2 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-[#51aaca]/50" />
+                            <button type="button" onClick={() => void submitLead()} disabled={leadLoading} className="mt-1 rounded-xl bg-[#51aaca] px-4 py-2.5 text-sm font-semibold text-[#021014] transition hover:bg-[#9ed8ea] disabled:cursor-not-allowed disabled:opacity-60">{leadLoading ? t.loading : t.leadSubmit}</button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                    {leadStatus !== "idle" && <p className={`mt-3 text-xs ${leadStatus === "success" ? "text-[#9ed8ea]" : "text-red-100"}`}>{leadStatus === "success" ? t.leadSuccess : leadStatus === "required" ? t.leadRequired : leadStatus === "invalidEmail" ? t.leadInvalidEmail : leadStatus === "invalidPhone" ? t.leadInvalidPhone : t.leadError}</p>}
                   </div>
                   {supportMessages.length === 0 && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm leading-relaxed text-zinc-300">{t.supportEmpty}<br /><span className="mt-2 block text-xs text-zinc-500">{t.supportOffline}</span></div>}
                   {supportMessages.map((message) => (
@@ -602,7 +1481,7 @@ export default function App() {
   }, []);
 
   const navigate = (nextRoute: Route) => {
-    const pathname = nextRoute.page === "home" ? "/" : nextRoute.page === "skill" ? `/tech/${nextRoute.slug}` : `/learning/${nextRoute.slug}`;
+    const pathname = nextRoute.page === "home" ? "/" : nextRoute.page === "animated" ? "/animated" : nextRoute.page === "skill" ? `/tech/${nextRoute.slug}` : `/learning/${nextRoute.slug}`;
     window.history.pushState({}, "", pathname);
     setRoute(nextRoute);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -677,8 +1556,23 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.lang = language;
-    document.title = route.page === "skill" && activeSkill ? `${activeSkill.name} | ${t.title}` : route.page === "provider" && activeProvider ? `${activeProvider.title} | ${t.title}` : t.title;
+    document.title = route.page === "animated" ? `Animated CV | ${t.title}` : route.page === "skill" && activeSkill ? `${activeSkill.name} | ${t.title}` : route.page === "provider" && activeProvider ? `${activeProvider.title} | ${t.title}` : t.title;
   }, [activeProvider, activeSkill, language, route.page, t.title]);
+
+  if (route.page === "animated") {
+    return (
+      <>
+        <AnimatedResume
+          language={language}
+          onBack={() => navigate({ page: "home" })}
+          onContact={() => document.getElementById("animated-contact")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+          onCvDownload={handleCvDownload}
+          onOpenSkill={(slug) => navigate({ page: "skill", slug })}
+        />
+        <AIChatWidget language={language} />
+      </>
+    );
+  }
 
   if (route.page === "skill" && activeSkill) {
     return <>
@@ -728,7 +1622,32 @@ export default function App() {
       <BackgroundScene />
       <nav className="fixed top-0 z-50 w-full glass border-b-0 py-4">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="text-white"><button type="button" onClick={() => navigate({ page: "home" })} className="block"><DevOpsLogo /></button></motion.div>
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-3 text-white">
+            <button type="button" onClick={() => navigate({ page: "home" })} className="block"><DevOpsLogo /></button>
+            <button
+              type="button"
+              onClick={() => navigate({ page: "animated" })}
+              className="group hidden items-center gap-3 rounded-2xl border border-[#51aaca]/25 bg-[#061a26]/82 px-4 py-2.5 text-left shadow-[0_14px_34px_rgba(0,0,0,0.2)] backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[#51aaca]/45 hover:bg-[#0c2b3d] sm:inline-flex"
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#51aaca]/25 bg-[#071b2a] text-[#d8f3fb] transition group-hover:bg-[#51aaca] group-hover:text-[#021014]">
+                <Terminal className="h-4 w-4" />
+              </span>
+              <span className="leading-none">
+                <span className="block text-sm font-black uppercase tracking-[0.14em] text-white">{t.hero.animated}</span>
+                <span className="mt-1 block text-[10px] font-black uppercase tracking-[0.22em] text-[#9ed8ea]">{language === "uk" ? "Відкрити animated CV" : "Open animated CV"}</span>
+              </span>
+              <ChevronRight className="h-4 w-4 text-[#9ed8ea] transition group-hover:translate-x-0.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate({ page: "animated" })}
+              aria-label={t.hero.animated}
+              title={t.hero.animated}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-[#51aaca]/25 bg-[#061a26]/82 text-[#d8f3fb] shadow-[0_14px_34px_rgba(0,0,0,0.2)] backdrop-blur-md transition hover:border-[#51aaca]/45 hover:bg-[#0c2b3d] sm:hidden"
+            >
+              <Terminal className="h-4 w-4" />
+            </button>
+          </motion.div>
           <div className="flex items-center gap-4 md:gap-6">
             <div className="hidden gap-6 text-sm font-medium text-zinc-400 md:flex">
               <a href="#about" className="transition-colors hover:text-white">{t.nav.about}</a>
@@ -757,6 +1676,7 @@ export default function App() {
               <p className="mb-8 text-xl leading-relaxed text-zinc-400 md:text-2xl">{t.hero.role}</p>
               <div className="flex flex-wrap gap-4">
                 <motion.a href="#contact" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex items-center gap-2 rounded-xl bg-[#51aaca] px-8 py-4 font-semibold text-[#021014] shadow-lg shadow-[#51aaca]/20 transition-all hover:bg-[#9ed8ea]"><Mail className="h-5 w-5" />{t.hero.contact}</motion.a>
+                <motion.button type="button" onClick={() => navigate({ page: "animated" })} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex items-center gap-2 rounded-xl bg-[#d8f3fb] px-8 py-4 font-semibold text-[#021014] shadow-lg shadow-[#d8f3fb]/10 transition-all hover:bg-white"><Terminal className="h-5 w-5" />{t.hero.animated}</motion.button>
                 <motion.a href="https://github.com/maximprysyazhnikov" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="glass flex items-center gap-2 rounded-xl px-8 py-4 font-semibold text-white transition-all hover:bg-[#0c2b3d]"><Github className="h-5 w-5" />{t.hero.github}</motion.a>
                 <motion.a href="/download/cv" onClick={handleCvDownload} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="glass flex items-center gap-2 rounded-xl border border-[#51aaca]/25 px-8 py-4 font-semibold text-[#effaff] transition-all hover:bg-[#0c2b3d] hover:text-white"><Download className="h-5 w-5" />{t.hero.resume}</motion.a>
               </div>
