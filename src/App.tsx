@@ -1112,8 +1112,8 @@ const AnimatedSkillDetail = ({
                 <span className="hidden text-xs font-black uppercase tracking-[0.14em] sm:inline">Site section</span>
               </button>
               <button type="button" onClick={onLightVersion} className="min-w-0 rounded-xl border border-[#51aaca]/18 bg-[#071b2a]/42 px-3 py-2 text-left shadow-[0_0_24px_rgba(81,170,202,0.06)] backdrop-blur-md transition hover:border-[#51aaca]/40 hover:bg-[#0c2b3d]/82 sm:px-4">
-                <span className="block truncate text-lg font-black leading-none sm:text-xl">DEVOPS</span>
-                <span className="mt-1 block truncate text-[9px] font-bold uppercase tracking-[0.22em] text-[#9ed8ea] sm:text-[10px]">Light version</span>
+                <span className="block truncate text-lg font-black leading-none sm:text-xl">MAIN SITE</span>
+                <span className="mt-1 block truncate text-[9px] font-bold uppercase tracking-[0.22em] text-[#9ed8ea] sm:text-[10px]">Light portfolio</span>
               </button>
             </div>
             <div className="flex shrink-0 items-center rounded-full border border-[#51aaca]/18 bg-[#061a26]/85 p-1">
