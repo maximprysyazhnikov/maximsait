@@ -1021,8 +1021,66 @@ const AnimatedSkillDetail = ({
   const siteSectionLabel = language === "uk" ? "До розділу сайту" : "Site section";
   const backToSectionLabel = language === "uk" ? "До розділу сайту" : "Back to site section";
   const animatedHomeLabel = language === "uk" ? "Головна animated" : "Animated main page";
+  const [openBulletIndex, setOpenBulletIndex] = useState(0);
+  const [techChatInput, setTechChatInput] = useState("");
+  const [techChatLoading, setTechChatLoading] = useState(false);
+  const [techChatMessages, setTechChatMessages] = useState<ChatMessage[]>([]);
+  const techPageContext: ChatPageContext = {
+    section: "animated technology",
+    title: skill.name,
+    summary: skill.summary[language],
+    description: skill.description[language],
+    bullets: skill.bullets[language],
+  };
+  const techChatCopy = language === "uk"
+    ? {
+      title: `${skill.name} AI`,
+      subtitle: `Короткий помічник саме по ${skill.name}.`,
+      welcome: `Я окремий AI-помічник по ${skill.name}. Питай коротко: що це, де застосовується в DevOps, або де краще вчитись далі.`,
+      placeholder: `Питання про ${skill.name}...`,
+      error: "Не вдалося отримати відповідь.",
+    }
+    : {
+      title: `${skill.name} AI`,
+      subtitle: `A focused helper for ${skill.name}.`,
+      welcome: `I am a focused AI helper for ${skill.name}. Ask what it is, how it fits DevOps, or where to learn more.`,
+      placeholder: `Ask about ${skill.name}...`,
+      error: "Could not get a response.",
+    };
   const switchAnimatedLanguage = (nextLanguage: Language) => {
     window.dispatchEvent(new CustomEvent<Language>("portfolio-language", { detail: nextLanguage }));
+  };
+
+  useEffect(() => {
+    setOpenBulletIndex(0);
+    setTechChatInput("");
+    setTechChatLoading(false);
+    setTechChatMessages([{ role: "assistant", content: techChatCopy.welcome }]);
+  }, [skill.slug, language]);
+
+  const sendTechChatMessage = async () => {
+    const trimmed = techChatInput.trim();
+    if (!trimmed || techChatLoading) return;
+
+    const nextMessages: ChatMessage[] = [...techChatMessages, { role: "user", content: trimmed }];
+    setTechChatMessages(nextMessages);
+    setTechChatInput("");
+    setTechChatLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language, messages: nextMessages, pageContext: techPageContext }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data?.error || "chat_failed");
+      setTechChatMessages((current) => [...current, { role: "assistant", content: cleanChatText(data.reply) }]);
+    } catch {
+      setTechChatMessages((current) => [...current, { role: "assistant", content: techChatCopy.error }]);
+    } finally {
+      setTechChatLoading(false);
+    }
   };
 
   return (
@@ -1069,11 +1127,12 @@ const AnimatedSkillDetail = ({
 
       <main className="mx-auto max-w-7xl px-5 pb-24 pt-10">
         <section className="grid min-h-[calc(100vh-9rem)] items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="order-2 space-y-4 lg:order-1">
           <motion.div
             initial={{ opacity: 0, x: -28 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.45 }}
-            className="relative order-2 min-h-[420px] overflow-hidden rounded-3xl border border-[#51aaca]/24 bg-[#061a26]/64 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:min-h-[520px] sm:p-7 lg:order-1"
+            className="relative min-h-[420px] overflow-hidden rounded-3xl border border-[#51aaca]/24 bg-[#061a26]/64 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:min-h-[520px] sm:p-7"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_45%_35%,rgba(81,170,202,0.18),transparent_30%),linear-gradient(180deg,rgba(216,243,251,0.06),rgba(2,7,13,0.18))]" />
             <div className="absolute inset-0 opacity-[0.16] [background-image:linear-gradient(rgba(216,243,251,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(216,243,251,0.22)_1px,transparent_1px)] [background-size:72px_72px]" />
@@ -1101,6 +1160,40 @@ const AnimatedSkillDetail = ({
             </div>
           </motion.div>
 
+          <div className="overflow-hidden rounded-3xl border border-[#51aaca]/22 bg-[#061a26]/72 shadow-2xl shadow-black/25 backdrop-blur-md">
+            <div className="border-b border-[#51aaca]/14 px-5 py-4">
+              <h2 className="text-sm font-black text-white">{techChatCopy.title}</h2>
+              <p className="mt-1 text-xs text-zinc-400">{techChatCopy.subtitle}</p>
+            </div>
+            <div className="max-h-60 space-y-3 overflow-y-auto px-5 py-4">
+              {techChatMessages.map((message, index) => (
+                <div key={`${message.role}-${index}`} className={`rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-8 bg-[#51aaca] text-[#021014]" : "mr-8 bg-[#092231] text-zinc-100"}`}>
+                  {message.content}
+                </div>
+              ))}
+              {techChatLoading && <div className="mr-8 rounded-2xl bg-[#092231] px-4 py-3 text-sm text-zinc-400">{language === "uk" ? "AI думає..." : "AI is thinking..."}</div>}
+            </div>
+            <div className="flex gap-2 border-t border-[#51aaca]/14 bg-[#02070d]/38 p-4">
+              <input
+                value={techChatInput}
+                onChange={(event) => setTechChatInput(event.target.value)}
+                onKeyDown={(event) => { if (event.key === "Enter") void sendTechChatMessage(); }}
+                placeholder={techChatCopy.placeholder}
+                className="min-w-0 flex-1 rounded-2xl border border-[#51aaca]/16 bg-[#02070d]/70 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500 focus:border-[#51aaca]/45"
+              />
+              <button
+                type="button"
+                onClick={() => void sendTechChatMessage()}
+                disabled={techChatLoading || !techChatInput.trim()}
+                className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#51aaca] text-[#021014] transition hover:bg-[#9ed8ea] disabled:cursor-not-allowed disabled:opacity-50"
+                aria-label={language === "uk" ? "Надіслати" : "Send"}
+              >
+                <Send className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+          </div>
+
           <motion.div
             initial={{ opacity: 0, x: 28 }}
             animate={{ opacity: 1, x: 0 }}
@@ -1120,20 +1213,39 @@ const AnimatedSkillDetail = ({
               <p className="text-lg font-medium leading-9 text-zinc-200">{skill.description[language]}</p>
             </div>
             <div className="mt-2">
-              {skill.bullets[language].map((bullet) => {
+              {skill.bullets[language].map((bullet, index) => {
                 const parsed = splitBullet(bullet);
+                const isOpen = openBulletIndex === index;
 
                 return (
-                  <div key={bullet} className="group border-b border-white/12 py-6">
-                    <div className="flex gap-5">
-                      <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition group-hover:bg-[#51aaca]">
-                        <ChevronRight className="h-4 w-4 text-[#51aaca] transition group-hover:text-[#021014]" />
+                  <div key={bullet} className="border-b border-white/12 py-4">
+                    <button
+                      type="button"
+                      onClick={() => setOpenBulletIndex(isOpen ? -1 : index)}
+                      aria-expanded={isOpen}
+                      className="group flex w-full gap-5 text-left"
+                    >
+                      <span className={`mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 transition ${isOpen ? "bg-[#51aaca]" : "bg-[#51aaca]/10 group-hover:bg-[#51aaca]"}`}>
+                        <ChevronRight className={`h-4 w-4 transition ${isOpen ? "rotate-90 text-[#021014]" : "text-[#51aaca] group-hover:text-[#021014]"}`} />
                       </span>
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-xl font-black leading-tight text-white">{parsed.title}</p>
-                        {parsed.details && <p className="mt-3 text-base font-medium leading-8 text-zinc-300">{parsed.details}</p>}
+                        {!isOpen && parsed.details && <p className="mt-2 line-clamp-1 text-sm font-medium text-zinc-400">{parsed.details}</p>}
                       </div>
-                    </div>
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {isOpen && parsed.details && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.22 }}
+                          className="overflow-hidden"
+                        >
+                          <p className="ml-14 mt-3 rounded-2xl border border-[#51aaca]/14 bg-[#061a26]/58 px-4 py-3 text-base font-medium leading-8 text-zinc-300 backdrop-blur-md">{parsed.details}</p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 );
               })}
@@ -1701,17 +1813,7 @@ export default function App() {
           onCvDownload={handleCvDownload}
           onOpenSkill={(slug) => navigate({ page: "animatedSkill", slug })}
         />
-        <AIChatWidget
-          language={language}
-          pageContext={{
-            section: "animated CV",
-            title: "DevOps stack",
-            summary: language === "uk"
-              ? "Анімована версія резюме Максима з DevOps-стеком, досвідом, проєктами та навчанням."
-              : "Animated CV version with Maksym's DevOps stack, experience, projects, and learning path.",
-            bullets: skills.map((item) => item.name),
-          }}
-        />
+        <AIChatWidget language={language} />
       </>
     );
   }
@@ -1726,16 +1828,7 @@ export default function App() {
           onLightVersion={() => navigate({ page: "animated" })}
           onSelectSkill={(slug) => navigate({ page: "animatedSkill", slug })}
         />
-        <AIChatWidget
-          language={language}
-          pageContext={{
-            section: "animated technology",
-            title: activeAnimatedSkill.name,
-            summary: activeAnimatedSkill.summary[language],
-            description: activeAnimatedSkill.description[language],
-            bullets: activeAnimatedSkill.bullets[language],
-          }}
-        />
+        <AIChatWidget language={language} />
       </>
     );
   }
@@ -1757,16 +1850,7 @@ export default function App() {
           return <button key={item.slug} type="button" onClick={() => !isActive && navigate({ page: "skill", slug: item.slug })} aria-current={isActive ? "page" : undefined} className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${isActive ? "border-[#51aaca]/45 bg-[#51aaca]/12 text-white shadow-[0_0_0_1px_rgba(81,170,202,0.1)]" : "cursor-pointer border-cyan-950/70 bg-[#092231] text-zinc-300 hover:border-[#51aaca]/30 hover:text-white"}`}><span className="flex items-center gap-2">{item.icon}{item.name}</span><ChevronRight className={`h-4 w-4 ${isActive ? "text-[#d8f3fb]" : "text-[#9ed8ea]"}`} /></button>;
         })}</div>}
       />
-      <AIChatWidget
-        language={language}
-        pageContext={{
-          section: "technology",
-          title: activeSkill.name,
-          summary: activeSkill.summary[language],
-          description: activeSkill.description[language],
-          bullets: activeSkill.bullets[language],
-        }}
-      />
+      <AIChatWidget language={language} />
     </>;
   }
 
@@ -1787,15 +1871,7 @@ export default function App() {
           return <button key={item.slug} type="button" onClick={() => !isActive && navigate({ page: "provider", slug: item.slug })} aria-current={isActive ? "page" : undefined} className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${isActive ? "border-[#51aaca]/45 bg-[#51aaca]/12 text-white shadow-[0_0_0_1px_rgba(81,170,202,0.1)]" : "cursor-pointer border-cyan-950/70 bg-[#092231] text-zinc-300 hover:border-[#51aaca]/30 hover:text-white"}`}><span>{item.title}</span><ChevronRight className={`h-4 w-4 ${isActive ? "text-[#d8f3fb]" : "text-[#9ed8ea]"}`} /></button>;
         })}</div>}
       />
-      <AIChatWidget
-        language={language}
-        pageContext={{
-          section: "learning platform",
-          title: activeProvider.title,
-          summary: activeProvider.summary[language],
-          bullets: activeProvider.highlights[language],
-        }}
-      />
+      <AIChatWidget language={language} />
     </>;
   }
 
