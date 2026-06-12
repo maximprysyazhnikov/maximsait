@@ -51,10 +51,19 @@ const sanitizePageContext = (context) => {
   const bullets = Array.isArray(context.bullets)
     ? context.bullets.map((item) => compactText(item, 180)).filter(Boolean).slice(0, 4)
     : [];
+  const resources = Array.isArray(context.resources)
+    ? context.resources
+      .map((item) => ({
+        label: compactText(item?.label, 80),
+        url: compactText(item?.url, 160),
+      }))
+      .filter((item) => item.label && /^https:\/\/[^\s]+$/i.test(item.url))
+      .slice(0, 3)
+    : [];
 
-  if (!title && !section && !summary && !description && bullets.length === 0) return null;
+  if (!title && !section && !summary && !description && bullets.length === 0 && resources.length === 0) return null;
 
-  return { section, title, summary, description, bullets };
+  return { section, title, summary, description, bullets, resources };
 };
 
 const formatPageContext = (context) => {
@@ -67,6 +76,7 @@ const formatPageContext = (context) => {
     context.summary ? `Summary: ${context.summary}` : '',
     context.description ? `Description: ${context.description}` : '',
     context.bullets?.length ? `Key points: ${context.bullets.join(' | ')}` : '',
+    context.resources?.length ? `Official resources: ${context.resources.map((item) => `${item.label} (${item.url})`).join(' | ')}` : '',
   ].filter(Boolean).join('\n');
 };
 

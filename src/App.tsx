@@ -10,7 +10,8 @@ import {
 type Language = "uk" | "en";
 type Route = { page: "home" } | { page: "animated" } | { page: "animatedSkill"; slug: string } | { page: "skill"; slug: string } | { page: "provider"; slug: string };
 type ChatMessage = { role: "user" | "assistant"; content: string };
-type ChatPageContext = { section: string; title: string; summary?: string; description?: string; bullets?: string[] };
+type OfficialResource = { label: string; url: string };
+type ChatPageContext = { section: string; title: string; summary?: string; description?: string; bullets?: string[]; resources?: OfficialResource[] };
 type LeadForm = { name: string; email: string; phone: string; message: string };
 type SupportMessage = { id: string; role: "user" | "operator"; text: string; createdAt: string };
 type Skill = {
@@ -26,6 +27,93 @@ const COMMERCIAL_SITE_URL = "https://vidfranko.com.ua";
 const VOLUNTEER_DEMO_URL = "https://volunteer-site-placeholder-dev.up.railway.app/";
 const CONTACT_EMAIL = "maximprysyazhnikov@gmail.com";
 
+const officialTechnologyResources: Record<string, OfficialResource[]> = {
+  linux: [
+    { label: "Linux Kernel Docs", url: "https://docs.kernel.org/" },
+    { label: "Ubuntu Server Docs", url: "https://ubuntu.com/server/docs" },
+  ],
+  docker: [
+    { label: "Docker Docs", url: "https://docs.docker.com/" },
+    { label: "Docker Get Started", url: "https://docs.docker.com/get-started/" },
+  ],
+  kubernetes: [
+    { label: "Kubernetes Docs", url: "https://kubernetes.io/docs/home/" },
+    { label: "Kubernetes Tutorials", url: "https://kubernetes.io/docs/tutorials/" },
+  ],
+  azure: [
+    { label: "Azure Documentation", url: "https://learn.microsoft.com/en-us/azure/" },
+    { label: "Microsoft Learn Azure", url: "https://learn.microsoft.com/en-us/training/azure/" },
+  ],
+  terraform: [
+    { label: "Terraform Docs", url: "https://developer.hashicorp.com/terraform/docs" },
+    { label: "Terraform Tutorials", url: "https://developer.hashicorp.com/terraform/tutorials" },
+  ],
+  "ci-cd": [
+    { label: "GitHub Actions Docs", url: "https://docs.github.com/en/actions" },
+    { label: "GitLab CI/CD Docs", url: "https://docs.gitlab.com/ee/ci/" },
+  ],
+  "github-actions": [
+    { label: "GitHub Actions Docs", url: "https://docs.github.com/en/actions" },
+    { label: "Learn GitHub Actions", url: "https://docs.github.com/en/actions/learn-github-actions" },
+  ],
+  python: [
+    { label: "Python Docs", url: "https://docs.python.org/3/" },
+    { label: "Python Tutorial", url: "https://docs.python.org/3/tutorial/" },
+  ],
+  mysql: [
+    { label: "MySQL Documentation", url: "https://dev.mysql.com/doc/" },
+    { label: "MySQL Reference Manual", url: "https://dev.mysql.com/doc/refman/8.4/en/" },
+  ],
+  postgresql: [
+    { label: "PostgreSQL Docs", url: "https://www.postgresql.org/docs/" },
+    { label: "PostgreSQL Tutorial", url: "https://www.postgresql.org/docs/current/tutorial.html" },
+  ],
+  liquibase: [
+    { label: "Liquibase Docs", url: "https://docs.liquibase.com/" },
+    { label: "Liquibase Concepts", url: "https://docs.liquibase.com/concepts/home.html" },
+  ],
+  bash: [
+    { label: "Bash Manual", url: "https://www.gnu.org/software/bash/manual/" },
+    { label: "GNU Bash", url: "https://www.gnu.org/software/bash/" },
+  ],
+  git: [
+    { label: "Git Documentation", url: "https://git-scm.com/doc" },
+    { label: "Pro Git Book", url: "https://git-scm.com/book/en/v2" },
+  ],
+  railway: [
+    { label: "Railway Docs", url: "https://docs.railway.com/" },
+    { label: "Railway Deployments", url: "https://docs.railway.com/guides/deployments" },
+  ],
+  sql: [
+    { label: "PostgreSQL SQL Docs", url: "https://www.postgresql.org/docs/current/sql.html" },
+    { label: "MySQL SQL Statements", url: "https://dev.mysql.com/doc/refman/8.4/en/sql-statements.html" },
+  ],
+  jira: [
+    { label: "Jira Support Docs", url: "https://support.atlassian.com/jira-software-cloud/" },
+    { label: "Jira Guides", url: "https://www.atlassian.com/software/jira/guides" },
+  ],
+  confluence: [
+    { label: "Confluence Support Docs", url: "https://support.atlassian.com/confluence-cloud/" },
+    { label: "Confluence Guides", url: "https://www.atlassian.com/software/confluence/guides" },
+  ],
+  agile: [
+    { label: "Atlassian Agile Guide", url: "https://www.atlassian.com/agile" },
+    { label: "Agile Project Management", url: "https://www.atlassian.com/agile/project-management" },
+  ],
+  scrum: [
+    { label: "Scrum Guide", url: "https://scrumguides.org/scrum-guide.html" },
+    { label: "Scrum.org What Is Scrum", url: "https://www.scrum.org/resources/what-scrum-module" },
+  ],
+  siem: [
+    { label: "Microsoft Sentinel Docs", url: "https://learn.microsoft.com/en-us/azure/sentinel/" },
+    { label: "Splunk Documentation", url: "https://docs.splunk.com/Documentation/Splunk" },
+  ],
+  "ids-ips": [
+    { label: "Snort Docs", url: "https://docs.snort.org/" },
+    { label: "Suricata Docs", url: "https://docs.suricata.io/" },
+  ],
+};
+
 const SectionTitle = ({ children, subtitle }: { children: ReactNode; subtitle?: string }) => (
   <div className="mb-12">
     <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-4 text-3xl font-bold text-white md:text-4xl">{children}</motion.h2>
@@ -37,6 +125,56 @@ const SectionTitle = ({ children, subtitle }: { children: ReactNode; subtitle?: 
 const Card = ({ children, className = "" }: React.PropsWithChildren<{ className?: string }>) => (
   <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className={`glass rounded-2xl p-6 transition-all duration-300 group hover:border-[#51aaca]/30 ${className}`}>{children}</motion.div>
 );
+
+const OfficialResourceLinks = ({
+  language,
+  resources,
+  compact = false,
+}: {
+  language: Language;
+  resources: OfficialResource[];
+  compact?: boolean;
+}) => {
+  if (resources.length === 0) return null;
+
+  const text = language === "uk"
+    ? {
+      eyebrow: "Офіційні джерела",
+      subtitle: "Документація та гайди від проєктів або вендорів.",
+    }
+    : {
+      eyebrow: "Official resources",
+      subtitle: "Documentation and guides from projects or vendors.",
+    };
+
+  return (
+    <div className={`overflow-hidden rounded-3xl border border-[#51aaca]/24 bg-[#061a26]/70 shadow-[0_20px_55px_rgba(0,0,0,0.22),0_0_26px_rgba(81,170,202,0.08)] backdrop-blur-md ${compact ? "p-4" : "p-5"}`}>
+      <div className="mb-4 flex items-start justify-between gap-4">
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[#9ed8ea]">{text.eyebrow}</p>
+          <p className="mt-2 text-sm leading-6 text-zinc-400">{text.subtitle}</p>
+        </div>
+        <span className="rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 px-3 py-1 text-[10px] font-black text-[#d8f3fb]">
+          {resources.length}
+        </span>
+      </div>
+      <div className="grid gap-3">
+        {resources.map((resource) => (
+          <a
+            key={resource.url}
+            href={resource.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-[#51aaca]/18 bg-[#092231]/82 px-4 py-3 text-sm font-black text-white shadow-[0_10px_26px_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014]"
+          >
+            <span className="min-w-0 truncate">{resource.label}</span>
+            <ExternalLink className="h-4 w-4 shrink-0 text-[#9ed8ea] transition group-hover:text-[#021014]" />
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const BackgroundScene = () => (
   <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -1030,12 +1168,14 @@ const AnimatedSkillDetail = ({
   const [techChatInput, setTechChatInput] = useState("");
   const [techChatLoading, setTechChatLoading] = useState(false);
   const [techChatMessages, setTechChatMessages] = useState<ChatMessage[]>([]);
+  const officialResources = officialTechnologyResources[skill.slug] ?? [];
   const techPageContext: ChatPageContext = {
     section: "animated technology",
     title: skill.name,
     summary: skill.summary[language],
     description: skill.description[language],
     bullets: skill.bullets[language],
+    resources: officialResources,
   };
   const techChatCopy = language === "uk"
     ? {
@@ -1134,40 +1274,45 @@ const AnimatedSkillDetail = ({
 
       <main className="mx-auto max-w-7xl px-5 pb-24 pt-10">
         <section className="grid min-h-[calc(100vh-9rem)] items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-          <motion.div
-            initial={{ opacity: 0, x: -28 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.45 }}
-            className="relative order-2 min-h-[420px] overflow-hidden rounded-3xl border border-[#51aaca]/24 bg-[#061a26]/64 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:min-h-[520px] sm:p-7 lg:order-1"
-          >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_45%_35%,rgba(81,170,202,0.18),transparent_30%),linear-gradient(180deg,rgba(216,243,251,0.06),rgba(2,7,13,0.18))]" />
-            <div className="absolute inset-0 opacity-[0.16] [background-image:linear-gradient(rgba(216,243,251,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(216,243,251,0.22)_1px,transparent_1px)] [background-size:72px_72px]" />
+          <div className="order-2 space-y-5 lg:order-1">
             <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-              className="absolute left-1/2 top-1/2 aspect-square w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#51aaca]/16"
-            />
-            <motion.div
-              animate={{ rotate: -360 }}
-              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
-              className="absolute left-1/2 top-1/2 aspect-square w-[54%] -translate-x-1/2 -translate-y-1/2 rounded-[42%] border border-dashed border-white/16"
-            />
-            <div className="relative z-10 flex min-h-[380px] flex-col items-center justify-center sm:min-h-[470px]">
-              <div className="relative flex items-center justify-center">
-                <div className="absolute h-48 w-48 rounded-full border border-[#51aaca]/18 bg-[#51aaca]/5 blur-[1px] sm:h-64 sm:w-64" />
-                <div className="absolute h-32 w-32 rounded-[38%] border border-dashed border-white/16 sm:h-44 sm:w-44" />
-                <div className="relative flex h-36 w-36 items-center justify-center rounded-[2rem] border border-[#51aaca]/28 bg-[#02070d]/58 text-[#d8f3fb] shadow-[0_0_52px_rgba(81,170,202,0.18)] backdrop-blur-md sm:h-44 sm:w-44 [&_svg]:h-16 [&_svg]:w-16 sm:[&_svg]:h-20 sm:[&_svg]:w-20">
-                  {skill.icon}
+              initial={{ opacity: 0, x: -28 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.45 }}
+              className="relative min-h-[420px] overflow-hidden rounded-3xl border border-[#51aaca]/24 bg-[#061a26]/64 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:min-h-[520px] sm:p-7"
+            >
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_45%_35%,rgba(81,170,202,0.18),transparent_30%),linear-gradient(180deg,rgba(216,243,251,0.06),rgba(2,7,13,0.18))]" />
+              <div className="absolute inset-0 opacity-[0.16] [background-image:linear-gradient(rgba(216,243,251,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(216,243,251,0.22)_1px,transparent_1px)] [background-size:72px_72px]" />
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+                className="absolute left-1/2 top-1/2 aspect-square w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#51aaca]/16"
+              />
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+                className="absolute left-1/2 top-1/2 aspect-square w-[54%] -translate-x-1/2 -translate-y-1/2 rounded-[42%] border border-dashed border-white/16"
+              />
+              <div className="relative z-10 flex min-h-[380px] flex-col items-center justify-center sm:min-h-[470px]">
+                <div className="relative flex items-center justify-center">
+                  <div className="absolute h-48 w-48 rounded-full border border-[#51aaca]/18 bg-[#51aaca]/5 blur-[1px] sm:h-64 sm:w-64" />
+                  <div className="absolute h-32 w-32 rounded-[38%] border border-dashed border-white/16 sm:h-44 sm:w-44" />
+                  <div className="relative flex h-36 w-36 items-center justify-center rounded-[2rem] border border-[#51aaca]/28 bg-[#02070d]/58 text-[#d8f3fb] shadow-[0_0_52px_rgba(81,170,202,0.18)] backdrop-blur-md sm:h-44 sm:w-44 [&_svg]:h-16 [&_svg]:w-16 sm:[&_svg]:h-20 sm:[&_svg]:w-20">
+                    {skill.icon}
+                  </div>
+                </div>
+                <span className="mt-8 w-fit rounded-full border border-[#51aaca]/30 bg-[#071b2a]/80 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#d8f3fb] shadow-[0_0_24px_rgba(81,170,202,0.12)]">
+                  {t.techPage.title}
+                </span>
+                <div className="mt-4 max-w-full truncate text-center text-5xl font-black uppercase leading-none tracking-tight text-white/[0.08] sm:text-7xl">
+                  {skill.name}
                 </div>
               </div>
-              <span className="mt-8 w-fit rounded-full border border-[#51aaca]/30 bg-[#071b2a]/80 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#d8f3fb] shadow-[0_0_24px_rgba(81,170,202,0.12)]">
-                {t.techPage.title}
-              </span>
-              <div className="mt-4 max-w-full truncate text-center text-5xl font-black uppercase leading-none tracking-tight text-white/[0.08] sm:text-7xl">
-                {skill.name}
-              </div>
+            </motion.div>
+            <div className="hidden lg:block">
+              <OfficialResourceLinks language={language} resources={officialResources} compact />
             </div>
-          </motion.div>
+          </div>
 
           <motion.div
             initial={{ opacity: 0, x: 28 }}
@@ -1222,6 +1367,9 @@ const AnimatedSkillDetail = ({
                   <Send className="h-4 w-4" />
                 </button>
               </div>
+            </div>
+            <div className="mt-7 lg:hidden">
+              <OfficialResourceLinks language={language} resources={officialResources} />
             </div>
             <div className="mt-7">
               {skill.bullets[language].map((bullet, index) => {
@@ -1728,6 +1876,11 @@ const DetailLayout = ({
             <p className="mb-6 max-w-3xl text-xl leading-relaxed text-zinc-300">{summary}</p>
             <Card className="mb-8 bg-[#071b2a]/76"><p className="text-base leading-8 text-zinc-300">{description}</p></Card>
             {pageContext && <div className="mb-8"><FocusedTechChat language={language} pageContext={pageContext} /></div>}
+            {pageContext?.resources && pageContext.resources.length > 0 && (
+              <div className="mb-8">
+                <OfficialResourceLinks language={language} resources={pageContext.resources} />
+              </div>
+            )}
             <div className="grid gap-4">
               {bullets.map((bullet, index) => {
                 const parsed = splitBullet(bullet);
@@ -2022,6 +2175,8 @@ export default function App() {
   }
 
   if (route.page === "skill" && activeSkill) {
+    const officialResources = officialTechnologyResources[activeSkill.slug] ?? [];
+
     return <>
       <DetailLayout
         language={language}
@@ -2039,6 +2194,7 @@ export default function App() {
           summary: activeSkill.summary[language],
           description: activeSkill.description[language],
           bullets: activeSkill.bullets[language],
+          resources: officialResources,
         }}
         asideContent={<div className="space-y-3">{skills.map((item) => {
           const isActive = item.slug === activeSkill.slug;
