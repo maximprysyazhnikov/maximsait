@@ -672,8 +672,12 @@ const AnimatedResume = ({
               <h2 className="text-5xl font-black leading-none tracking-tight md:text-7xl">{story.stackTitle}</h2>
               <div>
                 <p className="text-lg leading-8 text-zinc-700">{t.about.stackHint}</p>
-                <button type="button" onClick={() => scrollToAnimatedSection("animated-technologies")} className={`${animatedButtonLight} mt-6 px-5 py-3 text-sm uppercase tracking-[0.18em]`}>
-                  {story.technologies}
+                <button type="button" onClick={() => scrollToAnimatedSection("animated-technologies")} className={`${animatedButtonLight} mt-6 px-5 py-4 text-left uppercase tracking-[0.18em]`}>
+                  <MessageCircle className="h-5 w-5" />
+                  <span>
+                    <span className="block text-sm">{story.technologies}</span>
+                    <span className="mt-1 block text-[10px] tracking-[0.14em] opacity-70">{language === "uk" ? "AI-помічник по технологіях" : "Technology AI helper"}</span>
+                  </span>
                   <ChevronRight className="h-4 w-4" />
                 </button>
               </div>
@@ -684,6 +688,7 @@ const AnimatedResume = ({
                   <div>
                     <div className="text-xs font-black uppercase tracking-[0.3em] text-[#9ed8ea]">{story.technologies}</div>
                     <p className="mt-2 text-sm font-bold text-zinc-300">{t.about.stackHint}</p>
+                    <p className="mt-1 text-xs font-semibold text-zinc-500">{language === "uk" ? "Відкрий технологію, і на її сторінці буде окремий AI-помічник саме по ній." : "Open a technology to use a focused AI helper for that exact topic."}</p>
                   </div>
                   <span className="rounded-full border border-[#51aaca]/35 bg-[#51aaca]/14 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#d8f3fb] shadow-[0_0_24px_rgba(81,170,202,0.16)]">{featuredStack.length}</span>
                 </div>
@@ -1034,15 +1039,17 @@ const AnimatedSkillDetail = ({
   };
   const techChatCopy = language === "uk"
     ? {
-      title: `${skill.name} AI`,
-      subtitle: `Короткий помічник саме по ${skill.name}.`,
+      eyebrow: "AI по технологіях",
+      title: `${skill.name} AI Assistant`,
+      subtitle: `Окремий помічник саме по ${skill.name}: коротко пояснить роль у DevOps і підкаже, де вчитись далі.`,
       welcome: `Я окремий AI-помічник по ${skill.name}. Питай коротко: що це, де застосовується в DevOps, або де краще вчитись далі.`,
       placeholder: `Питання про ${skill.name}...`,
       error: "Не вдалося отримати відповідь.",
     }
     : {
-      title: `${skill.name} AI`,
-      subtitle: `A focused helper for ${skill.name}.`,
+      eyebrow: "Technology AI",
+      title: `${skill.name} AI Assistant`,
+      subtitle: `A focused helper for ${skill.name}: short DevOps context and where to learn more.`,
       welcome: `I am a focused AI helper for ${skill.name}. Ask what it is, how it fits DevOps, or where to learn more.`,
       placeholder: `Ask about ${skill.name}...`,
       error: "Could not get a response.",
@@ -1157,15 +1164,22 @@ const AnimatedSkillDetail = ({
               <span className="mt-8 w-fit rounded-full border border-[#51aaca]/30 bg-[#071b2a]/80 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#d8f3fb] shadow-[0_0_24px_rgba(81,170,202,0.12)]">
                 {t.techPage.title}
               </span>
+              <div className="mt-4 max-w-full truncate text-center text-5xl font-black uppercase leading-none tracking-tight text-white/[0.08] sm:text-7xl">
+                {skill.name}
+              </div>
             </div>
           </motion.div>
 
-          <div className="overflow-hidden rounded-3xl border border-[#51aaca]/22 bg-[#061a26]/72 shadow-2xl shadow-black/25 backdrop-blur-md">
-            <div className="border-b border-[#51aaca]/14 px-5 py-4">
-              <h2 className="text-sm font-black text-white">{techChatCopy.title}</h2>
-              <p className="mt-1 text-xs text-zinc-400">{techChatCopy.subtitle}</p>
+          <div className="overflow-hidden rounded-3xl border border-[#51aaca]/26 bg-[#061a26]/78 shadow-[0_24px_70px_rgba(0,0,0,0.28),0_0_36px_rgba(81,170,202,0.1)] backdrop-blur-md">
+            <div className="border-b border-[#51aaca]/14 px-6 py-5">
+              <div className="mb-2 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#9ed8ea]">
+                <MessageCircle className="h-4 w-4" />
+                {techChatCopy.eyebrow}
+              </div>
+              <h2 className="text-xl font-black text-white">{techChatCopy.title}</h2>
+              <p className="mt-2 text-sm leading-6 text-zinc-400">{techChatCopy.subtitle}</p>
             </div>
-            <div className="max-h-60 space-y-3 overflow-y-auto px-5 py-4">
+            <div className="max-h-80 min-h-48 space-y-3 overflow-y-auto px-6 py-5">
               {techChatMessages.map((message, index) => (
                 <div key={`${message.role}-${index}`} className={`rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-8 bg-[#51aaca] text-[#021014]" : "mr-8 bg-[#092231] text-zinc-100"}`}>
                   {message.content}
@@ -1173,7 +1187,7 @@ const AnimatedSkillDetail = ({
               ))}
               {techChatLoading && <div className="mr-8 rounded-2xl bg-[#092231] px-4 py-3 text-sm text-zinc-400">{language === "uk" ? "AI думає..." : "AI is thinking..."}</div>}
             </div>
-            <div className="flex gap-2 border-t border-[#51aaca]/14 bg-[#02070d]/38 p-4">
+            <div className="flex gap-3 border-t border-[#51aaca]/14 bg-[#02070d]/38 p-5">
               <input
                 value={techChatInput}
                 onChange={(event) => setTechChatInput(event.target.value)}
@@ -1215,6 +1229,7 @@ const AnimatedSkillDetail = ({
             <div className="mt-2">
               {skill.bullets[language].map((bullet, index) => {
                 const parsed = splitBullet(bullet);
+                const detailText = parsed.details || skill.summary[language];
                 const isOpen = openBulletIndex === index;
 
                 return (
@@ -1230,11 +1245,11 @@ const AnimatedSkillDetail = ({
                       </span>
                       <div className="min-w-0">
                         <p className="text-xl font-black leading-tight text-white">{parsed.title}</p>
-                        {!isOpen && parsed.details && <p className="mt-2 line-clamp-1 text-sm font-medium text-zinc-400">{parsed.details}</p>}
+                        {!isOpen && <p className="mt-2 line-clamp-1 text-sm font-medium text-zinc-400">{detailText}</p>}
                       </div>
                     </button>
                     <AnimatePresence initial={false}>
-                      {isOpen && parsed.details && (
+                      {isOpen && (
                         <motion.div
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
@@ -1242,7 +1257,7 @@ const AnimatedSkillDetail = ({
                           transition={{ duration: 0.22 }}
                           className="overflow-hidden"
                         >
-                          <p className="ml-14 mt-3 rounded-2xl border border-[#51aaca]/14 bg-[#061a26]/58 px-4 py-3 text-base font-medium leading-8 text-zinc-300 backdrop-blur-md">{parsed.details}</p>
+                          <p className="ml-14 mt-3 rounded-2xl border border-[#51aaca]/14 bg-[#061a26]/58 px-4 py-3 text-base font-medium leading-8 text-zinc-300 backdrop-blur-md">{detailText}</p>
                         </motion.div>
                       )}
                     </AnimatePresence>
