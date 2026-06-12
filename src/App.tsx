@@ -1128,40 +1128,51 @@ const AnimatedSkillDetail = ({
       </nav>
 
       <main className="mx-auto grid max-w-7xl gap-7 px-5 pb-24 pt-8 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <motion.section initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} className="rounded-3xl border border-[#51aaca]/22 bg-[#061a26]/82 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:p-8">
+        <motion.section initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl border border-[#51aaca]/22 bg-[#061a26]/78 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:p-8">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_0%,rgba(81,170,202,0.18),transparent_34%),linear-gradient(180deg,rgba(216,243,251,0.05),transparent_32%)]" />
+          <div className="pointer-events-none absolute -right-12 top-8 text-[7rem] font-black uppercase leading-none tracking-tight text-white/[0.035] sm:text-[11rem]">{skill.name}</div>
+          <div className="relative z-10">
           <button type="button" onClick={onBack} className="mb-6 inline-flex items-center gap-2 rounded-2xl border border-[#51aaca]/20 bg-[#071b2a]/54 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-[#d8f3fb] shadow-[0_12px_28px_rgba(0,0,0,0.18)] backdrop-blur-md transition hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]">
             <ArrowLeft className="h-4 w-4" />
             Back to site section
           </button>
-          <p className="mb-4 text-xs font-black uppercase tracking-[0.34em] text-[#9ed8ea]">{t.techPage.title}</p>
-          <h1 className="text-5xl font-black leading-none tracking-tight sm:text-7xl">{skill.name}</h1>
-          <p className="mt-6 max-w-3xl text-2xl leading-10 text-zinc-200">{skill.summary[language]}</p>
-          <div className="mt-8 rounded-3xl border border-[#51aaca]/18 bg-[#071b2a]/78 p-5 backdrop-blur-md sm:p-7">
-            <p className="text-lg leading-9 text-zinc-200">{skill.description[language]}</p>
+          <p className="mb-4 text-xs font-black uppercase tracking-[0.42em] text-[#9ed8ea]">{t.techPage.title}</p>
+          <h1 className="text-5xl font-black uppercase leading-[0.82] tracking-tight text-white sm:text-7xl">
+            {skill.name}
+          </h1>
+          <p className="mt-6 max-w-3xl text-2xl font-semibold leading-10 text-[#d8f3fb]">{skill.summary[language]}</p>
+          <div className="mt-8 rounded-3xl border border-[#51aaca]/22 bg-[#02070d]/46 p-5 shadow-[inset_0_0_0_1px_rgba(216,243,251,0.04),0_20px_55px_rgba(0,0,0,0.22)] backdrop-blur-md sm:p-7">
+            <div className="mb-5 flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#51aaca]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#9ed8ea]/55" />
+              <span className="h-2.5 w-2.5 rounded-full bg-white/18" />
+            </div>
+            <p className="text-lg font-medium leading-9 text-zinc-200">{skill.description[language]}</p>
           </div>
           <div className="mt-7 grid gap-4">
             {skill.bullets[language].map((bullet) => {
               const parsed = splitBullet(bullet);
 
               return (
-                <div key={bullet} className="rounded-3xl border border-[#51aaca]/16 bg-[#071c29]/86 p-5 backdrop-blur-md">
+                <div key={bullet} className="group rounded-3xl border border-[#51aaca]/16 bg-[#071c29]/78 p-5 shadow-[0_16px_38px_rgba(0,0,0,0.16)] backdrop-blur-md transition hover:border-[#51aaca]/34 hover:bg-[#092231]/84">
                   <div className="flex gap-4">
-                    <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10">
-                      <ChevronRight className="h-4 w-4 text-[#51aaca]" />
+                    <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition group-hover:bg-[#51aaca]">
+                      <ChevronRight className="h-4 w-4 text-[#51aaca] transition group-hover:text-[#021014]" />
                     </span>
                     <div>
-                      <p className="text-xl font-black text-white">{parsed.title}</p>
-                      {parsed.details && <p className="mt-3 text-base leading-8 text-zinc-300">{parsed.details}</p>}
+                      <p className="text-xl font-black leading-tight text-white">{parsed.title}</p>
+                      {parsed.details && <p className="mt-3 text-base font-medium leading-8 text-zinc-300">{parsed.details}</p>}
                     </div>
                   </div>
                 </div>
               );
             })}
           </div>
+          </div>
         </motion.section>
 
-        <aside className="rounded-3xl border border-[#51aaca]/22 bg-[#061a26]/82 p-4 shadow-2xl shadow-black/30 backdrop-blur-md lg:sticky lg:top-28 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
-          <h2 className="mb-4 px-1 text-lg font-black">{t.techPage.related}</h2>
+        <aside className="rounded-3xl border border-[#51aaca]/22 bg-[#061a26]/74 p-4 shadow-2xl shadow-black/30 backdrop-blur-md lg:sticky lg:top-28 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
+          <h2 className="mb-4 px-1 text-xs font-black uppercase tracking-[0.24em] text-[#9ed8ea]">{t.techPage.related}</h2>
           <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-1">
             {skills.map((item) => {
               const isActive = item.slug === skill.slug;
