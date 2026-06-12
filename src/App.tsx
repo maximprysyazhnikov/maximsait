@@ -1619,6 +1619,14 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const navigateAnimatedTechnologies = () => {
+    window.history.pushState({}, "", "/animated#animated-technologies");
+    setRoute({ page: "animated" });
+    window.setTimeout(() => {
+      document.getElementById("animated-technologies")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+  };
+
   const handleCvDownload = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
 
@@ -1700,6 +1708,16 @@ export default function App() {
             : t.title;
   }, [activeAnimatedSkill, activeProvider, activeSkill, language, route.page, t.title]);
 
+  useEffect(() => {
+    if (route.page !== "animated" || window.location.hash !== "#animated-technologies") return;
+
+    const timer = window.setTimeout(() => {
+      document.getElementById("animated-technologies")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 180);
+
+    return () => window.clearTimeout(timer);
+  }, [route.page]);
+
   if (route.page === "animated") {
     return (
       <>
@@ -1721,7 +1739,7 @@ export default function App() {
         <AnimatedSkillDetail
           language={language}
           skill={activeAnimatedSkill}
-          onBack={() => navigate({ page: "animated" })}
+          onBack={navigateAnimatedTechnologies}
           onLightVersion={() => navigate({ page: "home" })}
           onSelectSkill={(slug) => navigate({ page: "animatedSkill", slug })}
         />
