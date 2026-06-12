@@ -1134,12 +1134,11 @@ const AnimatedSkillDetail = ({
 
       <main className="mx-auto max-w-7xl px-5 pb-24 pt-10">
         <section className="grid min-h-[calc(100vh-9rem)] items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="order-2 space-y-4 lg:order-1">
           <motion.div
             initial={{ opacity: 0, x: -28 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.45 }}
-            className="relative min-h-[420px] overflow-hidden rounded-3xl border border-[#51aaca]/24 bg-[#061a26]/64 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:min-h-[520px] sm:p-7"
+            className="relative order-2 min-h-[420px] overflow-hidden rounded-3xl border border-[#51aaca]/24 bg-[#061a26]/64 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:min-h-[520px] sm:p-7 lg:order-1"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_45%_35%,rgba(81,170,202,0.18),transparent_30%),linear-gradient(180deg,rgba(216,243,251,0.06),rgba(2,7,13,0.18))]" />
             <div className="absolute inset-0 opacity-[0.16] [background-image:linear-gradient(rgba(216,243,251,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(216,243,251,0.22)_1px,transparent_1px)] [background-size:72px_72px]" />
@@ -1170,44 +1169,6 @@ const AnimatedSkillDetail = ({
             </div>
           </motion.div>
 
-          <div className="overflow-hidden rounded-3xl border border-[#51aaca]/26 bg-[#061a26]/78 shadow-[0_24px_70px_rgba(0,0,0,0.28),0_0_36px_rgba(81,170,202,0.1)] backdrop-blur-md">
-            <div className="border-b border-[#51aaca]/14 px-6 py-5">
-              <div className="mb-2 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#9ed8ea]">
-                <MessageCircle className="h-4 w-4" />
-                {techChatCopy.eyebrow}
-              </div>
-              <h2 className="text-xl font-black text-white">{techChatCopy.title}</h2>
-              <p className="mt-2 text-sm leading-6 text-zinc-400">{techChatCopy.subtitle}</p>
-            </div>
-            <div className="max-h-80 min-h-48 space-y-3 overflow-y-auto px-6 py-5">
-              {techChatMessages.map((message, index) => (
-                <div key={`${message.role}-${index}`} className={`rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-8 bg-[#51aaca] text-[#021014]" : "mr-8 bg-[#092231] text-zinc-100"}`}>
-                  {message.content}
-                </div>
-              ))}
-              {techChatLoading && <div className="mr-8 rounded-2xl bg-[#092231] px-4 py-3 text-sm text-zinc-400">{language === "uk" ? "AI думає..." : "AI is thinking..."}</div>}
-            </div>
-            <div className="flex gap-3 border-t border-[#51aaca]/14 bg-[#02070d]/38 p-5">
-              <input
-                value={techChatInput}
-                onChange={(event) => setTechChatInput(event.target.value)}
-                onKeyDown={(event) => { if (event.key === "Enter") void sendTechChatMessage(); }}
-                placeholder={techChatCopy.placeholder}
-                className="min-w-0 flex-1 rounded-2xl border border-[#51aaca]/16 bg-[#02070d]/70 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500 focus:border-[#51aaca]/45"
-              />
-              <button
-                type="button"
-                onClick={() => void sendTechChatMessage()}
-                disabled={techChatLoading || !techChatInput.trim()}
-                className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#51aaca] text-[#021014] transition hover:bg-[#9ed8ea] disabled:cursor-not-allowed disabled:opacity-50"
-                aria-label={language === "uk" ? "Надіслати" : "Send"}
-              >
-                <Send className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-          </div>
-
           <motion.div
             initial={{ opacity: 0, x: 28 }}
             animate={{ opacity: 1, x: 0 }}
@@ -1226,7 +1187,43 @@ const AnimatedSkillDetail = ({
             <div className="mt-9 border-y border-white/12 py-7">
               <p className="text-lg font-medium leading-9 text-zinc-200">{skill.description[language]}</p>
             </div>
-            <div className="mt-2">
+            <div className="mt-7 overflow-hidden rounded-3xl border border-[#51aaca]/26 bg-[#061a26]/78 shadow-[0_24px_70px_rgba(0,0,0,0.28),0_0_36px_rgba(81,170,202,0.1)] backdrop-blur-md">
+              <div className="border-b border-[#51aaca]/14 px-6 py-5">
+                <div className="mb-2 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#9ed8ea]">
+                  <MessageCircle className="h-4 w-4" />
+                  {techChatCopy.eyebrow}
+                </div>
+                <h2 className="text-xl font-black text-white">{techChatCopy.title}</h2>
+                <p className="mt-2 text-sm leading-6 text-zinc-400">{techChatCopy.subtitle}</p>
+              </div>
+              <div className="max-h-80 min-h-48 space-y-3 overflow-y-auto px-6 py-5">
+                {techChatMessages.map((message, index) => (
+                  <div key={`${message.role}-${index}`} className={`rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-8 bg-[#51aaca] text-[#021014]" : "mr-8 bg-[#092231] text-zinc-100"}`}>
+                    {message.content}
+                  </div>
+                ))}
+                {techChatLoading && <div className="mr-8 rounded-2xl bg-[#092231] px-4 py-3 text-sm text-zinc-400">{language === "uk" ? "AI думає..." : "AI is thinking..."}</div>}
+              </div>
+              <div className="flex gap-3 border-t border-[#51aaca]/14 bg-[#02070d]/38 p-5">
+                <input
+                  value={techChatInput}
+                  onChange={(event) => setTechChatInput(event.target.value)}
+                  onKeyDown={(event) => { if (event.key === "Enter") void sendTechChatMessage(); }}
+                  placeholder={techChatCopy.placeholder}
+                  className="min-w-0 flex-1 rounded-2xl border border-[#51aaca]/16 bg-[#02070d]/70 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500 focus:border-[#51aaca]/45"
+                />
+                <button
+                  type="button"
+                  onClick={() => void sendTechChatMessage()}
+                  disabled={techChatLoading || !techChatInput.trim()}
+                  className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#51aaca] text-[#021014] transition hover:bg-[#9ed8ea] disabled:cursor-not-allowed disabled:opacity-50"
+                  aria-label={language === "uk" ? "Надіслати" : "Send"}
+                >
+                  <Send className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+            <div className="mt-7">
               {skill.bullets[language].map((bullet, index) => {
                 const parsed = splitBullet(bullet);
                 const detailText = parsed.details || skill.summary[language];
@@ -1730,6 +1727,7 @@ const DetailLayout = ({
             <h1 className="mb-5 text-4xl font-bold text-white md:text-6xl">{title}</h1>
             <p className="mb-6 max-w-3xl text-xl leading-relaxed text-zinc-300">{summary}</p>
             <Card className="mb-8 bg-[#071b2a]/76"><p className="text-base leading-8 text-zinc-300">{description}</p></Card>
+            {pageContext && <div className="mb-8"><FocusedTechChat language={language} pageContext={pageContext} /></div>}
             <div className="grid gap-4">
               {bullets.map((bullet, index) => {
                 const parsed = splitBullet(bullet);
@@ -1766,7 +1764,6 @@ const DetailLayout = ({
           </div>
           <aside>
             <Card className="sticky top-28 bg-[#051421]/82"><h2 className="mb-5 text-lg font-semibold text-white">{asideTitle}</h2>{asideContent}</Card>
-            {pageContext && <div className="mt-6"><FocusedTechChat language={language} pageContext={pageContext} /></div>}
           </aside>
         </div>
       </main>
