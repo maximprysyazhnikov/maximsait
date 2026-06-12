@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 type Language = "uk" | "en";
-type Route = { page: "home" } | { page: "animated" } | { page: "skill"; slug: string } | { page: "provider"; slug: string };
+type Route = { page: "home" } | { page: "animated" } | { page: "animatedSkill"; slug: string } | { page: "skill"; slug: string } | { page: "provider"; slug: string };
 type ChatMessage = { role: "user" | "assistant"; content: string };
 type LeadForm = { name: string; email: string; phone: string; message: string };
 type SupportMessage = { id: string; role: "user" | "operator"; text: string; createdAt: string };
@@ -184,6 +184,7 @@ const blockIcons = [
 
 const getRouteFromPath = (pathname: string): Route => {
   const parts = pathname.split("/").filter(Boolean);
+  if (parts[0] === "animated" && parts[1] === "tech" && parts[2]) return { page: "animatedSkill", slug: parts[2] };
   if (parts[0] === "animated") return { page: "animated" };
   if (parts[0] === "tech" && parts[1]) return { page: "skill", slug: parts[1] };
   if (parts[0] === "learning" && parts[1]) return { page: "provider", slug: parts[1] };
@@ -701,7 +702,7 @@ const AnimatedResume = ({
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.025 }}
-                        onClick={() => setActiveAnimatedSkillSlug(skill.slug)}
+                        onClick={() => onOpenSkill(skill.slug)}
                         aria-current={isActive ? "true" : undefined}
                         className={`flex h-12 min-w-0 items-center justify-between gap-2 rounded-2xl border px-3 text-left shadow-[0_10px_28px_rgba(81,170,202,0.08)] transition hover:-translate-y-0.5 sm:h-14 sm:px-4 ${
                           isActive
@@ -1067,6 +1068,127 @@ const AnimatedResume = ({
           </motion.button>
         )}
       </AnimatePresence>
+    </div>
+  );
+};
+
+const AnimatedSkillDetail = ({
+  language,
+  skill,
+  onBack,
+  onLightVersion,
+  onSelectSkill,
+}: {
+  language: Language;
+  skill: Skill;
+  onBack: () => void;
+  onLightVersion: () => void;
+  onSelectSkill: (slug: string) => void;
+}) => {
+  const t = copy[language];
+  const switchAnimatedLanguage = (nextLanguage: Language) => {
+    window.dispatchEvent(new CustomEvent<Language>("portfolio-language", { detail: nextLanguage }));
+  };
+
+  return (
+    <div className="relative isolate min-h-screen overflow-hidden bg-[#02070d] text-white">
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <video
+          aria-hidden="true"
+          src="/videoplayback11.mp4"
+          preload="auto"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover opacity-55"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.74),rgba(3,12,18,0.46)_48%,rgba(0,0,0,0.78)),radial-gradient(circle_at_50%_20%,rgba(81,170,202,0.14),transparent_36%)]" />
+        <div className="absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(216,243,251,0.24)_1px,transparent_1px),linear-gradient(90deg,rgba(216,243,251,0.24)_1px,transparent_1px)] [background-size:96px_96px]" />
+      </div>
+
+      <nav className="sticky top-0 z-40 px-4 pt-3">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-2xl border border-[#51aaca]/20 bg-[#02070d]/76 shadow-2xl shadow-black/30 backdrop-blur-xl">
+          <div className="h-0.5 bg-[#51aaca]" />
+          <div className="flex items-center justify-between gap-3 px-3 py-3 sm:px-5">
+            <div className="flex min-w-0 items-center gap-3">
+              <button type="button" onClick={onBack} aria-label="Back" className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#51aaca]/25 bg-[#071b2a]/80 text-zinc-300 transition hover:bg-[#51aaca] hover:text-[#021014]">
+                <ArrowLeft className="h-4 w-4" />
+              </button>
+              <button type="button" onClick={onLightVersion} className="min-w-0 text-left">
+                <span className="block truncate text-xl font-black leading-none">DEVOPS</span>
+                <span className="mt-1 block truncate text-[10px] font-bold uppercase tracking-[0.24em] text-[#9ed8ea]">Back to light version</span>
+              </button>
+            </div>
+            <div className="flex shrink-0 items-center rounded-full border border-[#51aaca]/18 bg-[#061a26]/85 p-1">
+              {(["en", "uk"] as Language[]).map((lang) => (
+                <button key={lang} type="button" onClick={() => switchAnimatedLanguage(lang)} className={`rounded-full px-3 py-1.5 text-xs font-black uppercase tracking-[0.18em] transition ${language === lang ? "bg-[#51aaca] text-[#021014]" : "text-zinc-400 hover:text-white"}`}>
+                  {lang}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <main className="mx-auto grid max-w-7xl gap-7 px-5 pb-24 pt-8 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <motion.section initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} className="rounded-3xl border border-[#51aaca]/22 bg-[#061a26]/82 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:p-8">
+          <p className="mb-4 text-xs font-black uppercase tracking-[0.34em] text-[#9ed8ea]">{t.techPage.title}</p>
+          <h1 className="text-5xl font-black leading-none tracking-tight sm:text-7xl">{skill.name}</h1>
+          <p className="mt-6 max-w-3xl text-2xl leading-10 text-zinc-200">{skill.summary[language]}</p>
+          <div className="mt-8 rounded-3xl border border-[#51aaca]/18 bg-[#071b2a]/78 p-5 backdrop-blur-md sm:p-7">
+            <p className="text-lg leading-9 text-zinc-200">{skill.description[language]}</p>
+          </div>
+          <div className="mt-7 grid gap-4">
+            {skill.bullets[language].map((bullet) => {
+              const parsed = splitBullet(bullet);
+
+              return (
+                <div key={bullet} className="rounded-3xl border border-[#51aaca]/16 bg-[#071c29]/86 p-5 backdrop-blur-md">
+                  <div className="flex gap-4">
+                    <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10">
+                      <ChevronRight className="h-4 w-4 text-[#51aaca]" />
+                    </span>
+                    <div>
+                      <p className="text-xl font-black text-white">{parsed.title}</p>
+                      {parsed.details && <p className="mt-3 text-base leading-8 text-zinc-300">{parsed.details}</p>}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </motion.section>
+
+        <aside className="rounded-3xl border border-[#51aaca]/22 bg-[#061a26]/82 p-4 shadow-2xl shadow-black/30 backdrop-blur-md lg:sticky lg:top-28 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
+          <h2 className="mb-4 px-1 text-lg font-black">{t.techPage.related}</h2>
+          <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-1">
+            {skills.map((item) => {
+              const isActive = item.slug === skill.slug;
+
+              return (
+                <button
+                  key={item.slug}
+                  type="button"
+                  onClick={() => !isActive && onSelectSkill(item.slug)}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`flex h-12 min-w-0 items-center justify-between gap-2 rounded-2xl border px-3 text-left transition ${
+                    isActive
+                      ? "border-[#51aaca]/80 bg-[#51aaca] text-[#021014]"
+                      : "border-[#51aaca]/14 bg-[#092231]/92 text-white hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]"
+                  }`}
+                >
+                  <span className="flex min-w-0 items-center gap-2">
+                    {item.icon}
+                    <span className="truncate text-xs font-black sm:text-sm">{item.name}</span>
+                  </span>
+                  <ChevronRight className={`h-4 w-4 shrink-0 ${isActive ? "text-[#021014]" : "text-[#9ed8ea]"}`} />
+                </button>
+              );
+            })}
+          </div>
+        </aside>
+      </main>
     </div>
   );
 };
@@ -1472,7 +1594,15 @@ export default function App() {
   }, []);
 
   const navigate = (nextRoute: Route) => {
-    const pathname = nextRoute.page === "home" ? "/" : nextRoute.page === "animated" ? "/animated" : nextRoute.page === "skill" ? `/tech/${nextRoute.slug}` : `/learning/${nextRoute.slug}`;
+    const pathname = nextRoute.page === "home"
+      ? "/"
+      : nextRoute.page === "animated"
+        ? "/animated"
+        : nextRoute.page === "animatedSkill"
+          ? `/animated/tech/${nextRoute.slug}`
+          : nextRoute.page === "skill"
+            ? `/tech/${nextRoute.slug}`
+            : `/learning/${nextRoute.slug}`;
     window.history.pushState({}, "", pathname);
     setRoute(nextRoute);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1543,12 +1673,21 @@ export default function App() {
   };
 
   const activeSkill = useMemo(() => route.page === "skill" ? skills.find((item) => item.slug === route.slug) : undefined, [route]);
+  const activeAnimatedSkill = useMemo(() => route.page === "animatedSkill" ? skills.find((item) => item.slug === route.slug) : undefined, [route]);
   const activeProvider = useMemo(() => route.page === "provider" ? learningProviders.find((item) => item.slug === route.slug) : undefined, [route]);
 
   useEffect(() => {
     document.documentElement.lang = language;
-    document.title = route.page === "animated" ? `Animated CV | ${t.title}` : route.page === "skill" && activeSkill ? `${activeSkill.name} | ${t.title}` : route.page === "provider" && activeProvider ? `${activeProvider.title} | ${t.title}` : t.title;
-  }, [activeProvider, activeSkill, language, route.page, t.title]);
+    document.title = route.page === "animatedSkill" && activeAnimatedSkill
+      ? `${activeAnimatedSkill.name} | Animated CV`
+      : route.page === "animated"
+        ? `Animated CV | ${t.title}`
+        : route.page === "skill" && activeSkill
+          ? `${activeSkill.name} | ${t.title}`
+          : route.page === "provider" && activeProvider
+            ? `${activeProvider.title} | ${t.title}`
+            : t.title;
+  }, [activeAnimatedSkill, activeProvider, activeSkill, language, route.page, t.title]);
 
   if (route.page === "animated") {
     return (
@@ -1558,7 +1697,22 @@ export default function App() {
           onBack={() => navigate({ page: "home" })}
           onContact={() => document.getElementById("animated-contact")?.scrollIntoView({ behavior: "smooth", block: "start" })}
           onCvDownload={handleCvDownload}
-          onOpenSkill={(slug) => navigate({ page: "skill", slug })}
+          onOpenSkill={(slug) => navigate({ page: "animatedSkill", slug })}
+        />
+        <AIChatWidget language={language} />
+      </>
+    );
+  }
+
+  if (route.page === "animatedSkill" && activeAnimatedSkill) {
+    return (
+      <>
+        <AnimatedSkillDetail
+          language={language}
+          skill={activeAnimatedSkill}
+          onBack={() => navigate({ page: "animated" })}
+          onLightVersion={() => navigate({ page: "home" })}
+          onSelectSkill={(slug) => navigate({ page: "animatedSkill", slug })}
         />
         <AIChatWidget language={language} />
       </>
