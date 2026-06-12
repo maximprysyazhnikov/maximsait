@@ -1762,30 +1762,19 @@ export default function App() {
       <BackgroundScene />
       <nav className="fixed top-0 z-50 w-full glass border-b-0 py-4">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-3 text-white">
-            <button type="button" onClick={() => navigate({ page: "home" })} className="block"><DevOpsLogo /></button>
-            <button
-              type="button"
-              onClick={() => navigate({ page: "animated" })}
-              className="group hidden items-center gap-3 rounded-2xl border border-[#51aaca]/25 bg-[#061a26]/82 px-4 py-2.5 text-left shadow-[0_14px_34px_rgba(0,0,0,0.2)] backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[#51aaca]/45 hover:bg-[#0c2b3d] sm:inline-flex"
-            >
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#51aaca]/25 bg-[#071b2a] text-[#d8f3fb] transition group-hover:bg-[#51aaca] group-hover:text-[#021014]">
-                <Terminal className="h-4 w-4" />
-              </span>
-              <span className="leading-none">
-                <span className="block text-sm font-black uppercase tracking-[0.14em] text-white">{t.hero.animated}</span>
-                <span className="mt-1 block text-[10px] font-black uppercase tracking-[0.22em] text-[#9ed8ea]">{language === "uk" ? "Відкрити animated CV" : "Open animated CV"}</span>
-              </span>
-              <ChevronRight className="h-4 w-4 text-[#9ed8ea] transition group-hover:translate-x-0.5" />
-            </button>
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex min-w-0 items-center overflow-hidden rounded-2xl border border-[#51aaca]/18 bg-[#02070d]/62 p-1 text-white shadow-2xl shadow-black/20 backdrop-blur-xl">
             <button
               type="button"
               onClick={() => navigate({ page: "animated" })}
               aria-label={t.hero.animated}
-              title={t.hero.animated}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-[#51aaca]/25 bg-[#061a26]/82 text-[#d8f3fb] shadow-[0_14px_34px_rgba(0,0,0,0.2)] backdrop-blur-md transition hover:border-[#51aaca]/45 hover:bg-[#0c2b3d] sm:hidden"
+              className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl border border-[#51aaca]/25 bg-[#071b2a]/80 px-3 text-[#d8f3fb] transition hover:bg-[#51aaca] hover:text-[#021014] sm:px-4"
             >
               <Terminal className="h-4 w-4" />
+              <span className="hidden text-xs font-black uppercase tracking-[0.14em] sm:inline">{t.hero.animated}</span>
+            </button>
+            <button type="button" onClick={() => navigate({ page: "animated" })} className="min-w-0 px-4 text-left transition hover:text-[#d8f3fb] sm:min-w-[220px]">
+              <span className="block truncate text-lg font-black leading-none tracking-tight sm:text-xl">DEVOPS</span>
+              <span className="mt-1 block truncate text-[9px] font-bold uppercase tracking-[0.22em] text-[#9ed8ea] sm:text-[10px]">Open animated CV</span>
             </button>
           </motion.div>
           <div className="flex items-center gap-4 md:gap-6">
