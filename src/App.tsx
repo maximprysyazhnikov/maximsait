@@ -529,8 +529,19 @@ const AnimatedResume = ({
       trainingLink: "Mate course",
       fullPage: "Full explanation",
       technologies: "Technologies",
-    };
+  };
   const featuredStack = skills;
+  const stackStarterGuide = language === "uk"
+    ? [
+      { step: "01", title: "Обери інструмент", text: "Натисни на технологію нижче, щоб відкрити її окрему сторінку." },
+      { step: "02", title: "Пройди міні-гайд", text: "На сторінці буде короткий шлях для новачка: роль, перша дія, практика." },
+      { step: "03", title: "Питай AI або docs", text: "Локальний AI пояснить простими словами, а офіційні джерела дадуть глибину." },
+    ]
+    : [
+      { step: "01", title: "Pick a tool", text: "Click a technology below to open its focused page." },
+      { step: "02", title: "Use the mini guide", text: "Each page gives a beginner path: role, first action, practice." },
+      { step: "03", title: "Ask AI or docs", text: "The local AI explains simply, while official resources go deeper." },
+    ];
   const experienceScenes = [
     {
       title: t.experience.commercialTitle,
@@ -903,6 +914,22 @@ const AnimatedResume = ({
                   </span>
                   <ChevronRight className="h-4 w-4" />
                 </button>
+                <div className="mt-7 grid gap-3 sm:grid-cols-3 lg:max-w-3xl">
+                  {stackStarterGuide.map((item) => (
+                    <button
+                      key={item.step}
+                      type="button"
+                      onClick={() => scrollToAnimatedSection("animated-technologies")}
+                      className="group min-h-[118px] rounded-2xl border border-black/10 bg-white/70 p-4 text-left shadow-[0_16px_42px_rgba(2,7,13,0.08)] transition hover:-translate-y-0.5 hover:border-[#51aaca]/45 hover:bg-[#eaf8fc]"
+                    >
+                      <span className="mb-3 inline-flex rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 px-3 py-1 text-[10px] font-black text-[#073044] group-hover:bg-[#51aaca]">
+                        {item.step}
+                      </span>
+                      <span className="block text-sm font-black text-black">{item.title}</span>
+                      <span className="mt-2 block text-xs font-semibold leading-5 text-zinc-600">{item.text}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
             <div id="animated-technologies" className="border-y border-black/15 py-8 sm:py-10">
