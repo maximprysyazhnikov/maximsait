@@ -1019,7 +1019,7 @@ const AnimatedSkillDetail = ({
   const t = copy[language];
   const siteSectionLabel = language === "uk" ? "До розділу сайту" : "Site section";
   const backToSectionLabel = language === "uk" ? "До розділу сайту" : "Back to site section";
-  const lightPortfolioLabel = language === "uk" ? "Light portfolio" : "Light portfolio";
+  const animatedHomeLabel = language === "uk" ? "Головна animated" : "Animated main page";
   const switchAnimatedLanguage = (nextLanguage: Language) => {
     window.dispatchEvent(new CustomEvent<Language>("portfolio-language", { detail: nextLanguage }));
   };
@@ -1051,8 +1051,8 @@ const AnimatedSkillDetail = ({
                 <span className="hidden text-xs font-black uppercase tracking-[0.14em] sm:inline">{siteSectionLabel}</span>
               </button>
               <button type="button" onClick={onLightVersion} className="min-w-0 rounded-xl border border-[#51aaca]/18 bg-[#071b2a]/42 px-3 py-2 text-left shadow-[0_0_24px_rgba(81,170,202,0.06)] backdrop-blur-md transition hover:border-[#51aaca]/40 hover:bg-[#0c2b3d]/82 sm:px-4">
-                <span className="block truncate text-lg font-black leading-none sm:text-xl">MAIN SITE</span>
-                <span className="mt-1 block truncate text-[9px] font-bold uppercase tracking-[0.22em] text-[#9ed8ea] sm:text-[10px]">{lightPortfolioLabel}</span>
+                <span className="block truncate text-lg font-black leading-none sm:text-xl">ANIMATED CV</span>
+                <span className="mt-1 block truncate text-[9px] font-bold uppercase tracking-[0.22em] text-[#9ed8ea] sm:text-[10px]">{animatedHomeLabel}</span>
               </button>
             </div>
             <div className="flex shrink-0 items-center rounded-full border border-[#51aaca]/18 bg-[#061a26]/85 p-1">
@@ -1076,31 +1076,27 @@ const AnimatedSkillDetail = ({
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_45%_35%,rgba(81,170,202,0.18),transparent_30%),linear-gradient(180deg,rgba(216,243,251,0.06),rgba(2,7,13,0.18))]" />
             <div className="absolute inset-0 opacity-[0.16] [background-image:linear-gradient(rgba(216,243,251,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(216,243,251,0.22)_1px,transparent_1px)] [background-size:72px_72px]" />
-            <div className="pointer-events-none absolute left-6 top-8 text-[7rem] font-black uppercase leading-none tracking-tight text-white/[0.045] sm:text-[10rem]">01</div>
-            <div className="pointer-events-none absolute -right-8 top-16 text-[5.5rem] font-black uppercase leading-none tracking-tight text-white/[0.035] sm:text-[8rem]">{skill.name}</div>
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-x-8 top-20 aspect-square rounded-full border border-[#51aaca]/16"
+              className="absolute left-1/2 top-1/2 aspect-square w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#51aaca]/16"
             />
             <motion.div
               animate={{ rotate: -360 }}
               transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-x-16 top-28 aspect-square rounded-[42%] border border-dashed border-white/16"
+              className="absolute left-1/2 top-1/2 aspect-square w-[54%] -translate-x-1/2 -translate-y-1/2 rounded-[42%] border border-dashed border-white/16"
             />
-            <div className="relative z-10 flex min-h-[380px] flex-col justify-end sm:min-h-[470px]">
-              <div className="mb-auto flex justify-end">
-                <div className="flex h-28 w-28 items-center justify-center rounded-3xl border border-[#51aaca]/20 bg-[#02070d]/48 text-[#d8f3fb] shadow-[0_0_42px_rgba(81,170,202,0.12)] backdrop-blur-md sm:h-36 sm:w-36 [&_svg]:h-12 [&_svg]:w-12">
+            <div className="relative z-10 flex min-h-[380px] flex-col items-center justify-center sm:min-h-[470px]">
+              <div className="relative flex items-center justify-center">
+                <div className="absolute h-48 w-48 rounded-full border border-[#51aaca]/18 bg-[#51aaca]/5 blur-[1px] sm:h-64 sm:w-64" />
+                <div className="absolute h-32 w-32 rounded-[38%] border border-dashed border-white/16 sm:h-44 sm:w-44" />
+                <div className="relative flex h-36 w-36 items-center justify-center rounded-[2rem] border border-[#51aaca]/28 bg-[#02070d]/58 text-[#d8f3fb] shadow-[0_0_52px_rgba(81,170,202,0.18)] backdrop-blur-md sm:h-44 sm:w-44 [&_svg]:h-16 [&_svg]:w-16 sm:[&_svg]:h-20 sm:[&_svg]:w-20">
                   {skill.icon}
                 </div>
               </div>
-              <span className="mb-4 w-fit rounded-full border border-[#51aaca]/30 bg-[#071b2a]/80 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#d8f3fb] shadow-[0_0_24px_rgba(81,170,202,0.12)]">
+              <span className="mt-8 w-fit rounded-full border border-[#51aaca]/30 bg-[#071b2a]/80 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#d8f3fb] shadow-[0_0_24px_rgba(81,170,202,0.12)]">
                 {t.techPage.title}
               </span>
-              <div className="rounded-3xl border border-white/10 bg-[#02070d]/78 p-5 shadow-2xl shadow-black/25 backdrop-blur-md">
-                <h2 className="text-3xl font-black uppercase leading-none tracking-tight text-white sm:text-5xl">{skill.name}</h2>
-                <p className="mt-3 text-base font-bold leading-7 text-[#9ed8ea]">{skill.summary[language]}</p>
-              </div>
             </div>
           </motion.div>
 
@@ -1716,7 +1712,7 @@ export default function App() {
           language={language}
           skill={activeAnimatedSkill}
           onBack={navigateAnimatedTechnologies}
-          onLightVersion={() => navigate({ page: "home" })}
+          onLightVersion={() => navigate({ page: "animated" })}
           onSelectSkill={(slug) => navigate({ page: "animatedSkill", slug })}
         />
         <AIChatWidget language={language} />
