@@ -850,10 +850,6 @@ const AnimatedResume = ({
         </section>
 
         <section id="animated-projects" className="relative bg-white px-5 py-24 text-black">
-          <button type="button" onClick={() => scrollToAnimatedSection("animated-learning")} className={`absolute bottom-6 right-6 z-10 hidden md:inline-flex ${animatedFloatingButton} !bg-white/70 !text-[#021014] hover:!bg-white`}>
-            {story.learnProjects}
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#51aaca] text-[#021014]"><ArrowUp className="h-4 w-4 rotate-180" /></span>
-          </button>
           <div className="mx-auto max-w-7xl">
             <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
               <h2 className="text-5xl font-black leading-none tracking-tight md:text-7xl">{story.projectsTitle}</h2>
