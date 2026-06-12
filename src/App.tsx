@@ -991,54 +991,55 @@ const AnimatedResume = ({
           </div>
         </section>
 
-        <footer className="border-t border-white/10 bg-black px-5 py-16 text-white">
-          <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-4">
-            <div>
-              <button type="button" onClick={() => scrollToAnimatedSection("animated-hero")} className="text-left text-4xl font-black leading-none tracking-tight">
-                MAKSYM
-                <span className="mt-2 block text-xs font-bold uppercase tracking-[0.32em] text-[#9ed8ea]">DevOps CV</span>
-              </button>
-              <p className="mt-6 max-w-[240px] text-sm font-semibold leading-7 text-zinc-400">
-                Made for reliable systems. Cloud, automation, and delivery.
-              </p>
-              <div className="mt-8 max-w-[220px] overflow-hidden rounded-2xl border border-[#51aaca]/25 bg-[#071b2a]/80 shadow-2xl shadow-black/30">
+        <footer className="border-t border-white/10 bg-black px-5 py-12 text-white">
+          <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.05fr_0.85fr_1.45fr]">
+            <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+              <div className="flex items-center gap-4">
                 <img
                   src="/profile-photo.jpg"
                   alt="Maksym Prysiazhnikov"
-                  className="aspect-[4/5] w-full object-cover object-center opacity-90 saturate-[0.92]"
+                  className="h-24 w-24 rounded-2xl border border-[#51aaca]/25 object-cover object-center opacity-95"
                 />
+                <button type="button" onClick={() => scrollToAnimatedSection("animated-hero")} className="text-left">
+                  <span className="block text-3xl font-black leading-none tracking-tight">MAKSYM</span>
+                  <span className="mt-2 block text-xs font-black uppercase tracking-[0.32em] text-[#9ed8ea]">DevOps CV</span>
+                </button>
               </div>
+              <p className="mt-5 max-w-md text-sm font-semibold leading-7 text-zinc-400">
+                Made for reliable systems. Cloud, automation, and delivery.
+              </p>
             </div>
-            <div>
+            <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
               <h3 className="mb-5 text-xs font-black uppercase tracking-[0.28em] text-zinc-500">{story.resources}</h3>
               <div className="space-y-3 text-sm font-bold">
-                <a href="/download/cv" onClick={onCvDownload} className="flex items-center justify-between border-b border-white/10 pb-3 transition hover:text-[#9ed8ea]">{t.hero.resume}<Download className="h-4 w-4" /></a>
-                <button type="button" onClick={onBack} className="flex w-full items-center justify-between border-b border-white/10 pb-3 text-left transition hover:text-[#9ed8ea]">{story.back}<ArrowLeft className="h-4 w-4" /></button>
-                <button type="button" onClick={onContact} className="flex w-full items-center justify-between border-b border-white/10 pb-3 text-left transition hover:text-[#9ed8ea]">{story.contact}<Mail className="h-4 w-4" /></button>
+                <a href="/download/cv" onClick={onCvDownload} className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 px-4 py-3 transition hover:border-[#51aaca]/35 hover:text-[#9ed8ea]">{t.hero.resume}<Download className="h-4 w-4" /></a>
+                <button type="button" onClick={onBack} className="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-left transition hover:border-[#51aaca]/35 hover:text-[#9ed8ea]">{story.back}<ArrowLeft className="h-4 w-4" /></button>
+                <button type="button" onClick={onContact} className="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-left transition hover:border-[#51aaca]/35 hover:text-[#9ed8ea]">{story.contact}<Mail className="h-4 w-4" /></button>
               </div>
             </div>
-            <div>
-              <h3 className="mb-5 text-xs font-black uppercase tracking-[0.28em] text-zinc-500">{story.sitemap}</h3>
-              <div className="grid gap-3 text-sm font-bold">
-                {animatedNavItems.map(([id, label]) => (
-                  <button key={id} type="button" onClick={() => scrollToAnimatedSection(id)} className="text-left transition hover:text-[#9ed8ea]">
-                    {label}
-                  </button>
-                ))}
+            <div className="grid gap-8 rounded-3xl border border-white/10 bg-white/[0.03] p-5 md:grid-cols-2">
+              <div>
+                <h3 className="mb-5 text-xs font-black uppercase tracking-[0.28em] text-zinc-500">{story.sitemap}</h3>
+                <div className="grid grid-cols-2 gap-3 text-sm font-bold sm:grid-cols-1">
+                  {animatedNavItems.map(([id, label]) => (
+                    <button key={id} type="button" onClick={() => scrollToAnimatedSection(id)} className="text-left transition hover:text-[#9ed8ea]">
+                      {label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div>
-              <h3 className="mb-5 text-xs font-black uppercase tracking-[0.28em] text-zinc-500">{story.social}</h3>
-              <div className="space-y-3 text-sm font-bold">
-                <a href="https://linkedin.com/in/maxim-prysyazhnikov-b46196163" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between border-b border-white/10 pb-3 transition hover:text-[#9ed8ea]">{t.contact.linkedin}<ExternalLink className="h-4 w-4" /></a>
-                <a href="https://github.com/maximprysyazhnikov" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between border-b border-white/10 pb-3 transition hover:text-[#9ed8ea]">{t.contact.github}<ExternalLink className="h-4 w-4" /></a>
-                <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-center justify-between border-b border-white/10 pb-3 transition hover:text-[#9ed8ea]">{CONTACT_EMAIL}<Mail className="h-4 w-4" /></a>
+              <div>
+                <h3 className="mb-5 text-xs font-black uppercase tracking-[0.28em] text-zinc-500">{story.social}</h3>
+                <div className="space-y-3 text-sm font-bold">
+                  <a href="https://linkedin.com/in/maxim-prysyazhnikov-b46196163" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 px-4 py-3 transition hover:border-[#51aaca]/35 hover:text-[#9ed8ea]">{t.contact.linkedin}<ExternalLink className="h-4 w-4" /></a>
+                  <a href="https://github.com/maximprysyazhnikov" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 px-4 py-3 transition hover:border-[#51aaca]/35 hover:text-[#9ed8ea]">{t.contact.github}<ExternalLink className="h-4 w-4" /></a>
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-black/40 px-4 py-3 transition hover:border-[#51aaca]/35 hover:text-[#9ed8ea]"><span className="truncate">{CONTACT_EMAIL}</span><Mail className="h-4 w-4 shrink-0" /></a>
+                </div>
               </div>
             </div>
           </div>
-          <div className="mx-auto mt-12 flex max-w-7xl flex-col justify-between gap-4 border-t border-white/10 pt-6 text-xs font-bold uppercase tracking-[0.22em] text-zinc-500 md:flex-row">
-            <span>© {new Date().getFullYear()} Maksym Prysiazhnikov</span>
-            <button type="button" onClick={() => scrollToAnimatedSection("animated-hero")} className="text-left transition hover:text-white md:text-right">{story.backTop}</button>
+          <div className="mx-auto mt-8 max-w-7xl border-t border-white/10 pt-5 text-xs font-bold uppercase tracking-[0.22em] text-zinc-500">
+            © {new Date().getFullYear()} Maksym Prysiazhnikov
           </div>
         </footer>
       </main>
@@ -1053,7 +1054,7 @@ const AnimatedResume = ({
             onClick={() => scrollToAnimatedSection("animated-hero")}
             aria-label={story.backTop}
             title={story.backTop}
-            className={`fixed bottom-6 left-6 z-50 hidden h-12 w-12 rounded-full !p-0 md:inline-flex ${animatedButtonGhost}`}
+            className={`fixed bottom-6 left-6 z-50 h-12 w-12 rounded-full !p-0 ${animatedButtonGhost}`}
           >
             <ArrowUp className="h-4 w-4" />
           </motion.button>
@@ -1077,7 +1078,6 @@ const AIChatWidget = ({ language }: { language: Language }) => {
   const [leadLoading, setLeadLoading] = useState(false);
   const [leadStatus, setLeadStatus] = useState<"idle" | "success" | "error" | "required" | "invalidEmail" | "invalidPhone">("idle");
   const [showLeadForm, setShowLeadForm] = useState(false);
-  const [showScrollTop, setShowScrollTop] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([{ role: "assistant", content: t.welcome }]);
   const [supportSessionId] = useState(() => {
     const key = "portfolio-support-session-id";
@@ -1112,17 +1112,6 @@ const AIChatWidget = ({ language }: { language: Language }) => {
   useEffect(() => {
     window.localStorage.setItem(`portfolio-ai-chat-messages-${language}`, JSON.stringify(messages.slice(-30)));
   }, [language, messages]);
-
-  useEffect(() => {
-    const updateScrollTopVisibility = () => {
-      setShowScrollTop(window.scrollY > 260);
-    };
-
-    updateScrollTopVisibility();
-    window.addEventListener("scroll", updateScrollTopVisibility, { passive: true });
-
-    return () => window.removeEventListener("scroll", updateScrollTopVisibility);
-  }, []);
 
   useEffect(() => {
     if (!isOpen || mode !== "support") return;
@@ -1286,11 +1275,6 @@ const AIChatWidget = ({ language }: { language: Language }) => {
   return (
     <>
       {isOpen && <div className="fixed inset-0 z-40 bg-black/35 sm:hidden" onClick={() => setIsOpen(false)} />}
-      {showScrollTop && (
-        <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="До гори" title="До гори" className="fixed bottom-5 left-1/2 z-50 inline-flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full border border-[#51aaca]/18 bg-[#071b2a]/55 text-[#d8f3fb]/90 shadow-lg shadow-black/10 transition hover:border-[#51aaca]/40 hover:bg-[#0c2b3d]/75 hover:text-white">
-          <ArrowUp className="h-5 w-5" />
-        </button>
-      )}
       <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
         {isOpen && (
           <motion.div initial={{ opacity: 0, y: 16, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="glass w-[min(92vw,380px)] overflow-hidden rounded-3xl border border-[#51aaca]/20 shadow-2xl shadow-black/35">
