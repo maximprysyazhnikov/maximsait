@@ -640,10 +640,6 @@ const AnimatedResume = ({
         </section>
 
         <section id="animated-about" className="relative px-5 py-28">
-          <button type="button" onClick={() => scrollToAnimatedSection("animated-stack")} className={`absolute bottom-6 right-6 z-10 hidden md:inline-flex ${animatedFloatingButton}`}>
-            {story.learnAbout}
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#51aaca] text-[#021014]"><ArrowUp className="h-4 w-4 rotate-180" /></span>
-          </button>
           <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.95fr_1.05fr]">
             <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-120px" }}>
               <p className="mb-6 text-sm font-bold uppercase tracking-[0.4em] text-[#9ed8ea]">{story.whoTitle}</p>
