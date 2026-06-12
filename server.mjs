@@ -60,10 +60,13 @@ const sanitizePageContext = (context) => {
       .filter((item) => item.label && /^https:\/\/[^\s]+$/i.test(item.url))
       .slice(0, 3)
     : [];
+  const beginnerGuide = Array.isArray(context.beginnerGuide)
+    ? context.beginnerGuide.map((item) => compactText(item, 180)).filter(Boolean).slice(0, 3)
+    : [];
 
-  if (!title && !section && !summary && !description && bullets.length === 0 && resources.length === 0) return null;
+  if (!title && !section && !summary && !description && bullets.length === 0 && resources.length === 0 && beginnerGuide.length === 0) return null;
 
-  return { section, title, summary, description, bullets, resources };
+  return { section, title, summary, description, bullets, resources, beginnerGuide };
 };
 
 const formatPageContext = (context) => {
@@ -76,6 +79,7 @@ const formatPageContext = (context) => {
     context.summary ? `Summary: ${context.summary}` : '',
     context.description ? `Description: ${context.description}` : '',
     context.bullets?.length ? `Key points: ${context.bullets.join(' | ')}` : '',
+    context.beginnerGuide?.length ? `Beginner guide: ${context.beginnerGuide.join(' | ')}` : '',
     context.resources?.length ? `Official resources: ${context.resources.map((item) => `${item.label} (${item.url})`).join(' | ')}` : '',
   ].filter(Boolean).join('\n');
 };

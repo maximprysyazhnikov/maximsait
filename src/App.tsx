@@ -11,7 +11,7 @@ type Language = "uk" | "en";
 type Route = { page: "home" } | { page: "animated" } | { page: "animatedSkill"; slug: string } | { page: "skill"; slug: string } | { page: "provider"; slug: string };
 type ChatMessage = { role: "user" | "assistant"; content: string };
 type OfficialResource = { label: string; url: string };
-type ChatPageContext = { section: string; title: string; summary?: string; description?: string; bullets?: string[]; resources?: OfficialResource[] };
+type ChatPageContext = { section: string; title: string; summary?: string; description?: string; bullets?: string[]; resources?: OfficialResource[]; beginnerGuide?: string[] };
 type LeadForm = { name: string; email: string; phone: string; message: string };
 type SupportMessage = { id: string; role: "user" | "operator"; text: string; createdAt: string };
 type Skill = {
@@ -170,6 +170,91 @@ const OfficialResourceLinks = ({
             <span className="min-w-0 truncate">{resource.label}</span>
             <ExternalLink className="h-4 w-4 shrink-0 text-[#9ed8ea] transition group-hover:text-[#021014]" />
           </a>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const BeginnerToolGuide = ({
+  language,
+  skill,
+  resources,
+  compact = false,
+}: {
+  language: Language;
+  skill: Skill;
+  resources: OfficialResource[];
+  compact?: boolean;
+}) => {
+  const firstPractice = splitBullet(skill.bullets[language][0] || skill.summary[language]);
+  const docsLabel = resources[0]?.label || (language === "uk" ? "офіційну документацію" : "official documentation");
+  const text = language === "uk"
+    ? {
+      eyebrow: "Міні-гайд для новачка",
+      title: `Як почати з ${skill.name}`,
+      intro: "Короткий шлях: зрозуміти роль, зробити одну практичну дію, а потім закріпити через docs або AI.",
+      steps: [
+        {
+          label: "01",
+          title: "Зрозумій роль",
+          body: `${skill.name} у цьому стеку: ${skill.summary[language]}`,
+        },
+        {
+          label: "02",
+          title: "Спробуй руками",
+          body: firstPractice.details
+            ? `${firstPractice.title}: ${firstPractice.details}`
+            : firstPractice.title,
+        },
+        {
+          label: "03",
+          title: "Закріпи без хаосу",
+          body: `Відкрий ${docsLabel}, пройди перший офіційний приклад і попроси AI пояснити незрозумілий крок простими словами.`,
+        },
+      ],
+    }
+    : {
+      eyebrow: "Beginner mini guide",
+      title: `How to start with ${skill.name}`,
+      intro: "A short path: understand the role, try one practical action, then reinforce it with docs or AI.",
+      steps: [
+        {
+          label: "01",
+          title: "Understand the role",
+          body: `${skill.name} in this stack: ${skill.summary[language]}`,
+        },
+        {
+          label: "02",
+          title: "Try it hands-on",
+          body: firstPractice.details
+            ? `${firstPractice.title}: ${firstPractice.details}`
+            : firstPractice.title,
+        },
+        {
+          label: "03",
+          title: "Reinforce it cleanly",
+          body: `Open ${docsLabel}, follow the first official example, and ask the AI to explain any confusing step in simple words.`,
+        },
+      ],
+    };
+
+  return (
+    <div className={`overflow-hidden rounded-3xl border border-[#51aaca]/24 bg-[#061a26]/76 shadow-[0_20px_55px_rgba(0,0,0,0.24),0_0_30px_rgba(81,170,202,0.09)] backdrop-blur-md ${compact ? "p-4" : "p-5 sm:p-6"}`}>
+      <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[#9ed8ea]">{text.eyebrow}</p>
+      <h2 className="mt-2 text-2xl font-black text-white">{text.title}</h2>
+      <p className="mt-3 text-sm leading-6 text-zinc-400">{text.intro}</p>
+      <div className="mt-5 grid gap-3">
+        {text.steps.map((step) => (
+          <div key={step.label} className="group rounded-2xl border border-[#51aaca]/16 bg-[#092231]/70 p-4 transition hover:border-[#9ed8ea]/55 hover:bg-[#0b2a3a]">
+            <div className="mb-3 flex items-center gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/30 bg-[#51aaca]/10 text-xs font-black text-[#d8f3fb] group-hover:bg-[#51aaca] group-hover:text-[#021014]">
+                {step.label}
+              </span>
+              <h3 className="text-sm font-black text-white">{step.title}</h3>
+            </div>
+            <p className="text-sm leading-6 text-zinc-300">{step.body}</p>
+          </div>
         ))}
       </div>
     </div>
@@ -1169,6 +1254,11 @@ const AnimatedSkillDetail = ({
   const [techChatLoading, setTechChatLoading] = useState(false);
   const [techChatMessages, setTechChatMessages] = useState<ChatMessage[]>([]);
   const officialResources = officialTechnologyResources[skill.slug] ?? [];
+  const beginnerGuide = [
+    skill.summary[language],
+    skill.bullets[language][0],
+    officialResources.map((resource) => resource.label).join(", "),
+  ].filter(Boolean);
   const techPageContext: ChatPageContext = {
     section: "animated technology",
     title: skill.name,
@@ -1176,6 +1266,7 @@ const AnimatedSkillDetail = ({
     description: skill.description[language],
     bullets: skill.bullets[language],
     resources: officialResources,
+    beginnerGuide,
   };
   const techChatCopy = language === "uk"
     ? {
@@ -1312,6 +1403,9 @@ const AnimatedSkillDetail = ({
             <div className="hidden lg:block">
               <OfficialResourceLinks language={language} resources={officialResources} compact />
             </div>
+            <div className="hidden lg:block">
+              <BeginnerToolGuide language={language} skill={skill} resources={officialResources} compact />
+            </div>
           </div>
 
           <motion.div
@@ -1370,6 +1464,9 @@ const AnimatedSkillDetail = ({
             </div>
             <div className="mt-7 lg:hidden">
               <OfficialResourceLinks language={language} resources={officialResources} />
+            </div>
+            <div className="mt-7 lg:hidden">
+              <BeginnerToolGuide language={language} skill={skill} resources={officialResources} />
             </div>
             <div className="mt-7">
               {skill.bullets[language].map((bullet, index) => {
@@ -1847,11 +1944,11 @@ const AIChatWidget = ({ language, pageContext }: { language: Language; pageConte
 };
 
 const DetailLayout = ({
-  language, backLabel, onBack, eyebrow, title, summary, description, bullets, asideTitle, asideContent, pageContext,
+  language, backLabel, onBack, eyebrow, title, summary, description, bullets, asideTitle, asideContent, pageContext, beginnerGuideContent,
 }: {
   language: Language; backLabel: string; onBack: () => void; eyebrow: string; title: string;
   summary: string; description: string; bullets: string[]; asideTitle: string; asideContent: ReactNode;
-  pageContext?: ChatPageContext;
+  pageContext?: ChatPageContext; beginnerGuideContent?: ReactNode;
 }) => {
   const [openBulletIndex, setOpenBulletIndex] = useState<number | null>(0);
 
@@ -1881,6 +1978,7 @@ const DetailLayout = ({
                 <OfficialResourceLinks language={language} resources={pageContext.resources} />
               </div>
             )}
+            {beginnerGuideContent && <div className="mb-8">{beginnerGuideContent}</div>}
             <div className="grid gap-4">
               {bullets.map((bullet, index) => {
                 const parsed = splitBullet(bullet);
@@ -2176,6 +2274,11 @@ export default function App() {
 
   if (route.page === "skill" && activeSkill) {
     const officialResources = officialTechnologyResources[activeSkill.slug] ?? [];
+    const beginnerGuide = [
+      activeSkill.summary[language],
+      activeSkill.bullets[language][0],
+      officialResources.map((resource) => resource.label).join(", "),
+    ].filter(Boolean);
 
     return <>
       <DetailLayout
@@ -2195,7 +2298,9 @@ export default function App() {
           description: activeSkill.description[language],
           bullets: activeSkill.bullets[language],
           resources: officialResources,
+          beginnerGuide,
         }}
+        beginnerGuideContent={<BeginnerToolGuide language={language} skill={activeSkill} resources={officialResources} />}
         asideContent={<div className="space-y-3">{skills.map((item) => {
           const isActive = item.slug === activeSkill.slug;
           return <button key={item.slug} type="button" onClick={() => !isActive && navigate({ page: "skill", slug: item.slug })} aria-current={isActive ? "page" : undefined} className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${isActive ? "border-[#51aaca]/45 bg-[#51aaca]/12 text-white shadow-[0_0_0_1px_rgba(81,170,202,0.1)]" : "cursor-pointer border-cyan-950/70 bg-[#092231] text-zinc-300 hover:border-[#51aaca]/30 hover:text-white"}`}><span className="flex items-center gap-2">{item.icon}{item.name}</span><ChevronRight className={`h-4 w-4 ${isActive ? "text-[#d8f3fb]" : "text-[#9ed8ea]"}`} /></button>;
