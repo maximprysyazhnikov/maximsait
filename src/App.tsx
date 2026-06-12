@@ -621,19 +621,22 @@ const AnimatedResume = ({
           </motion.button>
         </section>
 
-        <section className="overflow-hidden border-y border-white/10 bg-white text-black">
-          <div className="flex w-max gap-10 py-8">
-            {[...story.verbs, ...story.verbs, ...story.verbs].map((verb, index) => (
-              <motion.span
+        <section className="relative overflow-hidden border-y border-white/10 bg-black/20 text-white backdrop-blur-[1px]">
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(2,7,13,0.62),rgba(6,24,39,0.18)_48%,rgba(2,7,13,0.62))]" />
+          <motion.div
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: isAnimatedMobile ? 18 : 24, repeat: Infinity, ease: "linear" }}
+            className="relative flex w-max gap-8 py-6 sm:gap-10 sm:py-8"
+          >
+            {[...story.verbs, ...story.verbs, ...story.verbs, ...story.verbs].map((verb, index) => (
+              <span
                 key={`${verb}-${index}`}
-                animate={isAnimatedMobile ? { x: 0 } : { x: ["0%", "-50%"] }}
-                transition={isAnimatedMobile ? { duration: 0 } : { duration: 22, repeat: Infinity, ease: "linear" }}
-                className="text-5xl font-black uppercase tracking-tight md:text-8xl"
+                className="text-5xl font-black uppercase tracking-tight text-[#d8f3fb]/72 drop-shadow-[0_0_24px_rgba(81,170,202,0.22)] md:text-8xl"
               >
                 {verb}
-              </motion.span>
+              </span>
             ))}
-          </div>
+          </motion.div>
         </section>
 
         <section id="animated-about" className="relative px-5 py-28">
