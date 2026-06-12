@@ -24,7 +24,6 @@ type LearningProvider = {
 const COMMERCIAL_SITE_URL = "https://vidfranko.com.ua";
 const VOLUNTEER_DEMO_URL = "https://volunteer-site-placeholder-dev.up.railway.app/";
 const CONTACT_EMAIL = "maximprysyazhnikov@gmail.com";
-const TECH_BACKGROUND_YOUTUBE_ID = "GpPUa7Red1M";
 
 const SectionTitle = ({ children, subtitle }: { children: ReactNode; subtitle?: string }) => (
   <div className="mb-12">
@@ -230,7 +229,6 @@ const AnimatedResume = ({
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showAnimatedTop, setShowAnimatedTop] = useState(false);
   const [isAnimatedMobile, setIsAnimatedMobile] = useState(false);
-  const [activeAnimatedSkillSlug, setActiveAnimatedSkillSlug] = useState("terraform");
   const story = language === "uk"
     ? {
       back: "Light version",
@@ -309,10 +307,6 @@ const AnimatedResume = ({
       technologies: "Technologies",
     };
   const featuredStack = skills;
-  const activeAnimatedSkill = useMemo(
-    () => skills.find((skill) => skill.slug === activeAnimatedSkillSlug) || skills[0],
-    [activeAnimatedSkillSlug],
-  );
   const experienceScenes = [
     {
       title: t.experience.commercialTitle,
@@ -683,94 +677,36 @@ const AnimatedResume = ({
                 </button>
               </div>
             </div>
-            <div id="animated-technologies" className="grid gap-6 border-y border-black/15 py-8 xl:grid-cols-[0.88fr_1.12fr]">
-              <div className="rounded-3xl border border-black/10 bg-zinc-50 p-4 shadow-[0_18px_50px_rgba(2,7,13,0.08)] sm:p-5">
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <div className="text-xs font-black uppercase tracking-[0.26em] text-zinc-500">{story.technologies}</div>
-                  <span className="rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#0a3142]">{featuredStack.length}</span>
+            <div id="animated-technologies" className="border-y border-black/15 py-8 sm:py-10">
+              <div className="mx-auto max-w-6xl rounded-[1.75rem] border border-[#51aaca]/20 bg-[#061a26] p-4 text-white shadow-[0_24px_70px_rgba(2,7,13,0.16),0_0_42px_rgba(81,170,202,0.12)] sm:p-6">
+                <div className="mb-5 flex flex-wrap items-center justify-center gap-3 text-center sm:justify-between sm:text-left">
+                  <div>
+                    <div className="text-xs font-black uppercase tracking-[0.3em] text-[#9ed8ea]">{story.technologies}</div>
+                    <p className="mt-2 text-sm font-bold text-zinc-300">{t.about.stackHint}</p>
+                  </div>
+                  <span className="rounded-full border border-[#51aaca]/35 bg-[#51aaca]/14 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#d8f3fb] shadow-[0_0_24px_rgba(81,170,202,0.16)]">{featuredStack.length}</span>
                 </div>
-                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
-                  {featuredStack.map((skill, index) => {
-                    const isActive = skill.slug === activeAnimatedSkill.slug;
-
-                    return (
-                      <motion.button
-                        key={skill.slug}
-                        type="button"
-                        initial={{ opacity: 0, y: 14 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.025 }}
-                        onClick={() => onOpenSkill(skill.slug)}
-                        aria-current={isActive ? "true" : undefined}
-                        className={`flex h-12 min-w-0 items-center justify-between gap-2 rounded-2xl border px-3 text-left shadow-[0_10px_28px_rgba(81,170,202,0.08)] transition hover:-translate-y-0.5 sm:h-14 sm:px-4 ${
-                          isActive
-                            ? "border-[#51aaca]/80 bg-[#51aaca] text-[#021014] shadow-[0_14px_32px_rgba(81,170,202,0.2)]"
-                            : "border-[#062333]/12 bg-[#092231] text-white hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]"
-                        }`}
-                      >
-                        <span className="flex min-w-0 items-center gap-2">
-                          {skill.icon}
-                          <span className="truncate text-xs font-black sm:text-sm">{skill.name}</span>
-                        </span>
-                        <ChevronRight className={`h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4 ${isActive ? "text-[#021014]" : "text-[#9ed8ea]"}`} />
-                      </motion.button>
-                    );
-                  })}
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                  {featuredStack.map((skill, index) => (
+                    <motion.button
+                      key={skill.slug}
+                      type="button"
+                      initial={{ opacity: 0, y: 14 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.025 }}
+                      onClick={() => onOpenSkill(skill.slug)}
+                      className="group flex h-14 min-w-0 items-center justify-between gap-2 rounded-2xl border border-[#51aaca]/22 bg-[#092231] px-3 text-left text-white shadow-[0_12px_30px_rgba(0,0,0,0.22),0_0_20px_rgba(81,170,202,0.08)] transition hover:-translate-y-0.5 hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014] hover:shadow-[0_18px_38px_rgba(81,170,202,0.28)] sm:px-4"
+                    >
+                      <span className="flex min-w-0 items-center gap-2">
+                        <span className="text-[#d8f3fb] transition group-hover:text-[#021014]">{skill.icon}</span>
+                        <span className="truncate text-xs font-black sm:text-sm">{skill.name}</span>
+                      </span>
+                      <ChevronRight className="h-3.5 w-3.5 shrink-0 text-[#9ed8ea] transition group-hover:text-[#021014] sm:h-4 sm:w-4" />
+                    </motion.button>
+                  ))}
                 </div>
               </div>
-
-              <motion.div
-                key={activeAnimatedSkill.slug}
-                initial={{ opacity: 0, y: 22 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.28 }}
-                className="relative min-h-[520px] overflow-hidden rounded-3xl border border-[#51aaca]/25 bg-[#061a26] p-5 text-white shadow-2xl shadow-black/20 sm:p-6"
-              >
-                <iframe
-                  key={`tech-video-${activeAnimatedSkill.slug}`}
-                  title={`${activeAnimatedSkill.name} animated background`}
-                  src={`https://www.youtube.com/embed/${TECH_BACKGROUND_YOUTUBE_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${TECH_BACKGROUND_YOUTUBE_ID}&playsinline=1&rel=0`}
-                  allow="autoplay; encrypted-media; picture-in-picture"
-                  className="pointer-events-none absolute left-1/2 top-1/2 aspect-video min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 border-0 opacity-30"
-                />
-                <div className="absolute inset-0 bg-[#061a26]/82 backdrop-blur-[1px]" />
-                <div className="relative z-10">
-                  <p className="mb-3 text-xs font-black uppercase tracking-[0.32em] text-[#9ed8ea]">{t.techPage.title}</p>
-                  <div className="flex flex-wrap items-start justify-between gap-4">
-                    <div>
-                      <h3 className="text-4xl font-black tracking-tight md:text-5xl">{activeAnimatedSkill.name}</h3>
-                      <p className="mt-4 text-xl leading-8 text-zinc-300">{activeAnimatedSkill.summary[language]}</p>
-                    </div>
-                    <button type="button" onClick={() => onOpenSkill(activeAnimatedSkill.slug)} className={`${animatedButtonGhost} px-4 py-3 text-sm text-[#d8f3fb]`}>
-                      {story.fullPage}
-                      <ExternalLink className="h-4 w-4" />
-                    </button>
-                  </div>
-                  <div className="mt-6 rounded-2xl border border-cyan-950/70 bg-[#071b2a]/76 p-5 backdrop-blur-md">
-                    <p className="text-base leading-8 text-zinc-300">{activeAnimatedSkill.description[language]}</p>
-                  </div>
-                  <div className="mt-6 grid gap-3">
-                    {activeAnimatedSkill.bullets[language].map((bullet) => {
-                      const parsed = splitBullet(bullet);
-
-                      return (
-                        <div key={bullet} className="rounded-2xl border border-cyan-950/70 bg-[#071c29]/90 p-5 backdrop-blur-md">
-                          <div className="flex gap-4">
-                            <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/20 bg-[#51aaca]/10">
-                              <ChevronRight className="h-4 w-4 text-[#51aaca]" />
-                            </span>
-                            <div>
-                              <p className="text-lg font-bold text-white">{parsed.title}</p>
-                              {parsed.details && <p className="mt-3 text-base leading-8 text-zinc-300">{parsed.details}</p>}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </motion.div>
             </div>
           </div>
         </section>
