@@ -1304,6 +1304,103 @@ const AnimatedSkillDetail = ({
   );
 };
 
+const FocusedTechChat = ({ language, pageContext }: { language: Language; pageContext: ChatPageContext }) => {
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const copyText = language === "uk"
+    ? {
+      eyebrow: "AI по технологіях",
+      title: `${pageContext.title} AI Assistant`,
+      subtitle: `Окремий помічник саме по ${pageContext.title}: коротко пояснить роль у DevOps і підкаже, де вчитись далі.`,
+      welcome: `Я окремий AI-помічник по ${pageContext.title}. Питай коротко: що це, де застосовується в DevOps, або де краще вчитись далі.`,
+      placeholder: `Питання про ${pageContext.title}...`,
+      thinking: "AI думає...",
+      error: "Не вдалося отримати відповідь.",
+      send: "Надіслати",
+    }
+    : {
+      eyebrow: "Technology AI",
+      title: `${pageContext.title} AI Assistant`,
+      subtitle: `A focused helper for ${pageContext.title}: short DevOps context and where to learn more.`,
+      welcome: `I am a focused AI helper for ${pageContext.title}. Ask what it is, how it fits DevOps, or where to learn more.`,
+      placeholder: `Ask about ${pageContext.title}...`,
+      thinking: "AI is thinking...",
+      error: "Could not get a response.",
+      send: "Send",
+    };
+  const [messages, setMessages] = useState<ChatMessage[]>([{ role: "assistant", content: copyText.welcome }]);
+
+  useEffect(() => {
+    setInput("");
+    setLoading(false);
+    setMessages([{ role: "assistant", content: copyText.welcome }]);
+  }, [language, pageContext.title]);
+
+  const sendFocusedMessage = async () => {
+    const trimmed = input.trim();
+    if (!trimmed || loading) return;
+
+    const nextMessages: ChatMessage[] = [...messages, { role: "user", content: trimmed }];
+    setMessages(nextMessages);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language, messages: nextMessages, pageContext }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data?.error || "chat_failed");
+      setMessages((current) => [...current, { role: "assistant", content: cleanChatText(data.reply) }]);
+    } catch {
+      setMessages((current) => [...current, { role: "assistant", content: copyText.error }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="overflow-hidden rounded-3xl border border-[#51aaca]/26 bg-[#061a26]/78 shadow-[0_24px_70px_rgba(0,0,0,0.28),0_0_36px_rgba(81,170,202,0.1)] backdrop-blur-md">
+      <div className="border-b border-[#51aaca]/14 px-6 py-5">
+        <div className="mb-2 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#9ed8ea]">
+          <MessageCircle className="h-4 w-4" />
+          {copyText.eyebrow}
+        </div>
+        <h2 className="text-xl font-black text-white">{copyText.title}</h2>
+        <p className="mt-2 text-sm leading-6 text-zinc-400">{copyText.subtitle}</p>
+      </div>
+      <div className="max-h-80 min-h-48 space-y-3 overflow-y-auto px-6 py-5">
+        {messages.map((message, index) => (
+          <div key={`${message.role}-${index}`} className={`rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-8 bg-[#51aaca] text-[#021014]" : "mr-8 bg-[#092231] text-zinc-100"}`}>
+            {message.content}
+          </div>
+        ))}
+        {loading && <div className="mr-8 rounded-2xl bg-[#092231] px-4 py-3 text-sm text-zinc-400">{copyText.thinking}</div>}
+      </div>
+      <div className="flex gap-3 border-t border-[#51aaca]/14 bg-[#02070d]/38 p-5">
+        <input
+          value={input}
+          onChange={(event) => setInput(event.target.value)}
+          onKeyDown={(event) => { if (event.key === "Enter") void sendFocusedMessage(); }}
+          placeholder={copyText.placeholder}
+          className="min-w-0 flex-1 rounded-2xl border border-[#51aaca]/16 bg-[#02070d]/70 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500 focus:border-[#51aaca]/45"
+        />
+        <button
+          type="button"
+          onClick={() => void sendFocusedMessage()}
+          disabled={loading || !input.trim()}
+          className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#51aaca] text-[#021014] transition hover:bg-[#9ed8ea] disabled:cursor-not-allowed disabled:opacity-50"
+          aria-label={copyText.send}
+        >
+          <Send className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const AIChatWidget = ({ language, pageContext }: { language: Language; pageContext?: ChatPageContext }) => {
   const t = copy[language].chat;
   const [isOpen, setIsOpen] = useState(false);
@@ -1605,10 +1702,11 @@ const AIChatWidget = ({ language, pageContext }: { language: Language; pageConte
 };
 
 const DetailLayout = ({
-  language, backLabel, onBack, eyebrow, title, summary, description, bullets, asideTitle, asideContent,
+  language, backLabel, onBack, eyebrow, title, summary, description, bullets, asideTitle, asideContent, pageContext,
 }: {
   language: Language; backLabel: string; onBack: () => void; eyebrow: string; title: string;
   summary: string; description: string; bullets: string[]; asideTitle: string; asideContent: ReactNode;
+  pageContext?: ChatPageContext;
 }) => {
   const [openBulletIndex, setOpenBulletIndex] = useState<number | null>(0);
 
@@ -1635,6 +1733,7 @@ const DetailLayout = ({
             <div className="grid gap-4">
               {bullets.map((bullet, index) => {
                 const parsed = splitBullet(bullet);
+                const detailText = parsed.details || summary;
                 const isOpen = openBulletIndex === index;
 
                 return (
@@ -1649,13 +1748,14 @@ const DetailLayout = ({
                       </span>
                       <div className="min-w-0">
                         <p className="text-lg font-medium text-zinc-100">{parsed.title}</p>
+                        {!isOpen && <p className="mt-2 line-clamp-1 text-sm text-zinc-500">{detailText}</p>}
                       </div>
                     </button>
 
-                    {isOpen && parsed.details && (
+                    {isOpen && (
                       <div className="border-t border-cyan-950/70 px-6 pb-6 pt-4">
                         <div className="pl-12 text-base leading-8 text-zinc-300">
-                          {parsed.details}
+                          {detailText}
                         </div>
                       </div>
                     )}
@@ -1664,9 +1764,80 @@ const DetailLayout = ({
               })}
             </div>
           </div>
-          <aside><Card className="sticky top-28 bg-[#051421]/82"><h2 className="mb-5 text-lg font-semibold text-white">{asideTitle}</h2>{asideContent}</Card></aside>
+          <aside>
+            <Card className="sticky top-28 bg-[#051421]/82"><h2 className="mb-5 text-lg font-semibold text-white">{asideTitle}</h2>{asideContent}</Card>
+            {pageContext && <div className="mt-6"><FocusedTechChat language={language} pageContext={pageContext} /></div>}
+          </aside>
         </div>
       </main>
+    </div>
+  );
+};
+
+const VersionChoiceScreen = ({
+  language,
+  onLight,
+  onAnimated,
+  onLanguage,
+}: {
+  language: Language;
+  onLight: () => void;
+  onAnimated: () => void;
+  onLanguage: (language: Language) => void;
+}) => {
+  const text = language === "uk"
+    ? {
+      eyebrow: "ОБЕРИ ВЕРСІЮ",
+      title: "ЯК ВІДКРИТИ CV?",
+      subtitle: "Light версія для швидкого перегляду резюме. Animated версія для повної кінематографічної презентації зі стеком і AI-помічниками по технологіях.",
+      light: "Light portfolio",
+      lightText: "Класична версія",
+      animated: "Animated CV",
+      animatedText: "Анімована версія",
+    }
+    : {
+      eyebrow: "CHOOSE VERSION",
+      title: "HOW SHOULD THE CV OPEN?",
+      subtitle: "Light version for a fast resume scan. Animated version for the full cinematic experience with stack pages and focused technology AI helpers.",
+      light: "Light portfolio",
+      lightText: "Classic version",
+      animated: "Animated CV",
+      animatedText: "Animated version",
+    };
+
+  return (
+    <div className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-[#02070d] px-5 text-white">
+      <video aria-hidden="true" src="/animated-bg.mp4" preload="auto" autoPlay muted loop playsInline className="absolute inset-0 -z-20 h-full w-full object-cover opacity-42" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(0,0,0,0.72),rgba(3,12,18,0.42)_48%,rgba(0,0,0,0.78)),radial-gradient(circle_at_center,rgba(81,170,202,0.16),transparent_36%)]" />
+      <div className="absolute inset-0 -z-10 opacity-[0.16] [background-image:linear-gradient(rgba(216,243,251,0.24)_1px,transparent_1px),linear-gradient(90deg,rgba(216,243,251,0.24)_1px,transparent_1px)] [background-size:100px_100px]" />
+      <div className="absolute right-5 top-5 z-10 flex items-center rounded-full border border-[#51aaca]/18 bg-[#061a26]/85 p-1">
+        {(["en", "uk"] as Language[]).map((lang) => (
+          <button key={lang} type="button" onClick={() => onLanguage(lang)} className={`rounded-full px-3 py-1.5 text-xs font-black uppercase tracking-[0.18em] transition ${language === lang ? "bg-[#51aaca] text-[#021014]" : "text-zinc-400 hover:text-white"}`}>
+            {lang}
+          </button>
+        ))}
+      </div>
+      <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-5xl text-center">
+        <p className="mb-5 text-xs font-black uppercase tracking-[0.44em] text-[#9ed8ea]">{text.eyebrow}</p>
+        <h1 className="mx-auto max-w-4xl text-5xl font-black uppercase leading-[0.9] tracking-tight md:text-7xl">{text.title}</h1>
+        <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-zinc-300">{text.subtitle}</p>
+        <div className="mt-10 grid gap-4 md:grid-cols-2">
+          <button type="button" onClick={onLight} className="group rounded-3xl border border-[#51aaca]/20 bg-[#071b2a]/78 p-6 text-left shadow-2xl shadow-black/25 backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/60 hover:bg-[#d8f3fb] hover:text-[#021014]">
+            <div className="mb-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#51aaca]/22 bg-[#02070d]/60 text-[#d8f3fb] transition group-hover:bg-[#51aaca] group-hover:text-[#021014]">
+              <BookOpen className="h-6 w-6" />
+            </div>
+            <div className="text-3xl font-black">{text.light}</div>
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.22em] text-[#9ed8ea] transition group-hover:text-[#021014]/70">{text.lightText}</p>
+          </button>
+          <button type="button" onClick={onAnimated} className="group rounded-3xl border border-[#51aaca]/35 bg-[#51aaca]/16 p-6 text-left shadow-[0_24px_70px_rgba(81,170,202,0.14)] backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014]">
+            <div className="mb-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#51aaca]/30 bg-[#02070d]/60 text-[#d8f3fb] transition group-hover:bg-[#021014] group-hover:text-[#d8f3fb]">
+              <Terminal className="h-6 w-6" />
+            </div>
+            <div className="text-3xl font-black">{text.animated}</div>
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.22em] text-[#9ed8ea] transition group-hover:text-[#021014]/70">{text.animatedText}</p>
+          </button>
+        </div>
+      </motion.div>
     </div>
   );
 };
@@ -1675,6 +1846,7 @@ export default function App() {
   const [language, setLanguage] = useState<Language>("en");
   const [route, setRoute] = useState<Route>(() => getRouteFromPath(window.location.pathname));
   const [showStartupLoader, setShowStartupLoader] = useState(true);
+  const [showVersionChoice, setShowVersionChoice] = useState(() => getRouteFromPath(window.location.pathname).page === "home");
   const [emailCopied, setEmailCopied] = useState(false);
   const t = copy[language];
 
@@ -1818,6 +1990,10 @@ export default function App() {
     return () => window.clearTimeout(timer);
   }, [route.page]);
 
+  useEffect(() => {
+    if (route.page !== "home") setShowVersionChoice(false);
+  }, [route.page]);
+
   if (route.page === "animated") {
     return (
       <>
@@ -1860,6 +2036,13 @@ export default function App() {
         description={activeSkill.description[language]}
         bullets={activeSkill.bullets[language]}
         asideTitle={t.techPage.related}
+        pageContext={{
+          section: "technology",
+          title: activeSkill.name,
+          summary: activeSkill.summary[language],
+          description: activeSkill.description[language],
+          bullets: activeSkill.bullets[language],
+        }}
         asideContent={<div className="space-y-3">{skills.map((item) => {
           const isActive = item.slug === activeSkill.slug;
           return <button key={item.slug} type="button" onClick={() => !isActive && navigate({ page: "skill", slug: item.slug })} aria-current={isActive ? "page" : undefined} className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${isActive ? "border-[#51aaca]/45 bg-[#51aaca]/12 text-white shadow-[0_0_0_1px_rgba(81,170,202,0.1)]" : "cursor-pointer border-cyan-950/70 bg-[#092231] text-zinc-300 hover:border-[#51aaca]/30 hover:text-white"}`}><span className="flex items-center gap-2">{item.icon}{item.name}</span><ChevronRight className={`h-4 w-4 ${isActive ? "text-[#d8f3fb]" : "text-[#9ed8ea]"}`} /></button>;
@@ -1888,6 +2071,25 @@ export default function App() {
       />
       <AIChatWidget language={language} />
     </>;
+  }
+
+  if (route.page === "home" && showVersionChoice) {
+    return (
+      <>
+        <AnimatePresence>{showStartupLoader && <StartupLoader />}</AnimatePresence>
+        {!showStartupLoader && (
+          <VersionChoiceScreen
+            language={language}
+            onLanguage={setLanguage}
+            onLight={() => setShowVersionChoice(false)}
+            onAnimated={() => {
+              setShowVersionChoice(false);
+              navigate({ page: "animated" });
+            }}
+          />
+        )}
+      </>
+    );
   }
 
   return (
