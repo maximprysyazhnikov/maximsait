@@ -36,6 +36,48 @@ Do not claim experience, tools, employers, certifications, or skills that are no
 If asked about general topics, you may answer helpfully, but clearly note that your main specialization is Maksym's portfolio and use portfolio facts as the primary context whenever relevant.
 `;
 
+const compactText = (value, maxLength = 700) => String(value || '')
+  .replace(/\s+/g, ' ')
+  .trim()
+  .slice(0, maxLength);
+
+const sanitizePageContext = (context) => {
+  if (!context || typeof context !== 'object') return null;
+
+  const title = compactText(context.title, 80);
+  const section = compactText(context.section, 80);
+  const summary = compactText(context.summary, 220);
+  const description = compactText(context.description, 520);
+  const bullets = Array.isArray(context.bullets)
+    ? context.bullets.map((item) => compactText(item, 180)).filter(Boolean).slice(0, 4)
+    : [];
+
+  if (!title && !section && !summary && !description && bullets.length === 0) return null;
+
+  return { section, title, summary, description, bullets };
+};
+
+const formatPageContext = (context) => {
+  if (!context) return '';
+
+  return [
+    'Current page context:',
+    context.section ? `Section: ${context.section}` : '',
+    context.title ? `Title: ${context.title}` : '',
+    context.summary ? `Summary: ${context.summary}` : '',
+    context.description ? `Description: ${context.description}` : '',
+    context.bullets?.length ? `Key points: ${context.bullets.join(' | ')}` : '',
+  ].filter(Boolean).join('\n');
+};
+
+const compactChatHistory = (messages) => messages
+  .filter((message) => ['user', 'assistant'].includes(message?.role) && compactText(message?.content, 1))
+  .slice(-6)
+  .map((message) => ({
+    role: message.role,
+    content: compactText(message.content, 700),
+  }));
+
 const shuffle = (items) => {
   const result = [...items];
 
@@ -623,39 +665,49 @@ app.post('/api/chat', async (req, res) => {
     return res.status(500).json({ error: 'OpenRouter model is not configured on the server.' });
   }
 
-  const { messages, language } = req.body ?? {};
+  const { messages, language, pageContext } = req.body ?? {};
 
   if (!Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: 'messages must be a non-empty array.' });
   }
 
   const latestUserMessage = [...messages].reverse().find((message) => message?.role === 'user')?.content || '';
+  const cleanPageContext = sanitizePageContext(pageContext);
+  const compactMessages = compactChatHistory(messages);
+  const pageContextBlock = formatPageContext(cleanPageContext);
 
   const systemPrompt = language === 'en'
-    ? `You are the AI assistant of Maksym Prysiazhnikov's portfolio website. Reply in English. Your primary knowledge base is the portfolio context below.
+    ? `You are the economical AI assistant of Maksym Prysiazhnikov's portfolio website. Reply in English. Use as few tokens as possible while still being useful.
 
 ${portfolioFacts}
+${pageContextBlock}
 
 Rules:
-- Be concise, warm, and factual.
-- When the user asks about Maksym, his skills, projects, learning path, or technologies from the site, answer strictly from the portfolio facts.
+- Keep answers short: usually 3-5 sentences or up to 90 words.
+- If the current page context names a technology, prioritize that technology and explain it in relation to Maksym's DevOps stack.
+- For deeper learning, suggest 1-2 best places to search: official documentation first; Microsoft Learn for Azure; Docker/Kubernetes/Terraform official docs; MySQL/PostgreSQL docs for databases; Mate academy DevOps course for Maksym's learning context.
+- Answer strictly from portfolio facts and current page context when the question is about Maksym, his skills, projects, learning path, or site technologies.
 - Do not invent extra employers, cloud providers, tools, or achievements.
-- If the user asks about a general topic, you can still answer, but mention when helpful that you are primarily tailored to Maksym's portfolio and relate the answer back to his stack when possible.`
-    : `Ти AI-помічник сайту-портфоліо Максима Присяжнікова. Відповідай українською. Твоя основна база знань — контекст портфоліо нижче.
+- Do not use long lists or tables unless the user asks.`
+    : `Ти економний AI-помічник сайту-портфоліо Максима Присяжнікова. Відповідай українською і витрачай мінімум токенів, але залишайся корисним.
 
 ${portfolioFacts}
+${pageContextBlock}
 
 Правила:
-- Відповідай доброзичливо, коротко і по суті.
-- Якщо запит про Максима, його стек, проєкти, навчання або технології із сайту, відповідай строго на основі фактів з портфоліо.
+- Відповідай коротко: зазвичай 3-5 речень або до 90 слів.
+- Якщо контекст сторінки містить технологію, пояснюй саме її у зв'язку з DevOps-стеком Максима.
+- Якщо користувач хоче вчитись глибше, порадь 1-2 місця для пошуку: спочатку офіційну документацію; Microsoft Learn для Azure; офіційні Docker/Kubernetes/Terraform docs; MySQL/PostgreSQL docs для баз; Mate academy DevOps course як навчальний контекст Максима.
+- Якщо запит про Максима, його стек, проєкти, навчання або технології із сайту, відповідай строго на основі фактів з портфоліо і поточного контексту сторінки.
 - Українською завжди пиши прізвище як "Присяжніков".
 - Не вигадуй зайві місця роботи, інструменти, сертифікати чи досягнення, яких немає у портфоліо.
-- Якщо користувач питає про довільну тему, ти можеш відповісти, але доречно зазначай, що ти заточений під це портфоліо, і коли можливо пов'язуй відповідь із реальним стеком Максима.`;
+- Не роби довгі списки або таблиці, якщо користувач прямо не просить.`;
 
   const requestBody = {
     model: openRouterModel,
-    max_tokens: 400,
-    messages: [{ role: 'system', content: systemPrompt }, ...messages],
+    max_tokens: 220,
+    temperature: 0.35,
+    messages: [{ role: 'system', content: systemPrompt }, ...compactMessages],
   };
 
   const shuffledKeys = shuffle(openRouterApiKeys);

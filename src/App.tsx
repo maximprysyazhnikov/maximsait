@@ -10,6 +10,7 @@ import {
 type Language = "uk" | "en";
 type Route = { page: "home" } | { page: "animated" } | { page: "animatedSkill"; slug: string } | { page: "skill"; slug: string } | { page: "provider"; slug: string };
 type ChatMessage = { role: "user" | "assistant"; content: string };
+type ChatPageContext = { section: string; title: string; summary?: string; description?: string; bullets?: string[] };
 type LeadForm = { name: string; email: string; phone: string; message: string };
 type SupportMessage = { id: string; role: "user" | "operator"; text: string; createdAt: string };
 type Skill = {
@@ -1176,7 +1177,7 @@ const AnimatedSkillDetail = ({
   );
 };
 
-const AIChatWidget = ({ language }: { language: Language }) => {
+const AIChatWidget = ({ language, pageContext }: { language: Language; pageContext?: ChatPageContext }) => {
   const t = copy[language].chat;
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<"ai" | "support">("ai");
@@ -1271,7 +1272,7 @@ const AIChatWidget = ({ language }: { language: Language }) => {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ language, messages: nextMessages }),
+        body: JSON.stringify({ language, messages: nextMessages, pageContext }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data?.error || "chat_failed");
@@ -1700,7 +1701,17 @@ export default function App() {
           onCvDownload={handleCvDownload}
           onOpenSkill={(slug) => navigate({ page: "animatedSkill", slug })}
         />
-        <AIChatWidget language={language} />
+        <AIChatWidget
+          language={language}
+          pageContext={{
+            section: "animated CV",
+            title: "DevOps stack",
+            summary: language === "uk"
+              ? "Анімована версія резюме Максима з DevOps-стеком, досвідом, проєктами та навчанням."
+              : "Animated CV version with Maksym's DevOps stack, experience, projects, and learning path.",
+            bullets: skills.map((item) => item.name),
+          }}
+        />
       </>
     );
   }
@@ -1715,7 +1726,16 @@ export default function App() {
           onLightVersion={() => navigate({ page: "animated" })}
           onSelectSkill={(slug) => navigate({ page: "animatedSkill", slug })}
         />
-        <AIChatWidget language={language} />
+        <AIChatWidget
+          language={language}
+          pageContext={{
+            section: "animated technology",
+            title: activeAnimatedSkill.name,
+            summary: activeAnimatedSkill.summary[language],
+            description: activeAnimatedSkill.description[language],
+            bullets: activeAnimatedSkill.bullets[language],
+          }}
+        />
       </>
     );
   }
@@ -1737,7 +1757,16 @@ export default function App() {
           return <button key={item.slug} type="button" onClick={() => !isActive && navigate({ page: "skill", slug: item.slug })} aria-current={isActive ? "page" : undefined} className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${isActive ? "border-[#51aaca]/45 bg-[#51aaca]/12 text-white shadow-[0_0_0_1px_rgba(81,170,202,0.1)]" : "cursor-pointer border-cyan-950/70 bg-[#092231] text-zinc-300 hover:border-[#51aaca]/30 hover:text-white"}`}><span className="flex items-center gap-2">{item.icon}{item.name}</span><ChevronRight className={`h-4 w-4 ${isActive ? "text-[#d8f3fb]" : "text-[#9ed8ea]"}`} /></button>;
         })}</div>}
       />
-      <AIChatWidget language={language} />
+      <AIChatWidget
+        language={language}
+        pageContext={{
+          section: "technology",
+          title: activeSkill.name,
+          summary: activeSkill.summary[language],
+          description: activeSkill.description[language],
+          bullets: activeSkill.bullets[language],
+        }}
+      />
     </>;
   }
 
@@ -1758,7 +1787,15 @@ export default function App() {
           return <button key={item.slug} type="button" onClick={() => !isActive && navigate({ page: "provider", slug: item.slug })} aria-current={isActive ? "page" : undefined} className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition ${isActive ? "border-[#51aaca]/45 bg-[#51aaca]/12 text-white shadow-[0_0_0_1px_rgba(81,170,202,0.1)]" : "cursor-pointer border-cyan-950/70 bg-[#092231] text-zinc-300 hover:border-[#51aaca]/30 hover:text-white"}`}><span>{item.title}</span><ChevronRight className={`h-4 w-4 ${isActive ? "text-[#d8f3fb]" : "text-[#9ed8ea]"}`} /></button>;
         })}</div>}
       />
-      <AIChatWidget language={language} />
+      <AIChatWidget
+        language={language}
+        pageContext={{
+          section: "learning platform",
+          title: activeProvider.title,
+          summary: activeProvider.summary[language],
+          bullets: activeProvider.highlights[language],
+        }}
+      />
     </>;
   }
 
