@@ -26,6 +26,92 @@ type LearningProvider = {
 const COMMERCIAL_SITE_URL = "https://vidfranko.com.ua";
 const VOLUNTEER_DEMO_URL = "https://volunteer-site-placeholder-dev.up.railway.app/";
 const CONTACT_EMAIL = "maximprysyazhnikov@gmail.com";
+const HUMAN_CHECK_STORAGE_KEY = "portfolio-ai-human-check-v1";
+
+const hasHumanCheck = () => {
+  if (typeof window === "undefined") return false;
+  return window.localStorage.getItem(HUMAN_CHECK_STORAGE_KEY) === "passed";
+};
+
+const markHumanCheck = () => {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(HUMAN_CHECK_STORAGE_KEY, "passed");
+};
+
+const HumanCheckGate = ({
+  language,
+  open,
+  onPass,
+  onClose,
+}: {
+  language: Language;
+  open: boolean;
+  onPass: () => void;
+  onClose: () => void;
+}) => {
+  const target = "terminal";
+  const options = [
+    { id: "cloud", label: "Cloud", icon: <Cloud className="h-7 w-7" /> },
+    { id: "database", label: "Database", icon: <Database className="h-7 w-7" /> },
+    { id: "terminal", label: "Terminal", icon: <Terminal className="h-7 w-7" /> },
+    { id: "container", label: "Container", icon: <Container className="h-7 w-7" /> },
+    { id: "shield", label: "Security", icon: <ShieldCheck className="h-7 w-7" /> },
+    { id: "git", label: "Git", icon: <GitBranch className="h-7 w-7" /> },
+  ];
+  const text = language === "uk"
+    ? {
+      title: "Швидка перевірка",
+      subtitle: "Щоб написати AI вперше, натисни картинку з терміналом.",
+      target: "Обери: Terminal",
+      close: "Закрити",
+    }
+    : {
+      title: "Quick check",
+      subtitle: "To message AI for the first time, tap the terminal picture.",
+      target: "Pick: Terminal",
+      close: "Close",
+    };
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+      <motion.div initial={{ opacity: 0, y: 18, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="w-full max-w-md overflow-hidden rounded-3xl border border-[#51aaca]/28 bg-[#03111b]/96 shadow-2xl shadow-black/45">
+        <div className="flex items-start justify-between gap-3 border-b border-[#51aaca]/16 px-5 py-4">
+          <div>
+            <p className="text-lg font-black text-white">{text.title}</p>
+            <p className="mt-1 text-sm leading-6 text-zinc-400">{text.subtitle}</p>
+          </div>
+          <button type="button" onClick={onClose} aria-label={text.close} className="rounded-full p-2 text-zinc-400 transition hover:bg-[#0a2635] hover:text-white">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="p-5">
+          <div className="mb-4 rounded-2xl border border-[#51aaca]/18 bg-[#092231]/72 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-[#9ed8ea]">
+            {text.target}
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {options.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => {
+                  if (option.id !== target) return;
+                  markHumanCheck();
+                  onPass();
+                }}
+                className="group flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl border border-[#51aaca]/18 bg-[#061a26]/88 text-[#d8f3fb] transition hover:-translate-y-0.5 hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014]"
+              >
+                {option.icon}
+                <span className="text-[10px] font-black uppercase tracking-[0.12em]">{option.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 const officialTechnologyResources: Record<string, OfficialResource[]> = {
   linux: [
@@ -1280,6 +1366,7 @@ const AnimatedSkillDetail = ({
   const [techChatInput, setTechChatInput] = useState("");
   const [techChatLoading, setTechChatLoading] = useState(false);
   const [techChatMessages, setTechChatMessages] = useState<ChatMessage[]>([]);
+  const [showTechHumanCheck, setShowTechHumanCheck] = useState(false);
   const officialResources = officialTechnologyResources[skill.slug] ?? [];
   const beginnerGuide = [
     skill.summary[language],
@@ -1326,6 +1413,10 @@ const AnimatedSkillDetail = ({
   const sendTechChatMessage = async () => {
     const trimmed = techChatInput.trim();
     if (!trimmed || techChatLoading) return;
+    if (!hasHumanCheck()) {
+      setShowTechHumanCheck(true);
+      return;
+    }
 
     const nextMessages: ChatMessage[] = [...techChatMessages, { role: "user", content: trimmed }];
     setTechChatMessages(nextMessages);
@@ -1569,6 +1660,15 @@ const AnimatedSkillDetail = ({
           </div>
         </section>
       </main>
+      <HumanCheckGate
+        language={language}
+        open={showTechHumanCheck}
+        onClose={() => setShowTechHumanCheck(false)}
+        onPass={() => {
+          setShowTechHumanCheck(false);
+          window.setTimeout(() => void sendTechChatMessage(), 0);
+        }}
+      />
     </div>
   );
 };
@@ -1576,6 +1676,7 @@ const AnimatedSkillDetail = ({
 const FocusedTechChat = ({ language, pageContext }: { language: Language; pageContext: ChatPageContext }) => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showHumanCheck, setShowHumanCheck] = useState(false);
   const copyText = language === "uk"
     ? {
       eyebrow: "AI по технологіях",
@@ -1608,6 +1709,10 @@ const FocusedTechChat = ({ language, pageContext }: { language: Language; pageCo
   const sendFocusedMessage = async () => {
     const trimmed = input.trim();
     if (!trimmed || loading) return;
+    if (!hasHumanCheck()) {
+      setShowHumanCheck(true);
+      return;
+    }
 
     const nextMessages: ChatMessage[] = [...messages, { role: "user", content: trimmed }];
     setMessages(nextMessages);
@@ -1631,7 +1736,8 @@ const FocusedTechChat = ({ language, pageContext }: { language: Language; pageCo
   };
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-[#51aaca]/26 bg-[#061a26]/78 shadow-[0_24px_70px_rgba(0,0,0,0.28),0_0_36px_rgba(81,170,202,0.1)] backdrop-blur-md">
+    <>
+      <div className="overflow-hidden rounded-3xl border border-[#51aaca]/26 bg-[#061a26]/78 shadow-[0_24px_70px_rgba(0,0,0,0.28),0_0_36px_rgba(81,170,202,0.1)] backdrop-blur-md">
       <div className="border-b border-[#51aaca]/14 px-6 py-5">
         <div className="mb-2 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#9ed8ea]">
           <MessageCircle className="h-4 w-4" />
@@ -1666,7 +1772,17 @@ const FocusedTechChat = ({ language, pageContext }: { language: Language; pageCo
           <Send className="h-4 w-4" />
         </button>
       </div>
-    </div>
+      </div>
+      <HumanCheckGate
+        language={language}
+        open={showHumanCheck}
+        onClose={() => setShowHumanCheck(false)}
+        onPass={() => {
+          setShowHumanCheck(false);
+          window.setTimeout(() => void sendFocusedMessage(), 0);
+        }}
+      />
+    </>
   );
 };
 
@@ -1684,6 +1800,7 @@ const AIChatWidget = ({ language, pageContext }: { language: Language; pageConte
   const [leadLoading, setLeadLoading] = useState(false);
   const [leadStatus, setLeadStatus] = useState<"idle" | "success" | "error" | "required" | "invalidEmail" | "invalidPhone">("idle");
   const [showLeadForm, setShowLeadForm] = useState(false);
+  const [showHumanCheck, setShowHumanCheck] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([{ role: "assistant", content: t.welcome }]);
   const [supportSessionId] = useState(() => {
     const key = "portfolio-support-session-id";
@@ -1755,6 +1872,10 @@ const AIChatWidget = ({ language, pageContext }: { language: Language; pageConte
   const sendMessage = async () => {
     const trimmed = input.trim();
     if (!trimmed || loading) return;
+    if (!hasHumanCheck()) {
+      setShowHumanCheck(true);
+      return;
+    }
 
     const nextMessages: ChatMessage[] = [...messages, { role: "user", content: trimmed }];
     setMessages(nextMessages);
@@ -1880,6 +2001,15 @@ const AIChatWidget = ({ language, pageContext }: { language: Language; pageConte
 
   return (
     <>
+      <HumanCheckGate
+        language={language}
+        open={showHumanCheck}
+        onClose={() => setShowHumanCheck(false)}
+        onPass={() => {
+          setShowHumanCheck(false);
+          window.setTimeout(() => void sendMessage(), 0);
+        }}
+      />
       {isOpen && <div className="fixed inset-0 z-40 bg-black/35 sm:hidden" onClick={() => setIsOpen(false)} />}
       <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
         {isOpen && (
@@ -2174,6 +2304,14 @@ export default function App() {
     }, 120);
   };
 
+  const openVersionChoice = () => {
+    window.history.pushState({}, "", "/");
+    setRoute({ page: "home" });
+    setShowStartupLoader(false);
+    setShowVersionChoice(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const handleCvDownload = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
 
@@ -2274,7 +2412,7 @@ export default function App() {
       <>
         <AnimatedResume
           language={language}
-          onBack={() => navigate({ page: "home" })}
+          onBack={openVersionChoice}
           onContact={() => document.getElementById("animated-contact")?.scrollIntoView({ behavior: "smooth", block: "start" })}
           onCvDownload={handleCvDownload}
           onOpenSkill={(slug) => navigate({ page: "animatedSkill", slug })}
@@ -2291,7 +2429,7 @@ export default function App() {
           language={language}
           skill={activeAnimatedSkill}
           onBack={navigateAnimatedTechnologies}
-          onLightVersion={() => navigate({ page: "animated" })}
+          onLightVersion={openVersionChoice}
           onSelectSkill={(slug) => navigate({ page: "animatedSkill", slug })}
         />
         <AIChatWidget language={language} />
