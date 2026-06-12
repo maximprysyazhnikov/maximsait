@@ -2524,16 +2524,16 @@ export default function App() {
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex min-w-0 items-center overflow-hidden rounded-2xl border border-[#51aaca]/18 bg-[#02070d]/62 p-1 text-white shadow-2xl shadow-black/20 backdrop-blur-xl">
             <button
               type="button"
-              onClick={() => navigate({ page: "animated" })}
-              aria-label={t.hero.animated}
+              onClick={openVersionChoice}
+              aria-label={language === "uk" ? "Обрати версію сайту" : "Choose site version"}
               className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl border border-[#51aaca]/25 bg-[#071b2a]/80 px-3 text-[#d8f3fb] transition hover:bg-[#51aaca] hover:text-[#021014] sm:px-4"
             >
               <Terminal className="h-4 w-4" />
-              <span className="hidden text-xs font-black uppercase tracking-[0.14em] sm:inline">{t.hero.animated}</span>
+              <span className="hidden text-xs font-black uppercase tracking-[0.14em] sm:inline">{language === "uk" ? "Версії" : "Versions"}</span>
             </button>
-            <button type="button" onClick={() => navigate({ page: "animated" })} className="min-w-0 px-4 text-left transition hover:text-[#d8f3fb] sm:min-w-[220px]">
+            <button type="button" onClick={openVersionChoice} className="min-w-0 px-4 text-left transition hover:text-[#d8f3fb] sm:min-w-[220px]">
               <span className="block truncate text-lg font-black leading-none tracking-tight sm:text-xl">DEVOPS</span>
-              <span className="mt-1 block truncate text-[9px] font-bold uppercase tracking-[0.22em] text-[#9ed8ea] sm:text-[10px]">Open animated CV</span>
+              <span className="mt-1 block truncate text-[9px] font-bold uppercase tracking-[0.22em] text-[#9ed8ea] sm:text-[10px]">{language === "uk" ? "Обрати версію CV" : "Choose CV version"}</span>
             </button>
           </motion.div>
           <div className="flex items-center gap-4 md:gap-6">
