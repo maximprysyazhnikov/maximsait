@@ -368,7 +368,8 @@ const AnimatedResume = ({
   ];
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setShowAnimatedIntro(false), 3200);
+    const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
+    const timer = window.setTimeout(() => setShowAnimatedIntro(false), isMobileViewport ? 1450 : 2600);
     return () => window.clearTimeout(timer);
   }, []);
 
@@ -413,6 +414,7 @@ const AnimatedResume = ({
   const animatedButtonGhost = `${animatedButtonBase} border-[#51aaca]/25 bg-[#071b2a]/82 text-white shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-md hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]`;
   const animatedButtonLight = `${animatedButtonBase} border-[#51aaca]/30 bg-[#51aaca]/10 text-[#021014] shadow-[0_12px_28px_rgba(81,170,202,0.12)] hover:bg-[#51aaca]`;
   const animatedFloatingButton = "inline-flex items-center gap-3 rounded-full border border-[#51aaca]/25 bg-[#071b2a]/56 py-2 pl-4 pr-2 text-[10px] font-black uppercase tracking-[0.22em] text-[#d8f3fb] shadow-[0_18px_38px_rgba(0,0,0,0.28)] backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]/82 hover:text-white";
+  const heroDelay = isAnimatedMobile ? 0.2 : 1.1;
   return (
     <div className="relative isolate min-h-screen overflow-hidden bg-black text-white">
       <AnimatePresence>
@@ -427,6 +429,7 @@ const AnimatedResume = ({
             <video
               aria-hidden="true"
               src="/animated-bg.mp4"
+              preload="auto"
               autoPlay
               muted
               loop
@@ -489,6 +492,7 @@ const AnimatedResume = ({
         <video
           aria-hidden="true"
           src="/animated-bg.mp4"
+          preload="auto"
           autoPlay
           muted
           loop
@@ -571,18 +575,18 @@ const AnimatedResume = ({
       <main>
         <section id="animated-hero" className="relative flex min-h-screen items-center justify-center px-5 pb-16 pt-28 text-center">
           <div className="mx-auto max-w-7xl">
-            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.55 }} className="mb-8 text-center font-bold uppercase text-[#9ed8ea]">
+            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: heroDelay }} className="mb-8 text-center font-bold uppercase text-[#9ed8ea]">
               <p className="text-sm tracking-[0.34em] sm:tracking-[0.5em]">Maksym Prysiazhnikov</p>
               <p className="mt-2 text-xs tracking-[0.42em]">DevOps Engineer</p>
             </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 42 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.7, duration: 0.7 }} className="text-[18vw] font-black leading-[0.78] tracking-tight md:text-[11vw]">
+            <motion.h1 initial={{ opacity: 0, y: 42 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: heroDelay + 0.12, duration: 0.55 }} className="text-[18vw] font-black leading-[0.78] tracking-tight md:text-[11vw]">
               {story.heroTop}
               <span className="block text-[#d8f3fb]">{story.heroBottom}</span>
             </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.9 }} className="mx-auto mt-9 max-w-3xl text-center text-xs font-bold uppercase leading-7 tracking-[0.28em] text-[#d8f3fb] md:text-sm md:leading-8 md:tracking-[0.34em]">
+            <motion.p initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: heroDelay + 0.24 }} className="mx-auto mt-9 max-w-3xl text-center text-xs font-bold uppercase leading-7 tracking-[0.28em] text-[#d8f3fb] md:text-sm md:leading-8 md:tracking-[0.34em]">
               {story.intro}
             </motion.p>
-            <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2.05 }} className="mx-auto mt-10 grid max-w-[320px] grid-cols-2 gap-3 md:max-w-[930px] md:grid-cols-3 md:gap-4">
+            <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: heroDelay + 0.34 }} className="mx-auto mt-10 grid max-w-[320px] grid-cols-2 gap-3 md:max-w-[930px] md:grid-cols-3 md:gap-4">
               <button type="button" onClick={onContact} className={`${animatedButtonPrimary} h-14 w-full px-5 text-sm sm:px-7 sm:text-base`}>
                 <Mail className="h-5 w-5" />
                 {story.contact}
@@ -599,13 +603,13 @@ const AnimatedResume = ({
           </div>
           <motion.button
             type="button"
-            onClick={() => scrollToAnimatedSection("animated-about")}
+            onClick={() => scrollToAnimatedSection("animated-stack")}
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 2.22 }}
+            transition={{ delay: heroDelay + 0.5 }}
             className={`absolute bottom-5 left-1/2 z-10 -translate-x-1/2 sm:bottom-7 ${animatedFloatingButton}`}
           >
-            <span>{story.scroll}</span>
+            <span>{story.learnAbout}</span>
             <motion.span
               animate={{ y: [0, 4, 0] }}
               transition={{ duration: 1.25, repeat: Infinity, ease: "easeInOut" }}
@@ -673,16 +677,19 @@ const AnimatedResume = ({
               <h2 className="text-5xl font-black leading-none tracking-tight md:text-7xl">{story.stackTitle}</h2>
               <div>
                 <p className="text-lg leading-8 text-zinc-700">{t.about.stackHint}</p>
-                <button type="button" onClick={() => scrollToAnimatedSection("animated-experience")} className={`${animatedButtonLight} mt-6 px-5 py-3 text-sm uppercase tracking-[0.18em]`}>
-                  {story.learnStack}
+                <button type="button" onClick={() => scrollToAnimatedSection("animated-technologies")} className={`${animatedButtonLight} mt-6 px-5 py-3 text-sm uppercase tracking-[0.18em]`}>
+                  {story.technologies}
                   <ChevronRight className="h-4 w-4" />
                 </button>
               </div>
             </div>
-            <div className="grid gap-8 border-y border-black/15 py-8 xl:grid-cols-[0.95fr_1.05fr]">
-              <div>
-                <div className="mb-4 text-xs font-black uppercase tracking-[0.26em] text-zinc-500">{story.technologies}</div>
-                <div className="flex flex-wrap gap-3">
+            <div id="animated-technologies" className="grid gap-6 border-y border-black/15 py-8 xl:grid-cols-[0.88fr_1.12fr]">
+              <div className="rounded-3xl border border-black/10 bg-zinc-50 p-4 shadow-[0_18px_50px_rgba(2,7,13,0.08)] sm:p-5">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <div className="text-xs font-black uppercase tracking-[0.26em] text-zinc-500">{story.technologies}</div>
+                  <span className="rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#0a3142]">{featuredStack.length}</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
                   {featuredStack.map((skill, index) => {
                     const isActive = skill.slug === activeAnimatedSkill.slug;
 
@@ -696,17 +703,17 @@ const AnimatedResume = ({
                         transition={{ delay: index * 0.025 }}
                         onClick={() => setActiveAnimatedSkillSlug(skill.slug)}
                         aria-current={isActive ? "true" : undefined}
-                        className={`flex min-w-[150px] items-center justify-between gap-4 rounded-xl border px-4 py-3 text-left shadow-[0_10px_28px_rgba(81,170,202,0.08)] transition hover:-translate-y-0.5 ${
+                        className={`flex h-12 min-w-0 items-center justify-between gap-2 rounded-2xl border px-3 text-left shadow-[0_10px_28px_rgba(81,170,202,0.08)] transition hover:-translate-y-0.5 sm:h-14 sm:px-4 ${
                           isActive
-                            ? "border-[#51aaca]/70 bg-[#51aaca] text-[#021014]"
-                            : "border-[#51aaca]/28 bg-[#092231] text-white hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]"
+                            ? "border-[#51aaca]/80 bg-[#51aaca] text-[#021014] shadow-[0_14px_32px_rgba(81,170,202,0.2)]"
+                            : "border-[#062333]/12 bg-[#092231] text-white hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]"
                         }`}
                       >
                         <span className="flex min-w-0 items-center gap-2">
                           {skill.icon}
-                          <span className="truncate text-sm font-black">{skill.name}</span>
+                          <span className="truncate text-xs font-black sm:text-sm">{skill.name}</span>
                         </span>
-                        <ChevronRight className={`h-4 w-4 shrink-0 ${isActive ? "text-[#021014]" : "text-[#9ed8ea]"}`} />
+                        <ChevronRight className={`h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4 ${isActive ? "text-[#021014]" : "text-[#9ed8ea]"}`} />
                       </motion.button>
                     );
                   })}
@@ -718,7 +725,7 @@ const AnimatedResume = ({
                 initial={{ opacity: 0, y: 22 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.28 }}
-                className="relative overflow-hidden rounded-2xl border border-[#51aaca]/25 bg-[#061a26] p-6 text-white shadow-2xl shadow-black/20"
+                className="relative min-h-[520px] overflow-hidden rounded-3xl border border-[#51aaca]/25 bg-[#061a26] p-5 text-white shadow-2xl shadow-black/20 sm:p-6"
               >
                 <iframe
                   key={`tech-video-${activeAnimatedSkill.slug}`}
