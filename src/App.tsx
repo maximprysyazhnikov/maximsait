@@ -1017,6 +1017,9 @@ const AnimatedSkillDetail = ({
   onSelectSkill: (slug: string) => void;
 }) => {
   const t = copy[language];
+  const siteSectionLabel = language === "uk" ? "До розділу сайту" : "Site section";
+  const backToSectionLabel = language === "uk" ? "До розділу сайту" : "Back to site section";
+  const lightPortfolioLabel = language === "uk" ? "Light portfolio" : "Light portfolio";
   const switchAnimatedLanguage = (nextLanguage: Language) => {
     window.dispatchEvent(new CustomEvent<Language>("portfolio-language", { detail: nextLanguage }));
   };
@@ -1045,11 +1048,11 @@ const AnimatedSkillDetail = ({
             <div className="flex min-w-0 items-center gap-2">
               <button type="button" onClick={onBack} className="inline-flex h-11 min-w-0 shrink-0 items-center justify-center gap-2 rounded-xl border border-[#51aaca]/25 bg-[#071b2a]/55 px-3 text-zinc-200 shadow-[0_0_24px_rgba(81,170,202,0.08)] backdrop-blur-md transition hover:border-[#51aaca]/45 hover:bg-[#51aaca] hover:text-[#021014] sm:px-4">
                 <ArrowLeft className="h-4 w-4" />
-                <span className="hidden text-xs font-black uppercase tracking-[0.14em] sm:inline">Site section</span>
+                <span className="hidden text-xs font-black uppercase tracking-[0.14em] sm:inline">{siteSectionLabel}</span>
               </button>
               <button type="button" onClick={onLightVersion} className="min-w-0 rounded-xl border border-[#51aaca]/18 bg-[#071b2a]/42 px-3 py-2 text-left shadow-[0_0_24px_rgba(81,170,202,0.06)] backdrop-blur-md transition hover:border-[#51aaca]/40 hover:bg-[#0c2b3d]/82 sm:px-4">
                 <span className="block truncate text-lg font-black leading-none sm:text-xl">MAIN SITE</span>
-                <span className="mt-1 block truncate text-[9px] font-bold uppercase tracking-[0.22em] text-[#9ed8ea] sm:text-[10px]">Light portfolio</span>
+                <span className="mt-1 block truncate text-[9px] font-bold uppercase tracking-[0.22em] text-[#9ed8ea] sm:text-[10px]">{lightPortfolioLabel}</span>
               </button>
             </div>
             <div className="flex shrink-0 items-center rounded-full border border-[#51aaca]/18 bg-[#061a26]/85 p-1">
@@ -1063,53 +1066,90 @@ const AnimatedSkillDetail = ({
         </div>
       </nav>
 
-      <main className="mx-auto grid max-w-7xl gap-7 px-5 pb-24 pt-8 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <motion.section initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl border border-[#51aaca]/22 bg-[#061a26]/78 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:p-8">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_0%,rgba(81,170,202,0.18),transparent_34%),linear-gradient(180deg,rgba(216,243,251,0.05),transparent_32%)]" />
-          <div className="pointer-events-none absolute -right-12 top-8 text-[7rem] font-black uppercase leading-none tracking-tight text-white/[0.035] sm:text-[11rem]">{skill.name}</div>
-          <div className="relative z-10">
-          <button type="button" onClick={onBack} className="mb-6 inline-flex items-center gap-2 rounded-2xl border border-[#51aaca]/20 bg-[#071b2a]/54 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-[#d8f3fb] shadow-[0_12px_28px_rgba(0,0,0,0.18)] backdrop-blur-md transition hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]">
-            <ArrowLeft className="h-4 w-4" />
-            Back to site section
-          </button>
-          <p className="mb-4 text-xs font-black uppercase tracking-[0.42em] text-[#9ed8ea]">{t.techPage.title}</p>
-          <h1 className="text-5xl font-black uppercase leading-[0.82] tracking-tight text-white sm:text-7xl">
-            {skill.name}
-          </h1>
-          <p className="mt-6 max-w-3xl text-2xl font-semibold leading-10 text-[#d8f3fb]">{skill.summary[language]}</p>
-          <div className="mt-8 rounded-3xl border border-[#51aaca]/22 bg-[#02070d]/46 p-5 shadow-[inset_0_0_0_1px_rgba(216,243,251,0.04),0_20px_55px_rgba(0,0,0,0.22)] backdrop-blur-md sm:p-7">
-            <div className="mb-5 flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#51aaca]" />
-              <span className="h-2.5 w-2.5 rounded-full bg-[#9ed8ea]/55" />
-              <span className="h-2.5 w-2.5 rounded-full bg-white/18" />
+      <main className="mx-auto max-w-7xl px-5 pb-24 pt-10">
+        <section className="grid min-h-[calc(100vh-9rem)] items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+          <motion.div
+            initial={{ opacity: 0, x: -28 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.45 }}
+            className="relative order-2 min-h-[420px] overflow-hidden rounded-3xl border border-[#51aaca]/24 bg-[#061a26]/64 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:min-h-[520px] sm:p-7 lg:order-1"
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_45%_35%,rgba(81,170,202,0.18),transparent_30%),linear-gradient(180deg,rgba(216,243,251,0.06),rgba(2,7,13,0.18))]" />
+            <div className="absolute inset-0 opacity-[0.16] [background-image:linear-gradient(rgba(216,243,251,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(216,243,251,0.22)_1px,transparent_1px)] [background-size:72px_72px]" />
+            <div className="pointer-events-none absolute left-6 top-8 text-[7rem] font-black uppercase leading-none tracking-tight text-white/[0.045] sm:text-[10rem]">01</div>
+            <div className="pointer-events-none absolute -right-8 top-16 text-[5.5rem] font-black uppercase leading-none tracking-tight text-white/[0.035] sm:text-[8rem]">{skill.name}</div>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-x-8 top-20 aspect-square rounded-full border border-[#51aaca]/16"
+            />
+            <motion.div
+              animate={{ rotate: -360 }}
+              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-x-16 top-28 aspect-square rounded-[42%] border border-dashed border-white/16"
+            />
+            <div className="relative z-10 flex min-h-[380px] flex-col justify-end sm:min-h-[470px]">
+              <div className="mb-auto flex justify-end">
+                <div className="flex h-28 w-28 items-center justify-center rounded-3xl border border-[#51aaca]/20 bg-[#02070d]/48 text-[#d8f3fb] shadow-[0_0_42px_rgba(81,170,202,0.12)] backdrop-blur-md sm:h-36 sm:w-36 [&_svg]:h-12 [&_svg]:w-12">
+                  {skill.icon}
+                </div>
+              </div>
+              <span className="mb-4 w-fit rounded-full border border-[#51aaca]/30 bg-[#071b2a]/80 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#d8f3fb] shadow-[0_0_24px_rgba(81,170,202,0.12)]">
+                {t.techPage.title}
+              </span>
+              <div className="rounded-3xl border border-white/10 bg-[#02070d]/78 p-5 shadow-2xl shadow-black/25 backdrop-blur-md">
+                <h2 className="text-3xl font-black uppercase leading-none tracking-tight text-white sm:text-5xl">{skill.name}</h2>
+                <p className="mt-3 text-base font-bold leading-7 text-[#9ed8ea]">{skill.summary[language]}</p>
+              </div>
             </div>
-            <p className="text-lg font-medium leading-9 text-zinc-200">{skill.description[language]}</p>
-          </div>
-          <div className="mt-7 grid gap-4">
-            {skill.bullets[language].map((bullet) => {
-              const parsed = splitBullet(bullet);
+          </motion.div>
 
-              return (
-                <div key={bullet} className="group rounded-3xl border border-[#51aaca]/16 bg-[#071c29]/78 p-5 shadow-[0_16px_38px_rgba(0,0,0,0.16)] backdrop-blur-md transition hover:border-[#51aaca]/34 hover:bg-[#092231]/84">
-                  <div className="flex gap-4">
-                    <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition group-hover:bg-[#51aaca]">
-                      <ChevronRight className="h-4 w-4 text-[#51aaca] transition group-hover:text-[#021014]" />
-                    </span>
-                    <div>
-                      <p className="text-xl font-black leading-tight text-white">{parsed.title}</p>
-                      {parsed.details && <p className="mt-3 text-base font-medium leading-8 text-zinc-300">{parsed.details}</p>}
+          <motion.div
+            initial={{ opacity: 0, x: 28 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.45, delay: 0.08 }}
+            className="relative order-1 lg:order-2"
+          >
+            <button type="button" onClick={onBack} className="mb-7 inline-flex items-center gap-2 rounded-2xl border border-[#51aaca]/20 bg-[#071b2a]/54 px-4 py-3 text-xs font-black uppercase tracking-[0.18em] text-[#d8f3fb] shadow-[0_12px_28px_rgba(0,0,0,0.18)] backdrop-blur-md transition hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]">
+              <ArrowLeft className="h-4 w-4" />
+              {backToSectionLabel}
+            </button>
+            <p className="mb-4 text-xs font-black uppercase tracking-[0.42em] text-[#9ed8ea]">{t.techPage.title}</p>
+            <h1 className="break-words text-4xl font-black uppercase leading-[0.84] tracking-tight text-white sm:text-6xl xl:text-7xl">
+              {skill.name}
+            </h1>
+            <p className="mt-7 max-w-3xl text-2xl font-semibold leading-10 text-[#d8f3fb]">{skill.summary[language]}</p>
+            <div className="mt-9 border-y border-white/12 py-7">
+              <p className="text-lg font-medium leading-9 text-zinc-200">{skill.description[language]}</p>
+            </div>
+            <div className="mt-2">
+              {skill.bullets[language].map((bullet) => {
+                const parsed = splitBullet(bullet);
+
+                return (
+                  <div key={bullet} className="group border-b border-white/12 py-6">
+                    <div className="flex gap-5">
+                      <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition group-hover:bg-[#51aaca]">
+                        <ChevronRight className="h-4 w-4 text-[#51aaca] transition group-hover:text-[#021014]" />
+                      </span>
+                      <div>
+                        <p className="text-xl font-black leading-tight text-white">{parsed.title}</p>
+                        {parsed.details && <p className="mt-3 text-base font-medium leading-8 text-zinc-300">{parsed.details}</p>}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-          </div>
-        </motion.section>
+                );
+              })}
+            </div>
+          </motion.div>
+        </section>
 
-        <aside className="rounded-3xl border border-[#51aaca]/22 bg-[#061a26]/74 p-4 shadow-2xl shadow-black/30 backdrop-blur-md lg:sticky lg:top-28 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
-          <h2 className="mb-4 px-1 text-xs font-black uppercase tracking-[0.24em] text-[#9ed8ea]">{t.techPage.related}</h2>
-          <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-1">
+        <section className="mt-16 border-t border-white/12 pt-8">
+          <div className="mb-5 flex flex-wrap items-center justify-center gap-3 text-center sm:justify-between sm:text-left">
+            <h2 className="text-xs font-black uppercase tracking-[0.28em] text-[#9ed8ea]">{t.techPage.related}</h2>
+            <span className="rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#d8f3fb]">{skills.length}</span>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {skills.map((item) => {
               const isActive = item.slug === skill.slug;
 
@@ -1119,22 +1159,22 @@ const AnimatedSkillDetail = ({
                   type="button"
                   onClick={() => !isActive && onSelectSkill(item.slug)}
                   aria-current={isActive ? "page" : undefined}
-                  className={`flex h-12 min-w-0 items-center justify-between gap-2 rounded-2xl border px-3 text-left transition ${
+                  className={`group flex h-14 min-w-0 items-center justify-between gap-2 rounded-2xl border px-3 text-left shadow-[0_12px_30px_rgba(0,0,0,0.22),0_0_20px_rgba(81,170,202,0.08)] transition hover:-translate-y-0.5 sm:px-4 ${
                     isActive
-                      ? "border-[#51aaca]/80 bg-[#51aaca] text-[#021014]"
-                      : "border-[#51aaca]/14 bg-[#092231]/92 text-white hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]"
+                      ? "border-[#9ed8ea]/70 bg-[#51aaca] text-[#021014] shadow-[0_18px_38px_rgba(81,170,202,0.28)]"
+                      : "border-[#51aaca]/22 bg-[#092231]/88 text-white hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014]"
                   }`}
                 >
                   <span className="flex min-w-0 items-center gap-2">
-                    {item.icon}
+                    <span className={`transition ${isActive ? "text-[#021014]" : "text-[#d8f3fb] group-hover:text-[#021014]"}`}>{item.icon}</span>
                     <span className="truncate text-xs font-black sm:text-sm">{item.name}</span>
                   </span>
-                  <ChevronRight className={`h-4 w-4 shrink-0 ${isActive ? "text-[#021014]" : "text-[#9ed8ea]"}`} />
+                  <ChevronRight className={`h-4 w-4 shrink-0 transition ${isActive ? "text-[#021014]" : "text-[#9ed8ea] group-hover:text-[#021014]"}`} />
                 </button>
               );
             })}
           </div>
-        </aside>
+        </section>
       </main>
     </div>
   );
