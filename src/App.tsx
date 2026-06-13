@@ -4,7 +4,7 @@ import DevOpsLogo from "./components/DevOpsLogo";
 import {
   ArrowLeft, ArrowUp, Award, BookOpen, Calendar, ChevronRight, ClipboardList, Cloud, Code2,
   Container, Cpu, Database, Download, ExternalLink, GitBranch, Github, Globe, Kanban, Linkedin,
-  Mail, MapPin, MessageCircle, RailSymbol, Send, ShieldCheck, Terminal, Users, X,
+  Eye, EyeOff, Mail, MapPin, MessageCircle, RailSymbol, Send, ShieldCheck, Terminal, Users, X,
 } from "lucide-react";
 
 type Language = "uk" | "en";
@@ -598,6 +598,7 @@ const AnimatedResume = ({
   const [openCertIndex, setOpenCertIndex] = useState<number | null>(null);
   const [openEducationIndex, setOpenEducationIndex] = useState<number | null>(null);
   const [openEarlierIndex, setOpenEarlierIndex] = useState<number | null>(null);
+  const [isHeroTextHidden, setIsHeroTextHidden] = useState(false);
   const story = language === "uk"
     ? {
       back: "Light version",
@@ -607,7 +608,17 @@ const AnimatedResume = ({
       loadingWords: ["Infrastructure", "Automation", "Delivery"],
       heroTop: "I BUILD",
       heroBottom: "RELIABLE SYSTEMS",
+      heroPhrases: [
+        ["CLOUD", "AUTOMATED", "INFRASTRUCTURE"],
+        ["RELIABLE SYSTEMS", "DEPLOYED FAST"],
+        ["SCALABLE CLOUD", "INFRASTRUCTURE"],
+        ["CODE TO PRODUCTION", "WITH CONFIDENCE"],
+        ["AUTOMATION", "DEPLOYMENT", "OBSERVABILITY"],
+        ["CLOUD SYSTEMS", "BUILT TO SCALE"],
+        ["INFRASTRUCTURE", "THAT DELIVERS"],
+      ],
       intro: "DEVOPS / CLOUD ENGINEER · AUTOMATION. DEPLOYMENT. OBSERVABILITY.",
+      introLines: ["AUTOMATION · DEPLOYMENT · OBSERVABILITY"],
       whoTitle: "WHO I AM",
       whoLead: "Я поєдную практичний DevOps, cloud deployment, бази даних, automation та security-мислення.",
       whoText: [t.about.p1, t.about.p2, t.about.p3],
@@ -645,7 +656,17 @@ const AnimatedResume = ({
       loadingWords: ["Infrastructure", "Automation", "Delivery"],
       heroTop: "I BUILD",
       heroBottom: "RELIABLE SYSTEMS",
+      heroPhrases: [
+        ["CLOUD", "AUTOMATED", "INFRASTRUCTURE"],
+        ["RELIABLE SYSTEMS", "DEPLOYED FAST"],
+        ["SCALABLE CLOUD", "INFRASTRUCTURE"],
+        ["CODE TO PRODUCTION", "WITH CONFIDENCE"],
+        ["AUTOMATION", "DEPLOYMENT", "OBSERVABILITY"],
+        ["CLOUD SYSTEMS", "BUILT TO SCALE"],
+        ["INFRASTRUCTURE", "THAT DELIVERS"],
+      ],
       intro: "DEVOPS / CLOUD ENGINEER · AUTOMATION. DEPLOYMENT. OBSERVABILITY.",
+      introLines: ["AUTOMATION · DEPLOYMENT · OBSERVABILITY"],
       whoTitle: "WHO I AM",
       whoLead: "I connect practical DevOps, cloud deployment, databases, automation, and security-minded infrastructure.",
       whoText: [t.about.p1, t.about.p2, t.about.p3],
@@ -793,7 +814,12 @@ const AnimatedResume = ({
   const animatedButtonGhost = `${animatedButtonBase} border-[#51aaca]/25 bg-[#071b2a]/82 text-white shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-md hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]`;
   const animatedButtonLight = `${animatedButtonBase} border-[#51aaca]/30 bg-[#51aaca]/10 text-[#021014] shadow-[0_12px_28px_rgba(81,170,202,0.12)] hover:bg-[#51aaca]`;
   const animatedFloatingButton = "inline-flex items-center gap-3 rounded-full border border-[#51aaca]/25 bg-[#071b2a]/56 py-2 pl-4 pr-2 text-[10px] font-black uppercase tracking-[0.22em] text-[#d8f3fb] shadow-[0_18px_38px_rgba(0,0,0,0.28)] backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[#51aaca]/45 hover:bg-[#0c2b3d]/82 hover:text-white";
+  const heroTextToggleLabel = language === "uk"
+    ? isHeroTextHidden ? "Показати текст" : "Сховати текст"
+    : isHeroTextHidden ? "Show text" : "Hide text";
   const heroDelay = isAnimatedMobile ? 0 : 0.72;
+  const heroPhrase = story.heroPhrases[0];
+
   return (
     <div className="relative isolate min-h-screen overflow-hidden bg-black text-white">
       <AnimatePresence>
@@ -881,9 +907,33 @@ const AnimatedResume = ({
           />
         )}
         {isAnimatedMobile && (
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,7,13,0.38),rgba(6,24,39,0.34)_44%,rgba(2,7,13,0.72)),url('/mobile-animated-bg.svg')] bg-cover bg-center opacity-95" />
+          <video
+            aria-hidden="true"
+            src="/animated-bg-mobile.mp4"
+            preload="auto"
+            autoPlay
+            muted
+            playsInline
+            onLoadedMetadata={(event) => {
+              const video = event.currentTarget;
+              if (Number.isFinite(video.duration) && video.duration > 1) {
+                video.currentTime = video.duration / 2;
+              }
+            }}
+            onEnded={(event) => {
+              const video = event.currentTarget;
+              if (Number.isFinite(video.duration) && video.duration > 1) {
+                video.currentTime = video.duration / 2;
+                void video.play();
+              }
+            }}
+            className="absolute inset-0 h-full w-full object-cover object-center opacity-78"
+          />
         )}
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.48),rgba(3,12,18,0.18)_48%,rgba(0,0,0,0.52)),radial-gradient(circle_at_50%_20%,rgba(81,170,202,0.1),transparent_32%)]" />
+        {isAnimatedMobile && (
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,7,13,0.42),rgba(6,24,39,0.2)_38%,rgba(2,7,13,0.76)),radial-gradient(circle_at_50%_38%,rgba(81,170,202,0.16),transparent_38%)]" />
+        )}
         {!isAnimatedMobile && (
           <motion.div
             animate={{ backgroundPosition: ["0px 0px", "120px 120px"] }}
@@ -941,12 +991,12 @@ const AnimatedResume = ({
               <ArrowLeft className="h-4 w-4" />
               <span className="hidden text-xs font-black uppercase tracking-[0.14em] sm:inline">{story.back}</span>
             </button>
-            <button type="button" onClick={onBack} className="min-w-0 rounded-xl px-1 text-left transition hover:text-[#d8f3fb]">
-              <span className="block truncate text-base font-black leading-none tracking-tight sm:text-xl">DEVOPS</span>
-              <span className="mt-1 hidden truncate text-[9px] font-bold uppercase tracking-[0.22em] text-[#9ed8ea] min-[380px]:block sm:text-[10px]">Back to light version</span>
+            <button type="button" onClick={onBack} className="min-w-0 max-w-[42vw] rounded-xl px-1 text-left transition hover:text-[#d8f3fb] sm:max-w-none">
+              <span className="block truncate text-sm font-black leading-none tracking-tight sm:text-xl">DEVOPS</span>
+              <span className="mt-1 hidden truncate text-[8px] font-bold uppercase tracking-[0.16em] text-[#9ed8ea] min-[380px]:block sm:text-[9px] sm:tracking-[0.18em] xl:text-[10px] xl:tracking-[0.22em]">Back to light version</span>
             </button>
           </div>
-          <div className="hidden items-center gap-7 text-xs font-bold uppercase tracking-[0.18em] text-zinc-400 lg:flex">
+          <div className="hidden items-center gap-4 text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-400 lg:flex xl:gap-7 xl:text-xs xl:tracking-[0.18em]">
             {animatedNavItems.map(([id, label]) => (
               <button key={id} type="button" onClick={() => scrollToAnimatedSection(id)} className="transition hover:text-white">
                 {label}
@@ -965,20 +1015,68 @@ const AnimatedResume = ({
       </nav>
 
       <main>
-        <section id="animated-hero" className="relative flex min-h-[100svh] items-center justify-center px-4 pb-24 pt-24 text-center sm:px-5 sm:pb-16 sm:pt-28">
-          <div className="mx-auto max-w-7xl">
-            <motion.div initial={{ opacity: 0, y: isAnimatedMobile ? 10 : 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: heroDelay }} className="mb-5 text-center font-bold uppercase text-[#9ed8ea] sm:mb-8">
-              <p className="text-[11px] tracking-[0.24em] min-[380px]:text-xs min-[380px]:tracking-[0.34em] sm:text-sm sm:tracking-[0.5em]">Maksym Prysiazhnikov</p>
-              <p className="mt-2 text-[10px] tracking-[0.3em] sm:text-xs sm:tracking-[0.42em]">DevOps Engineer</p>
+        <section id="animated-hero" className="relative flex min-h-[100svh] items-center justify-center px-4 pb-24 pt-28 text-center sm:px-5 sm:pb-16 sm:pt-28">
+          <button
+            type="button"
+            onClick={() => setIsHeroTextHidden((hidden) => !hidden)}
+            aria-label={heroTextToggleLabel}
+            title={heroTextToggleLabel}
+            className="absolute right-3 top-[5.45rem] z-20 inline-flex h-10 items-center justify-center gap-2 rounded-full border border-[#51aaca]/24 bg-[#071b2a]/68 px-3 text-[9px] font-black uppercase tracking-[0.12em] text-[#d8f3fb] shadow-[0_16px_38px_rgba(0,0,0,0.26)] backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-[#51aaca]/50 hover:bg-[#0c2b3d]/88 hover:text-white sm:right-6 sm:top-[6.35rem] sm:h-11 sm:px-5 sm:text-xs sm:tracking-[0.16em]"
+          >
+            {isHeroTextHidden ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+            <span>{heroTextToggleLabel}</span>
+          </button>
+          <div className="mx-auto w-full max-w-7xl">
+            <motion.div initial={{ opacity: 0, y: isAnimatedMobile ? 10 : 24 }} animate={{ opacity: 0.82, y: 0 }} transition={{ delay: heroDelay }} className="mb-4 text-center font-bold uppercase text-[#9ed8ea] sm:mb-8">
+              <p className="mx-auto max-w-[92vw] truncate text-[9px] tracking-[0.2em] min-[380px]:text-[10px] min-[380px]:tracking-[0.24em] sm:text-xs sm:tracking-[0.38em] md:text-sm md:tracking-[0.44em]">DevOps Engineer</p>
+              <p className="mx-auto mt-1.5 max-w-[92vw] truncate text-[8px] tracking-[0.2em] min-[380px]:text-[9px] min-[380px]:tracking-[0.24em] sm:mt-2 sm:text-xs sm:tracking-[0.34em]">Maksym Prysiazhnikov</p>
             </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: isAnimatedMobile ? 14 : 42 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: heroDelay + (isAnimatedMobile ? 0.04 : 0.12), duration: isAnimatedMobile ? 0.28 : 0.55 }} className="mx-auto max-w-[96vw] text-[17vw] font-black leading-[0.84] tracking-tight min-[380px]:text-[16vw] sm:text-[14vw] sm:leading-[0.78] md:text-[11vw]">
-              {story.heroTop}
-              <span className="block text-[#d8f3fb]">{story.heroBottom}</span>
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: isAnimatedMobile ? 10 : 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: heroDelay + (isAnimatedMobile ? 0.08 : 0.24) }} className="mx-auto mt-6 max-w-3xl text-center text-[10px] font-bold uppercase leading-6 tracking-[0.16em] text-[#d8f3fb] min-[380px]:text-[11px] min-[380px]:tracking-[0.22em] sm:mt-9 md:text-sm md:leading-8 md:tracking-[0.34em]">
-              {story.intro}
-            </motion.p>
-            <motion.div initial={{ opacity: 0, y: isAnimatedMobile ? 10 : 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: heroDelay + (isAnimatedMobile ? 0.12 : 0.34) }} className="mx-auto mt-7 grid max-w-[340px] grid-cols-2 gap-2.5 sm:mt-10 sm:gap-3 md:max-w-[930px] md:grid-cols-3 md:gap-4">
+            <motion.div
+              animate={{ height: isHeroTextHidden ? 0 : "2.62em", marginTop: 0, marginBottom: isHeroTextHidden ? 0 : 0 }}
+              transition={{ duration: 0.82, ease: "easeInOut" }}
+              className="overflow-hidden text-[13vw] leading-[0.86] min-[380px]:text-[12vw] sm:text-[8.2vw] sm:leading-[0.82] md:text-[6.4vw] xl:text-[5.8vw]"
+            >
+              <motion.h1 initial={{ opacity: 0, filter: "blur(18px)" }} animate={{ opacity: isHeroTextHidden ? 0 : 1, filter: isHeroTextHidden ? "blur(16px)" : "blur(0px)" }} transition={{ delay: isHeroTextHidden ? 0 : heroDelay + (isAnimatedMobile ? 0.16 : 0.32), duration: isAnimatedMobile ? 1.55 : 2.05, ease: "easeOut" }} className="relative mx-auto flex h-[2.62em] max-w-[92vw] items-center justify-center font-black tracking-normal" aria-live="polite">
+                <AnimatePresence>
+                  <motion.span
+                    key={heroPhrase.join("-")}
+                    initial={{ opacity: 0, filter: "blur(14px)" }}
+                    animate={{ opacity: 0.74, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, filter: "blur(18px)" }}
+                    transition={{
+                      opacity: { duration: isAnimatedMobile ? 2.7 : 3.4, ease: "easeInOut" },
+                      filter: { duration: isAnimatedMobile ? 2.9 : 3.6, ease: "easeInOut" },
+                    }}
+                    className="absolute inset-0 grid h-full w-full grid-rows-3 place-items-center"
+                  >
+                    {[0, 1, 2].map((lineIndex) => {
+                      const line = heroPhrase[lineIndex] ?? "\u00A0";
+                      return (
+                      <span
+                        key={`${line}-${lineIndex}`}
+                        aria-hidden={!heroPhrase[lineIndex]}
+                        className={`block max-w-full overflow-hidden text-ellipsis whitespace-nowrap ${!heroPhrase[lineIndex] ? "opacity-0" : lineIndex === 0 ? "text-[0.74em] text-white/84" : lineIndex === 1 ? "text-[0.9em] text-[#d8f3fb]/82" : "text-[0.76em] text-[#d8f3fb]/78"}`}
+                      >
+                        {line}
+                      </span>
+                      );
+                    })}
+                  </motion.span>
+                </AnimatePresence>
+              </motion.h1>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: isAnimatedMobile ? 10 : 22 }} animate={{ opacity: 0.72, y: 0 }} transition={{ delay: heroDelay + (isAnimatedMobile ? 0.16 : 0.36), duration: 0.85, ease: "easeOut" }} className="mx-auto mt-5 flex w-full max-w-4xl items-center justify-center gap-3 text-center sm:mt-6 md:mt-7">
+              <span className="hidden h-px min-w-16 flex-1 bg-gradient-to-r from-transparent via-[#d8f3fb]/24 to-[#d8f3fb]/6 sm:block" />
+              <p className="mx-auto max-w-[96vw] text-center text-[8px] font-black uppercase leading-5 tracking-[0.1em] text-[#d8f3fb]/72 min-[380px]:text-[9px] min-[380px]:tracking-[0.13em] sm:max-w-none sm:text-[10px] sm:leading-6 sm:tracking-[0.2em] md:text-[11px] md:leading-7 md:tracking-[0.24em]">
+                {story.introLines.map((line) => (
+                  <span key={line} className="block whitespace-nowrap">
+                    <span className="text-[#51aaca]/70">·</span> {line} <span className="text-[#51aaca]/70">·</span>
+                  </span>
+                ))}
+              </p>
+              <span className="hidden h-px min-w-16 flex-1 bg-gradient-to-l from-transparent via-[#d8f3fb]/24 to-[#d8f3fb]/6 sm:block" />
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: isAnimatedMobile ? 10 : 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: heroDelay + (isAnimatedMobile ? 0.2 : 0.46) }} className="mx-auto mt-6 grid max-w-[340px] grid-cols-2 gap-2.5 sm:mt-7 sm:gap-3 md:max-w-[930px] md:grid-cols-3 md:gap-4">
               <button type="button" onClick={onContact} className={`${animatedButtonPrimary} h-12 w-full px-3 text-xs sm:h-14 sm:px-7 sm:text-base`}>
                 <Mail className="h-5 w-5" />
                 {story.contact}
