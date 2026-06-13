@@ -2559,20 +2559,24 @@ const VersionChoiceScreen = ({
         <p className="mb-4 text-[11px] font-black uppercase tracking-[0.36em] text-[#9ed8ea] min-[380px]:text-xs min-[380px]:tracking-[0.44em] sm:mb-5">{text.eyebrow}</p>
         <h1 className="mx-auto max-w-[21rem] text-[40px] font-black uppercase leading-[0.9] tracking-tight min-[380px]:max-w-[28rem] min-[380px]:text-[48px] sm:max-w-4xl sm:text-5xl md:text-7xl">{text.title}</h1>
         <p className="mx-auto mt-5 max-w-[31rem] text-base leading-7 text-zinc-300 min-[380px]:text-lg min-[380px]:leading-8 sm:mt-6 sm:max-w-3xl">{text.subtitle}</p>
-        <div className="mt-8 grid gap-3 min-[380px]:gap-4 sm:mt-10 md:grid-cols-2">
-          <button type="button" onClick={onLight} className="group min-h-[190px] rounded-[26px] border border-[#51aaca]/20 bg-[#071b2a]/78 p-5 text-left shadow-2xl shadow-black/25 backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/60 hover:bg-[#d8f3fb] hover:text-[#021014] min-[380px]:min-h-[215px] min-[380px]:p-6 md:min-h-[260px]">
-            <div className="mb-7 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#51aaca]/22 bg-[#02070d]/60 text-[#d8f3fb] transition group-hover:bg-[#51aaca] group-hover:text-[#021014] min-[380px]:mb-9 min-[380px]:h-14 min-[380px]:w-14 md:mb-10">
-              <BookOpen className="h-5 w-5 min-[380px]:h-6 min-[380px]:w-6" />
+        <div className="mt-6 grid gap-2.5 min-[380px]:gap-3 sm:mt-10 md:grid-cols-2">
+          <button type="button" onClick={onLight} className="group flex min-h-[128px] flex-col justify-between rounded-[22px] border border-[#51aaca]/20 bg-[#071b2a]/78 p-4 text-left shadow-2xl shadow-black/25 backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/60 hover:bg-[#d8f3fb] hover:text-[#021014] min-[380px]:min-h-[146px] min-[380px]:p-5 sm:min-h-[190px] sm:rounded-[26px] sm:p-6 md:min-h-[260px]">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#51aaca]/22 bg-[#02070d]/60 text-[#d8f3fb] transition group-hover:bg-[#51aaca] group-hover:text-[#021014] min-[380px]:h-12 min-[380px]:w-12 sm:mb-9 sm:h-14 sm:w-14 md:mb-10">
+              <BookOpen className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
-            <div className="text-2xl font-black min-[380px]:text-3xl">{text.light}</div>
-            <p className="mt-2 text-xs font-bold uppercase tracking-[0.2em] text-[#9ed8ea] transition group-hover:text-[#021014]/70 min-[380px]:text-sm min-[380px]:tracking-[0.22em]">{text.lightText}</p>
+            <div>
+              <div className="text-xl font-black min-[380px]:text-2xl sm:text-3xl">{text.light}</div>
+              <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#9ed8ea] transition group-hover:text-[#021014]/70 min-[380px]:text-xs min-[380px]:tracking-[0.2em] sm:mt-2 sm:text-sm sm:tracking-[0.22em]">{text.lightText}</p>
+            </div>
           </button>
-          <button type="button" onClick={onAnimated} className="group min-h-[190px] rounded-[26px] border border-[#51aaca]/35 bg-[#51aaca]/16 p-5 text-left shadow-[0_24px_70px_rgba(81,170,202,0.14)] backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014] min-[380px]:min-h-[215px] min-[380px]:p-6 md:min-h-[260px]">
-            <div className="mb-7 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#51aaca]/30 bg-[#02070d]/60 text-[#d8f3fb] transition group-hover:bg-[#021014] group-hover:text-[#d8f3fb] min-[380px]:mb-9 min-[380px]:h-14 min-[380px]:w-14 md:mb-10">
-              <Terminal className="h-5 w-5 min-[380px]:h-6 min-[380px]:w-6" />
+          <button type="button" onClick={onAnimated} className="group flex min-h-[128px] flex-col justify-between rounded-[22px] border border-[#51aaca]/35 bg-[#51aaca]/16 p-4 text-left shadow-[0_24px_70px_rgba(81,170,202,0.14)] backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014] min-[380px]:min-h-[146px] min-[380px]:p-5 sm:min-h-[190px] sm:rounded-[26px] sm:p-6 md:min-h-[260px]">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#51aaca]/30 bg-[#02070d]/60 text-[#d8f3fb] transition group-hover:bg-[#021014] group-hover:text-[#d8f3fb] min-[380px]:h-12 min-[380px]:w-12 sm:mb-9 sm:h-14 sm:w-14 md:mb-10">
+              <Terminal className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
-            <div className="text-2xl font-black min-[380px]:text-3xl">{text.animated}</div>
-            <p className="mt-2 text-xs font-bold uppercase tracking-[0.2em] text-[#9ed8ea] transition group-hover:text-[#021014]/70 min-[380px]:text-sm min-[380px]:tracking-[0.22em]">{text.animatedText}</p>
+            <div>
+              <div className="text-xl font-black min-[380px]:text-2xl sm:text-3xl">{text.animated}</div>
+              <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#9ed8ea] transition group-hover:text-[#021014]/70 min-[380px]:text-xs min-[380px]:tracking-[0.2em] sm:mt-2 sm:text-sm sm:tracking-[0.22em]">{text.animatedText}</p>
+            </div>
           </button>
         </div>
       </motion.div>
