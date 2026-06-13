@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 929" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#020817"/>
+      <stop offset="0.54" stop-color="#071d3b"/>
+      <stop offset="1" stop-color="#1c4fb0"/>
+    </linearGradient>
+    <linearGradient id="streak-blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dff3ff" stop-opacity="0"/>
+      <stop offset="0.42" stop-color="#9ed8ff" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#3d7dff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="streak-warm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff1c0" stop-opacity="0"/>
+      <stop offset="0.48" stop-color="#fff1c0" stop-opacity="1"/>
+      <stop offset="1" stop-color="#ff9d5a" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft-glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1536" height="929" fill="url(#sky)"/>
+  <path d="M846 0c-9 131-43 285-88 423-45 139-92 271-124 506" stroke="url(#streak-warm)" stroke-width="8" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.96"/>
+  <path d="M0 104 75 0" stroke="url(#streak-blue)" stroke-width="3" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.78"/>
+  <path d="M296 0 155 211" stroke="url(#streak-blue)" stroke-width="3" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.72"/>
+  <path d="M610 42 465 438" stroke="url(#streak-blue)" stroke-width="3" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.82"/>
+  <path d="M1084 0 1032 426" stroke="url(#streak-blue)" stroke-width="2.6" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.7"/>
+  <path d="M1269 0 1310 649" stroke="url(#streak-blue)" stroke-width="3" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.74"/>
+  <path d="M1348 0 1433 389" stroke="url(#streak-blue)" stroke-width="2.8" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.78"/>
+  <path d="M1516 0 1476 684" stroke="url(#streak-blue)" stroke-width="3" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.82"/>
+  <path d="M760 312 748 366" stroke="#4d82ff" stroke-width="4" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.88"/>
+  <path d="M680 486 617 651" stroke="url(#streak-blue)" stroke-width="4" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.78"/>
+  <path d="M777 537 697 725" stroke="url(#streak-blue)" stroke-width="3" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.64"/>
+  <path d="M438 488 333 806" stroke="url(#streak-blue)" stroke-width="3" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.62"/>
+  <path d="M1200 121 1224 555" stroke="url(#streak-blue)" stroke-width="2.4" stroke-linecap="round" filter="url(#soft-glow)" opacity="0.66"/>
+  <circle cx="334" cy="383" r="4" fill="#ffc7c5" filter="url(#soft-glow)" opacity="0.9"/>
+  <circle cx="1444" cy="646" r="4" fill="#ffd4cf" filter="url(#soft-glow)" opacity="0.88"/>
+  <circle cx="1405" cy="389" r="3" fill="#f5f7ff" filter="url(#soft-glow)" opacity="0.7"/>
+  <circle cx="809" cy="338" r="2.4" fill="#ffd4bf" filter="url(#soft-glow)" opacity="0.72"/>
+  <circle cx="774" cy="393" r="2.4" fill="#ffd4bf" filter="url(#soft-glow)" opacity="0.68"/>
+  <circle cx="750" cy="545" r="2.4" fill="#ffd4bf" filter="url(#soft-glow)" opacity="0.76"/>
+  <path d="M882 617c110-78 174-74 292-41 83 24 156 18 220-16v369H736c9-125 55-231 146-312Z" fill="#08152b" opacity="0.24"/>
+  <path d="M1080 661c87-35 159-27 247-6 73 18 143 13 209-24v298H875c27-116 96-221 205-268Z" fill="#050b19" opacity="0.26"/>
+</svg>
