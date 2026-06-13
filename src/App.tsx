@@ -223,7 +223,7 @@ const OfficialResourceLinks = ({
   compact?: boolean;
   defaultOpen?: boolean;
 }) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen ?? compact);
+  const [isOpen, setIsOpen] = useState(defaultOpen ?? false);
 
   if (resources.length === 0) return null;
 
@@ -301,7 +301,7 @@ const BeginnerToolGuide = ({
   compact?: boolean;
   defaultOpen?: boolean;
 }) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen ?? compact);
+  const [isOpen, setIsOpen] = useState(defaultOpen ?? false);
   const firstPractice = splitBullet(skill.bullets[language][0] || skill.summary[language]);
   const docsLabel = resources[0]?.label || (language === "uk" ? "офіційну документацію" : "official documentation");
   const text = language === "uk"
@@ -999,7 +999,7 @@ const AnimatedResume = ({
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: heroDelay + (isAnimatedMobile ? 0.18 : 0.5) }}
-            className={`absolute bottom-4 left-1/2 z-10 -translate-x-1/2 sm:bottom-7 ${animatedFloatingButton}`}
+            className={`absolute bottom-4 left-4 z-10 translate-x-0 sm:bottom-3 sm:left-[calc(50%-18px)] sm:-translate-x-1/2 lg:left-[calc(50%-22px)] ${animatedFloatingButton} max-[379px]:gap-2 max-[379px]:pl-3 max-[379px]:pr-1 max-[379px]:tracking-[0.14em]`}
           >
             <span>{story.learnAbout}</span>
             <motion.span
@@ -1184,23 +1184,23 @@ const AnimatedResume = ({
                   <button
                     type="button"
                     onClick={() => setOpenExperienceIndex(openExperienceIndex === index ? null : index)}
-                    aria-expanded={!isAnimatedMobile || openExperienceIndex === index}
+                    aria-expanded={openExperienceIndex === index}
                     className="group flex w-full items-start justify-between gap-4 text-left"
                   >
                     <span className="min-w-0">
                       <span className="block text-4xl font-black leading-none tracking-tight sm:text-5xl md:text-7xl">{scene.title}</span>
                       <span className="mt-5 block text-lg font-bold text-[#9ed8ea] sm:text-xl">{scene.role}</span>
                     </span>
-                    <span className={`mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition group-hover:bg-[#51aaca] lg:hidden ${openExperienceIndex === index ? "bg-[#51aaca]" : ""}`}>
+                    <span className={`mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition group-hover:bg-[#51aaca] ${openExperienceIndex === index ? "bg-[#51aaca]" : ""}`}>
                       <ChevronRight className={`h-4 w-4 transition ${openExperienceIndex === index ? "rotate-90 text-[#021014]" : "text-[#51aaca] group-hover:text-[#021014]"}`} />
                     </span>
                   </button>
                   <AnimatePresence initial={false}>
-                    {(!isAnimatedMobile || openExperienceIndex === index) && (
+                    {openExperienceIndex === index && (
                       <motion.div
                         initial={isAnimatedMobile ? { height: 0, opacity: 0 } : false}
                         animate={{ height: "auto", opacity: 1 }}
-                        exit={isAnimatedMobile ? { height: 0, opacity: 0 } : undefined}
+                        exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.22 }}
                         className="overflow-hidden"
                       >
@@ -1272,21 +1272,21 @@ const AnimatedResume = ({
                       <button
                         type="button"
                         onClick={() => setOpenProjectIndex(openProjectIndex === index ? null : index)}
-                        aria-expanded={!isAnimatedMobile || openProjectIndex === index}
-                        className={`flex h-10 w-10 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition hover:bg-[#51aaca] lg:hidden ${openProjectIndex === index ? "bg-[#51aaca]" : ""}`}
+                        aria-expanded={openProjectIndex === index}
+                        className={`flex h-10 w-10 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition hover:bg-[#51aaca] ${openProjectIndex === index ? "bg-[#51aaca]" : ""}`}
                       >
                         <ChevronRight className={`h-4 w-4 transition ${openProjectIndex === index ? "rotate-90 text-[#021014]" : "text-[#51aaca]"}`} />
                       </button>
                     </div>
-                    <button type="button" onClick={() => setOpenProjectIndex(openProjectIndex === index ? null : index)} className="block w-full text-left lg:pointer-events-none">
+                    <button type="button" onClick={() => setOpenProjectIndex(openProjectIndex === index ? null : index)} className="block w-full text-left">
                       <h3 className="text-2xl font-black tracking-tight sm:text-3xl">{project.title}</h3>
                     </button>
                     <AnimatePresence initial={false}>
-                      {(!isAnimatedMobile || openProjectIndex === index) && (
+                      {openProjectIndex === index && (
                         <motion.div
                           initial={isAnimatedMobile ? { height: 0, opacity: 0 } : false}
                           animate={{ height: "auto", opacity: 1 }}
-                          exit={isAnimatedMobile ? { height: 0, opacity: 0 } : undefined}
+                          exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.22 }}
                           className="overflow-hidden"
                         >
@@ -1327,16 +1327,16 @@ const AnimatedResume = ({
                         <span className="block text-xl font-black">{cert.name}</span>
                         <span className="mt-1 block text-sm text-zinc-400">{cert.issuer} / {cert.year}</span>
                       </span>
-                      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition group-hover:bg-[#51aaca] lg:hidden ${openCertIndex === index ? "bg-[#51aaca]" : ""}`}>
+                      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition group-hover:bg-[#51aaca] ${openCertIndex === index ? "bg-[#51aaca]" : ""}`}>
                         <ChevronRight className={`h-4 w-4 transition ${openCertIndex === index ? "rotate-90 text-[#021014]" : "text-[#51aaca] group-hover:text-[#021014]"}`} />
                       </span>
                     </button>
                     <AnimatePresence initial={false}>
-                      {(!isAnimatedMobile || openCertIndex === index) && cert.details && (
+                      {openCertIndex === index && cert.details && (
                         <motion.p
                           initial={isAnimatedMobile ? { height: 0, opacity: 0 } : false}
                           animate={{ height: "auto", opacity: 1 }}
-                          exit={isAnimatedMobile ? { height: 0, opacity: 0 } : undefined}
+                          exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.22 }}
                           className="mt-2 overflow-hidden text-sm leading-6 text-[#9ed8ea]/75"
                         >
@@ -1352,16 +1352,16 @@ const AnimatedResume = ({
                   <motion.div key={item.title} initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.06 }} className="border border-white/10 bg-white/[0.04] p-5">
                     <button type="button" onClick={() => setOpenEducationIndex(openEducationIndex === index ? null : index)} className="group flex w-full items-start justify-between gap-4 text-left">
                       <span className="text-lg font-black">{item.title}</span>
-                      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition group-hover:bg-[#51aaca] lg:hidden ${openEducationIndex === index ? "bg-[#51aaca]" : ""}`}>
+                      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition group-hover:bg-[#51aaca] ${openEducationIndex === index ? "bg-[#51aaca]" : ""}`}>
                         <ChevronRight className={`h-4 w-4 transition ${openEducationIndex === index ? "rotate-90 text-[#021014]" : "text-[#51aaca] group-hover:text-[#021014]"}`} />
                       </span>
                     </button>
                     <AnimatePresence initial={false}>
-                      {(!isAnimatedMobile || openEducationIndex === index) && (
+                      {openEducationIndex === index && (
                         <motion.p
                           initial={isAnimatedMobile ? { height: 0, opacity: 0 } : false}
                           animate={{ height: "auto", opacity: 1 }}
-                          exit={isAnimatedMobile ? { height: 0, opacity: 0 } : undefined}
+                          exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.22 }}
                           className="mt-2 overflow-hidden text-sm leading-7 text-zinc-400"
                         >
@@ -1383,16 +1383,16 @@ const AnimatedResume = ({
                         <span className="block text-xs font-bold text-[#51aaca]">{item.period}</span>
                         <span className="mt-2 block text-xl font-black">{item.title}</span>
                       </span>
-                      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition group-hover:bg-[#51aaca] lg:hidden ${openEarlierIndex === index ? "bg-[#51aaca]" : ""}`}>
+                      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 transition group-hover:bg-[#51aaca] ${openEarlierIndex === index ? "bg-[#51aaca]" : ""}`}>
                         <ChevronRight className={`h-4 w-4 transition ${openEarlierIndex === index ? "rotate-90 text-[#021014]" : "text-[#51aaca] group-hover:text-[#021014]"}`} />
                       </span>
                     </button>
                     <AnimatePresence initial={false}>
-                      {(!isAnimatedMobile || openEarlierIndex === index) && (
+                      {openEarlierIndex === index && (
                         <motion.p
                           initial={isAnimatedMobile ? { height: 0, opacity: 0 } : false}
                           animate={{ height: "auto", opacity: 1 }}
-                          exit={isAnimatedMobile ? { height: 0, opacity: 0 } : undefined}
+                          exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.22 }}
                           className="mt-2 overflow-hidden text-sm leading-7 text-zinc-400"
                         >
@@ -1552,9 +1552,9 @@ const AnimatedSkillDetail = ({
   const animatedHomeLabel = language === "uk" ? "Головна animated" : "Animated main page";
   const isInitialSkillMobile = () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
   const [isSkillMobile, setIsSkillMobile] = useState(isInitialSkillMobile);
-  const [isOverviewOpen, setIsOverviewOpen] = useState(() => !isInitialSkillMobile());
-  const [isBulletListOpen, setIsBulletListOpen] = useState(() => !isInitialSkillMobile());
-  const [openBulletIndex, setOpenBulletIndex] = useState(0);
+  const [isOverviewOpen, setIsOverviewOpen] = useState(false);
+  const [isBulletListOpen, setIsBulletListOpen] = useState(false);
+  const [openBulletIndex, setOpenBulletIndex] = useState<number | null>(null);
   const [techChatInput, setTechChatInput] = useState("");
   const [techChatLoading, setTechChatLoading] = useState(false);
   const [techChatMessages, setTechChatMessages] = useState<ChatMessage[]>([]);
@@ -1596,13 +1596,13 @@ const AnimatedSkillDetail = ({
   };
 
   const scrollToRelatedTechnologies = () => {
-    document.getElementById("animated-related-technologies")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById(isSkillMobile ? "animated-related-technologies" : "animated-related-technologies-desktop")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   useEffect(() => {
-    setOpenBulletIndex(0);
-    setIsOverviewOpen(!isInitialSkillMobile());
-    setIsBulletListOpen(!isInitialSkillMobile());
+    setOpenBulletIndex(null);
+    setIsOverviewOpen(false);
+    setIsBulletListOpen(false);
     setTechChatInput("");
     setTechChatLoading(false);
     setTechChatMessages([{ role: "assistant", content: techChatCopy.welcome }]);
@@ -1612,7 +1612,7 @@ const AnimatedSkillDetail = ({
     const mediaQuery = window.matchMedia("(max-width: 767px)");
     const updateMobileState = () => {
       setIsSkillMobile(mediaQuery.matches);
-      setIsBulletListOpen(!mediaQuery.matches);
+      setIsBulletListOpen(false);
     };
     updateMobileState();
     mediaQuery.addEventListener("change", updateMobileState);
@@ -1727,11 +1727,15 @@ const AnimatedSkillDetail = ({
       <main className="mx-auto max-w-7xl px-5 pb-24 pt-10">
         <section className="grid min-h-[calc(100vh-9rem)] items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="hidden space-y-5 lg:order-1 lg:block">
-            <motion.div
+            <motion.button
+              type="button"
+              onClick={scrollToRelatedTechnologies}
+              aria-label={language === "uk" ? "До інших технологій" : "Go to other technologies"}
+              title={language === "uk" ? "До інших технологій" : "Go to other technologies"}
               initial={{ opacity: 0, x: -28 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.45 }}
-              className="relative min-h-[420px] overflow-hidden rounded-3xl border border-[#51aaca]/24 bg-[#061a26]/64 p-5 shadow-2xl shadow-black/30 backdrop-blur-md sm:min-h-[520px] sm:p-7"
+              className="group relative block w-full min-h-[420px] overflow-hidden rounded-3xl border border-[#51aaca]/24 bg-[#061a26]/64 p-5 text-left shadow-2xl shadow-black/30 backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/70 hover:bg-[#082333]/72 hover:shadow-[0_26px_80px_rgba(81,170,202,0.18)] focus:outline-none focus:ring-2 focus:ring-[#51aaca]/60 sm:min-h-[520px] sm:p-7"
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_45%_35%,rgba(81,170,202,0.18),transparent_30%),linear-gradient(180deg,rgba(216,243,251,0.06),rgba(2,7,13,0.18))]" />
               <div className="absolute inset-0 opacity-[0.16] [background-image:linear-gradient(rgba(216,243,251,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(216,243,251,0.22)_1px,transparent_1px)] [background-size:72px_72px]" />
@@ -1749,18 +1753,21 @@ const AnimatedSkillDetail = ({
                 <div className="relative flex items-center justify-center">
                   <div className="absolute h-48 w-48 rounded-full border border-[#51aaca]/18 bg-[#51aaca]/5 blur-[1px] sm:h-64 sm:w-64" />
                   <div className="absolute h-32 w-32 rounded-[38%] border border-dashed border-white/16 sm:h-44 sm:w-44" />
-                  <div className="relative flex h-36 w-36 items-center justify-center rounded-[2rem] border border-[#51aaca]/28 bg-[#02070d]/58 text-[#d8f3fb] shadow-[0_0_52px_rgba(81,170,202,0.18)] backdrop-blur-md sm:h-44 sm:w-44 [&_svg]:h-16 [&_svg]:w-16 sm:[&_svg]:h-20 sm:[&_svg]:w-20">
+                  <div className="relative flex h-36 w-36 items-center justify-center rounded-[2rem] border border-[#51aaca]/28 bg-[#02070d]/58 text-[#d8f3fb] shadow-[0_0_52px_rgba(81,170,202,0.18)] backdrop-blur-md transition group-hover:border-[#9ed8ea]/70 group-hover:bg-[#51aaca] group-hover:text-[#021014] sm:h-44 sm:w-44 [&_svg]:h-16 [&_svg]:w-16 sm:[&_svg]:h-20 sm:[&_svg]:w-20">
                     {skill.icon}
                   </div>
                 </div>
-                <span className="mt-8 w-fit rounded-full border border-[#51aaca]/30 bg-[#071b2a]/80 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#d8f3fb] shadow-[0_0_24px_rgba(81,170,202,0.12)]">
-                  {t.techPage.title}
+                <span className="mt-8 inline-flex w-fit items-center gap-3 rounded-full border border-[#51aaca]/30 bg-[#071b2a]/80 py-2 pl-4 pr-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#d8f3fb] shadow-[0_0_24px_rgba(81,170,202,0.12)] transition group-hover:border-[#9ed8ea]/70 group-hover:bg-[#51aaca] group-hover:text-[#021014]">
+                  <span>{t.techPage.related}</span>
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#51aaca] text-[#021014] transition group-hover:bg-[#021014] group-hover:text-[#d8f3fb]">
+                    <ArrowUp className="h-3.5 w-3.5 rotate-180" />
+                  </span>
                 </span>
                 <div className="mt-4 max-w-full truncate text-center text-5xl font-black uppercase leading-none tracking-tight text-white/[0.08] sm:text-7xl">
                   {skill.name}
                 </div>
               </div>
-            </motion.div>
+            </motion.button>
             <div className="hidden lg:block">
               <OfficialResourceLinks language={language} resources={officialResources} compact />
             </div>
@@ -2410,7 +2417,7 @@ const DetailLayout = ({
   summary: string; description: string; bullets: string[]; asideTitle: string; asideContent: ReactNode;
   pageContext?: ChatPageContext; beginnerGuideContent?: ReactNode;
 }) => {
-  const [openBulletIndex, setOpenBulletIndex] = useState<number | null>(0);
+  const [openBulletIndex, setOpenBulletIndex] = useState<number | null>(null);
 
   return (
     <div className="relative isolate min-h-screen overflow-hidden font-sans">
@@ -2497,7 +2504,7 @@ const VersionChoiceScreen = ({
   const text = language === "uk"
     ? {
       eyebrow: "ОБЕРИ ВЕРСІЮ",
-      title: "ЯК ВІДКРИТИ CV?",
+      title: "ОБЕРИ, ЯК ЗРУЧНІШЕ ПЕРЕГЛЯНУТИ CV",
       subtitle: "Light версія для швидкого перегляду резюме. Animated версія для повної кінематографічної презентації зі стеком і AI-помічниками по технологіях.",
       light: "Light portfolio",
       lightText: "Класична версія",
@@ -2506,7 +2513,7 @@ const VersionChoiceScreen = ({
     }
     : {
       eyebrow: "CHOOSE VERSION",
-      title: "HOW SHOULD THE CV OPEN?",
+      title: "CHOOSE HOW YOU WANT TO VIEW MY CV",
       subtitle: "Light version for a fast resume scan. Animated version for the full cinematic experience with stack pages and focused technology AI helpers.",
       light: "Light portfolio",
       lightText: "Classic version",
@@ -2523,7 +2530,7 @@ const VersionChoiceScreen = ({
   }, []);
 
   return (
-    <div className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-[#02070d] px-5 text-white">
+    <div className="relative isolate flex min-h-screen min-h-[100svh] items-start justify-center overflow-hidden bg-[#02070d] px-4 pb-8 pt-20 text-white sm:items-center sm:px-5 sm:py-10">
       {isVersionMobile ? (
         <video
           aria-hidden="true"
@@ -2541,7 +2548,7 @@ const VersionChoiceScreen = ({
       )}
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(0,0,0,0.72),rgba(3,12,18,0.42)_48%,rgba(0,0,0,0.78)),radial-gradient(circle_at_center,rgba(81,170,202,0.16),transparent_36%)]" />
       <div className="absolute inset-0 -z-10 opacity-[0.16] [background-image:linear-gradient(rgba(216,243,251,0.24)_1px,transparent_1px),linear-gradient(90deg,rgba(216,243,251,0.24)_1px,transparent_1px)] [background-size:100px_100px]" />
-      <div className="absolute right-5 top-5 z-10 flex items-center rounded-full border border-[#51aaca]/18 bg-[#061a26]/85 p-1">
+      <div className="absolute right-4 top-4 z-10 flex items-center rounded-full border border-[#51aaca]/18 bg-[#061a26]/85 p-1 shadow-[0_16px_36px_rgba(0,0,0,0.28)] backdrop-blur-md sm:right-5 sm:top-5">
         {(["en", "uk"] as Language[]).map((lang) => (
           <button key={lang} type="button" onClick={() => onLanguage(lang)} className={`rounded-full px-3 py-1.5 text-xs font-black uppercase tracking-[0.18em] transition ${language === lang ? "bg-[#51aaca] text-[#021014]" : "text-zinc-400 hover:text-white"}`}>
             {lang}
@@ -2549,23 +2556,23 @@ const VersionChoiceScreen = ({
         ))}
       </div>
       <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-5xl text-center">
-        <p className="mb-5 text-xs font-black uppercase tracking-[0.44em] text-[#9ed8ea]">{text.eyebrow}</p>
-        <h1 className="mx-auto max-w-4xl text-5xl font-black uppercase leading-[0.9] tracking-tight md:text-7xl">{text.title}</h1>
-        <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-zinc-300">{text.subtitle}</p>
-        <div className="mt-10 grid gap-4 md:grid-cols-2">
-          <button type="button" onClick={onLight} className="group rounded-3xl border border-[#51aaca]/20 bg-[#071b2a]/78 p-6 text-left shadow-2xl shadow-black/25 backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/60 hover:bg-[#d8f3fb] hover:text-[#021014]">
-            <div className="mb-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#51aaca]/22 bg-[#02070d]/60 text-[#d8f3fb] transition group-hover:bg-[#51aaca] group-hover:text-[#021014]">
-              <BookOpen className="h-6 w-6" />
+        <p className="mb-4 text-[11px] font-black uppercase tracking-[0.36em] text-[#9ed8ea] min-[380px]:text-xs min-[380px]:tracking-[0.44em] sm:mb-5">{text.eyebrow}</p>
+        <h1 className="mx-auto max-w-[21rem] text-[40px] font-black uppercase leading-[0.9] tracking-tight min-[380px]:max-w-[28rem] min-[380px]:text-[48px] sm:max-w-4xl sm:text-5xl md:text-7xl">{text.title}</h1>
+        <p className="mx-auto mt-5 max-w-[31rem] text-base leading-7 text-zinc-300 min-[380px]:text-lg min-[380px]:leading-8 sm:mt-6 sm:max-w-3xl">{text.subtitle}</p>
+        <div className="mt-8 grid gap-3 min-[380px]:gap-4 sm:mt-10 md:grid-cols-2">
+          <button type="button" onClick={onLight} className="group min-h-[190px] rounded-[26px] border border-[#51aaca]/20 bg-[#071b2a]/78 p-5 text-left shadow-2xl shadow-black/25 backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/60 hover:bg-[#d8f3fb] hover:text-[#021014] min-[380px]:min-h-[215px] min-[380px]:p-6 md:min-h-[260px]">
+            <div className="mb-7 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#51aaca]/22 bg-[#02070d]/60 text-[#d8f3fb] transition group-hover:bg-[#51aaca] group-hover:text-[#021014] min-[380px]:mb-9 min-[380px]:h-14 min-[380px]:w-14 md:mb-10">
+              <BookOpen className="h-5 w-5 min-[380px]:h-6 min-[380px]:w-6" />
             </div>
-            <div className="text-3xl font-black">{text.light}</div>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.22em] text-[#9ed8ea] transition group-hover:text-[#021014]/70">{text.lightText}</p>
+            <div className="text-2xl font-black min-[380px]:text-3xl">{text.light}</div>
+            <p className="mt-2 text-xs font-bold uppercase tracking-[0.2em] text-[#9ed8ea] transition group-hover:text-[#021014]/70 min-[380px]:text-sm min-[380px]:tracking-[0.22em]">{text.lightText}</p>
           </button>
-          <button type="button" onClick={onAnimated} className="group rounded-3xl border border-[#51aaca]/35 bg-[#51aaca]/16 p-6 text-left shadow-[0_24px_70px_rgba(81,170,202,0.14)] backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014]">
-            <div className="mb-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#51aaca]/30 bg-[#02070d]/60 text-[#d8f3fb] transition group-hover:bg-[#021014] group-hover:text-[#d8f3fb]">
-              <Terminal className="h-6 w-6" />
+          <button type="button" onClick={onAnimated} className="group min-h-[190px] rounded-[26px] border border-[#51aaca]/35 bg-[#51aaca]/16 p-5 text-left shadow-[0_24px_70px_rgba(81,170,202,0.14)] backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014] min-[380px]:min-h-[215px] min-[380px]:p-6 md:min-h-[260px]">
+            <div className="mb-7 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#51aaca]/30 bg-[#02070d]/60 text-[#d8f3fb] transition group-hover:bg-[#021014] group-hover:text-[#d8f3fb] min-[380px]:mb-9 min-[380px]:h-14 min-[380px]:w-14 md:mb-10">
+              <Terminal className="h-5 w-5 min-[380px]:h-6 min-[380px]:w-6" />
             </div>
-            <div className="text-3xl font-black">{text.animated}</div>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.22em] text-[#9ed8ea] transition group-hover:text-[#021014]/70">{text.animatedText}</p>
+            <div className="text-2xl font-black min-[380px]:text-3xl">{text.animated}</div>
+            <p className="mt-2 text-xs font-bold uppercase tracking-[0.2em] text-[#9ed8ea] transition group-hover:text-[#021014]/70 min-[380px]:text-sm min-[380px]:tracking-[0.22em]">{text.animatedText}</p>
           </button>
         </div>
       </motion.div>
