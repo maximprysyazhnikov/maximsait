@@ -2489,6 +2489,49 @@ const DetailLayout = ({
   );
 };
 
+const wait = (ms: number) => new Promise<void>((resolve) => window.setTimeout(resolve, ms));
+
+const waitForNextFrame = () => new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+
+const preloadImage = (src: string) => new Promise<void>((resolve) => {
+  const image = new Image();
+  image.onload = () => resolve();
+  image.onerror = () => resolve();
+  image.src = src;
+});
+
+const preloadVideo = (src: string) => new Promise<void>((resolve) => {
+  const video = document.createElement("video");
+  const finish = () => {
+    video.removeEventListener("loadeddata", finish);
+    video.removeEventListener("canplaythrough", finish);
+    video.removeEventListener("error", finish);
+    resolve();
+  };
+
+  video.preload = "auto";
+  video.muted = true;
+  video.playsInline = true;
+  video.addEventListener("loadeddata", finish);
+  video.addEventListener("canplaythrough", finish);
+  video.addEventListener("error", finish);
+  video.src = src;
+  video.load();
+});
+
+const prepareAnimatedExperience = async (isMobile: boolean) => {
+  const criticalAssets = isMobile
+    ? [preloadImage("/mobile-animated-bg.svg"), preloadVideo("/animated-bg-mobile.mp4")]
+    : [preloadVideo("/animated-bg.mp4")];
+  const fontsReady = document.fonts?.ready.then(() => undefined).catch(() => undefined) ?? Promise.resolve();
+  const criticalReady = Promise.all([...criticalAssets, fontsReady, waitForNextFrame()]).then(() => undefined);
+
+  await Promise.all([
+    Promise.race([criticalReady, wait(3600)]),
+    wait(650),
+  ]);
+};
+
 const VersionChoiceScreen = ({
   language,
   onLight,
@@ -2501,6 +2544,7 @@ const VersionChoiceScreen = ({
   onLanguage: (language: Language) => void;
 }) => {
   const [isVersionMobile, setIsVersionMobile] = useState(() => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches);
+  const [isPreparingAnimated, setIsPreparingAnimated] = useState(false);
   const text = language === "uk"
     ? {
       eyebrow: "ОБЕРИ ВЕРСІЮ",
@@ -2510,6 +2554,8 @@ const VersionChoiceScreen = ({
       lightText: "Класична версія",
       animated: "Animated CV",
       animatedText: "Анімована версія",
+      preparingTitle: "Готуємо animated CV...",
+      preparingText: "Підвантажуємо мобільну версію, щоб сторінка відкрилась плавно.",
     }
     : {
       eyebrow: "CHOOSE VERSION",
@@ -2519,6 +2565,8 @@ const VersionChoiceScreen = ({
       lightText: "Classic version",
       animated: "Animated CV",
       animatedText: "Animated version",
+      preparingTitle: "Preparing the animated CV...",
+      preparingText: "Loading the mobile experience so it opens smoothly.",
     };
 
   useEffect(() => {
@@ -2528,6 +2576,13 @@ const VersionChoiceScreen = ({
     mediaQuery.addEventListener("change", updateMobileState);
     return () => mediaQuery.removeEventListener("change", updateMobileState);
   }, []);
+
+  const handleAnimatedChoice = async () => {
+    if (isPreparingAnimated) return;
+    setIsPreparingAnimated(true);
+    await prepareAnimatedExperience(isVersionMobile);
+    onAnimated();
+  };
 
   return (
     <div className="relative isolate flex min-h-screen min-h-[100svh] items-start justify-center overflow-hidden bg-[#02070d] px-4 pb-8 pt-20 text-white sm:items-center sm:px-5 sm:py-10">
@@ -2560,7 +2615,7 @@ const VersionChoiceScreen = ({
         <h1 className="mx-auto max-w-[21rem] text-[40px] font-black uppercase leading-[0.9] tracking-tight min-[380px]:max-w-[28rem] min-[380px]:text-[48px] sm:max-w-4xl sm:text-5xl md:text-7xl">{text.title}</h1>
         <p className="mx-auto mt-5 max-w-[31rem] text-base leading-7 text-zinc-300 min-[380px]:text-lg min-[380px]:leading-8 sm:mt-6 sm:max-w-3xl">{text.subtitle}</p>
         <div className="mt-6 grid gap-2.5 min-[380px]:gap-3 sm:mt-10 md:grid-cols-2">
-          <button type="button" onClick={onLight} className="group flex min-h-[128px] flex-col justify-between rounded-[22px] border border-[#51aaca]/20 bg-[#071b2a]/78 p-4 text-left shadow-2xl shadow-black/25 backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/60 hover:bg-[#d8f3fb] hover:text-[#021014] min-[380px]:min-h-[146px] min-[380px]:p-5 sm:min-h-[190px] sm:rounded-[26px] sm:p-6 md:min-h-[260px]">
+          <button type="button" onClick={onLight} disabled={isPreparingAnimated} className="group flex min-h-[128px] flex-col justify-between rounded-[22px] border border-[#51aaca]/20 bg-[#071b2a]/78 p-4 text-left shadow-2xl shadow-black/25 backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/60 hover:bg-[#d8f3fb] hover:text-[#021014] disabled:pointer-events-none disabled:opacity-60 min-[380px]:min-h-[146px] min-[380px]:p-5 sm:min-h-[190px] sm:rounded-[26px] sm:p-6 md:min-h-[260px]">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#51aaca]/22 bg-[#02070d]/60 text-[#d8f3fb] transition group-hover:bg-[#51aaca] group-hover:text-[#021014] min-[380px]:h-12 min-[380px]:w-12 sm:mb-9 sm:h-14 sm:w-14 md:mb-10">
               <BookOpen className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
@@ -2569,7 +2624,7 @@ const VersionChoiceScreen = ({
               <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#9ed8ea] transition group-hover:text-[#021014]/70 min-[380px]:text-xs min-[380px]:tracking-[0.2em] sm:mt-2 sm:text-sm sm:tracking-[0.22em]">{text.lightText}</p>
             </div>
           </button>
-          <button type="button" onClick={onAnimated} className="group flex min-h-[128px] flex-col justify-between rounded-[22px] border border-[#51aaca]/35 bg-[#51aaca]/16 p-4 text-left shadow-[0_24px_70px_rgba(81,170,202,0.14)] backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014] min-[380px]:min-h-[146px] min-[380px]:p-5 sm:min-h-[190px] sm:rounded-[26px] sm:p-6 md:min-h-[260px]">
+          <button type="button" onClick={handleAnimatedChoice} disabled={isPreparingAnimated} className="group flex min-h-[128px] flex-col justify-between rounded-[22px] border border-[#51aaca]/35 bg-[#51aaca]/16 p-4 text-left shadow-[0_24px_70px_rgba(81,170,202,0.14)] backdrop-blur-md transition hover:-translate-y-1 hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014] disabled:pointer-events-none disabled:opacity-60 min-[380px]:min-h-[146px] min-[380px]:p-5 sm:min-h-[190px] sm:rounded-[26px] sm:p-6 md:min-h-[260px]">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#51aaca]/30 bg-[#02070d]/60 text-[#d8f3fb] transition group-hover:bg-[#021014] group-hover:text-[#d8f3fb] min-[380px]:h-12 min-[380px]:w-12 sm:mb-9 sm:h-14 sm:w-14 md:mb-10">
               <Terminal className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
@@ -2580,6 +2635,37 @@ const VersionChoiceScreen = ({
           </button>
         </div>
       </motion.div>
+      <AnimatePresence>
+        {isPreparingAnimated && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#02070d]/88 px-6 text-center backdrop-blur-md"
+          >
+            <div className="relative flex max-w-sm flex-col items-center">
+              <div className="relative mb-7 flex h-28 w-28 items-center justify-center">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 rounded-full border border-[#51aaca]/18 border-t-[#51aaca] shadow-[0_0_36px_rgba(81,170,202,0.3)]"
+                />
+                <motion.div
+                  animate={{ scale: [0.92, 1.04, 0.92], opacity: [0.48, 0.9, 0.48] }}
+                  transition={{ duration: 1.35, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-5 rounded-full bg-[#51aaca]/12"
+                />
+                <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-[#51aaca]/25 bg-[#071b2a]/90 text-[#d8f3fb] shadow-2xl shadow-black/30">
+                  <Terminal className="h-7 w-7" />
+                </div>
+              </div>
+              <p className="mb-3 text-[11px] font-black uppercase tracking-[0.34em] text-[#9ed8ea]">{text.eyebrow}</p>
+              <h2 className="text-2xl font-black tracking-tight text-white">{text.preparingTitle}</h2>
+              <p className="mt-3 text-sm leading-6 text-zinc-300">{text.preparingText}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
