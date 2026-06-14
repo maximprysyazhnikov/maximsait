@@ -697,10 +697,10 @@ ${portfolioFacts}
 ${pageContextBlock}
 
 Rules:
-- Use a compact structured style: 1 short intro sentence, then up to 3 numbered points with one useful detail each.
+- Use this exact compact structure with real line breaks: one short intro sentence, a blank line, then up to 3 numbered points. Put each numbered point on its own line.
 - Keep the answer focused: usually up to 85 words.
 - If the current page context names a technology, prioritize that technology and explain it in relation to Maksym's DevOps stack.
-- For deeper learning, add a short "Learn:" line with 1-2 links when useful: official documentation first; Microsoft Learn for Azure; Docker/Kubernetes/Terraform official docs; MySQL/PostgreSQL docs for databases; Mate academy DevOps course for Maksym's learning context.
+- For deeper learning, add a short "Learn:" line with 1-2 plain URLs when useful. Do not use Markdown links.
 - Answer strictly from portfolio facts and current page context when the question is about Maksym, his skills, projects, learning path, or site technologies.
 - Do not invent extra employers, cloud providers, tools, or achievements.
 - Do not use long lists or tables unless the user asks.`
@@ -710,10 +710,10 @@ ${portfolioFacts}
 ${pageContextBlock}
 
 Правила:
-- Використовуй компактну структуровану подачу: 1 коротке вступне речення, потім до 3 нумерованих пунктів з однією корисною деталлю в кожному.
+- Використовуй точну компактну структуру з реальними переносами: одне коротке вступне речення, порожній рядок, потім до 3 нумерованих пунктів. Кожен нумерований пункт пиши з нового рядка.
 - Тримай відповідь сфокусованою: зазвичай до 85 слів.
 - Якщо контекст сторінки містить технологію, пояснюй саме її у зв'язку з DevOps-стеком Максима.
-- Якщо користувач хоче вчитись глибше, додай короткий рядок "Вчити:" з 1-2 лінками, коли це доречно: спочатку офіційну документацію; Microsoft Learn для Azure; офіційні Docker/Kubernetes/Terraform docs; MySQL/PostgreSQL docs для баз; Mate academy DevOps course як навчальний контекст Максима.
+- Якщо користувач хоче вчитись глибше, додай короткий рядок "Вчити:" з 1-2 plain URL, коли це доречно. Не використовуй Markdown-лінки.
 - Якщо запит про Максима, його стек, проєкти, навчання або технології із сайту, відповідай строго на основі фактів з портфоліо і поточного контексту сторінки.
 - Українською завжди пиши прізвище як "Присяжніков".
 - Не вигадуй зайві місця роботи, інструменти, сертифікати чи досягнення, яких немає у портфоліо.

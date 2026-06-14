@@ -554,6 +554,7 @@ const getRouteFromPath = (pathname: string): Route => {
 };
 
 const cleanChatText = (text: string) => text
+  .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, "$1: $2")
   .replace(/\*\*(.*?)\*\*/g, "$1")
   .replace(/__(.*?)__/g, "$1")
   .replace(/\*([^*\n]+)\*/g, "$1")
@@ -575,7 +576,7 @@ const renderChatContent = (text: string) => {
         href={part}
         target="_blank"
         rel="noopener noreferrer"
-        className="font-semibold text-[#9ed8ea] underline decoration-[#51aaca]/60 underline-offset-4 transition hover:text-white"
+        className="break-all font-semibold text-[#9ed8ea] underline decoration-[#51aaca]/60 underline-offset-4 transition hover:text-white"
       >
         {part}
       </a>
@@ -1967,13 +1968,13 @@ const AnimatedSkillDetail = ({
                 <h2 className="text-xl font-black text-white">{techChatCopy.title}</h2>
                 <p className="mt-2 text-sm leading-6 text-zinc-400">{techChatCopy.subtitle}</p>
               </div>
-              <div className="max-h-80 min-h-48 space-y-3 overflow-y-auto px-6 py-5">
+              <div className="max-h-[min(56vh,34rem)] min-h-48 space-y-4 overflow-y-auto px-5 py-5 pr-6 sm:px-6 sm:pr-7">
                 {techChatMessages.map((message, index) => (
-                  <div key={`${message.role}-${index}`} className={`whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-8 bg-[#51aaca] text-[#021014]" : "mr-8 border border-[#51aaca]/10 bg-[#071b2a]/58 text-zinc-300"}`}>
+                  <div key={`${message.role}-${index}`} className={`whitespace-pre-line break-words rounded-2xl px-5 py-4 text-sm leading-7 ${message.role === "user" ? "ml-auto max-w-[88%] bg-[#51aaca] text-[#021014]" : "w-full border border-[#51aaca]/10 bg-[#071b2a]/58 text-zinc-300"}`}>
                     {renderChatContent(message.content)}
                   </div>
                 ))}
-                {techChatLoading && <div className="mr-8 rounded-2xl border border-[#51aaca]/10 bg-[#071b2a]/58 px-4 py-3 text-sm text-zinc-400">{language === "uk" ? "AI думає..." : "AI is thinking..."}</div>}
+                {techChatLoading && <div className="w-full rounded-2xl border border-[#51aaca]/10 bg-[#071b2a]/58 px-5 py-4 text-sm text-zinc-400">{language === "uk" ? "AI думає..." : "AI is thinking..."}</div>}
               </div>
               <div className="flex gap-3 border-t border-[#51aaca]/14 bg-[#02070d]/38 p-5">
                 <input
@@ -2175,13 +2176,13 @@ const FocusedTechChat = ({ language, pageContext }: { language: Language; pageCo
         <h2 className="text-xl font-black text-white">{copyText.title}</h2>
         <p className="mt-2 text-sm leading-6 text-zinc-400">{copyText.subtitle}</p>
       </div>
-      <div className="max-h-80 min-h-48 space-y-3 overflow-y-auto px-6 py-5">
+      <div className="max-h-[min(56vh,34rem)] min-h-48 space-y-4 overflow-y-auto px-5 py-5 pr-6 sm:px-6 sm:pr-7">
         {messages.map((message, index) => (
-          <div key={`${message.role}-${index}`} className={`whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-8 bg-[#51aaca] text-[#021014]" : "mr-8 border border-[#51aaca]/10 bg-[#071b2a]/58 text-zinc-300"}`}>
+          <div key={`${message.role}-${index}`} className={`whitespace-pre-line break-words rounded-2xl px-5 py-4 text-sm leading-7 ${message.role === "user" ? "ml-auto max-w-[88%] bg-[#51aaca] text-[#021014]" : "w-full border border-[#51aaca]/10 bg-[#071b2a]/58 text-zinc-300"}`}>
             {renderChatContent(message.content)}
           </div>
         ))}
-        {loading && <div className="mr-8 rounded-2xl border border-[#51aaca]/10 bg-[#071b2a]/58 px-4 py-3 text-sm text-zinc-400">{copyText.thinking}</div>}
+        {loading && <div className="w-full rounded-2xl border border-[#51aaca]/10 bg-[#071b2a]/58 px-5 py-4 text-sm text-zinc-400">{copyText.thinking}</div>}
       </div>
       <div className="flex gap-3 border-t border-[#51aaca]/14 bg-[#02070d]/38 p-5">
         <input
