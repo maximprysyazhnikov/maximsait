@@ -60,37 +60,43 @@ const HumanCheckGate = ({
   ];
   const text = language === "uk"
     ? {
-      title: "Швидка перевірка",
-      subtitle: "Щоб написати AI вперше, натисни картинку з терміналом.",
-      target: "Обери: Terminal",
+      badge: "CAPTCHA",
+      title: "Підтверди, що ти людина",
+      subtitle: "Ця коротка перевірка захищає AI-чат від спаму й зайвих автоматичних запитів.",
+      helper: "Потрібно пройти лише один раз у цьому браузері.",
+      target: "Натисни картку Terminal",
       close: "Закрити",
     }
     : {
-      title: "Quick check",
-      subtitle: "To message AI for the first time, tap the terminal picture.",
-      target: "Pick: Terminal",
+      badge: "CAPTCHA",
+      title: "Confirm you are human",
+      subtitle: "This quick check protects the AI chat from spam and automated requests.",
+      helper: "You only need to pass it once in this browser.",
+      target: "Tap the Terminal card",
       close: "Close",
     };
 
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
-      <motion.div initial={{ opacity: 0, y: 18, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="w-full max-w-md overflow-hidden rounded-3xl border border-[#51aaca]/28 bg-[#03111b]/96 shadow-2xl shadow-black/45">
-        <div className="flex items-start justify-between gap-3 border-b border-[#51aaca]/16 px-5 py-4">
-          <div>
-            <p className="text-lg font-black text-white">{text.title}</p>
+    <div className="fixed inset-0 z-[90] flex items-end justify-center bg-black/60 px-3 py-3 backdrop-blur-sm sm:items-center sm:p-6">
+      <motion.div initial={{ opacity: 0, y: 18, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="max-h-[min(92vh,40rem)] w-full max-w-lg overflow-y-auto rounded-3xl border border-[#51aaca]/28 bg-[#03111b]/96 shadow-2xl shadow-black/45">
+        <div className="flex items-start justify-between gap-3 border-b border-[#51aaca]/16 px-4 py-4 sm:px-5">
+          <div className="min-w-0">
+            <span className="mb-2 inline-flex rounded-full border border-[#51aaca]/25 bg-[#51aaca]/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#9ed8ea]">{text.badge}</span>
+            <p className="text-lg font-black leading-tight text-white sm:text-xl">{text.title}</p>
             <p className="mt-1 text-sm leading-6 text-zinc-400">{text.subtitle}</p>
+            <p className="mt-2 text-xs font-semibold text-[#9ed8ea]/75">{text.helper}</p>
           </div>
-          <button type="button" onClick={onClose} aria-label={text.close} className="rounded-full p-2 text-zinc-400 transition hover:bg-[#0a2635] hover:text-white">
+          <button type="button" onClick={onClose} aria-label={text.close} className="shrink-0 rounded-full p-2 text-zinc-400 transition hover:bg-[#0a2635] hover:text-white">
             <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="p-5">
-          <div className="mb-4 rounded-2xl border border-[#51aaca]/18 bg-[#092231]/72 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-[#9ed8ea]">
+        <div className="p-4 sm:p-5">
+          <div className="mb-4 rounded-2xl border border-[#51aaca]/18 bg-[#092231]/72 px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-[#9ed8ea] sm:tracking-[0.16em]">
             {text.target}
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3 min-[380px]:grid-cols-3">
             {options.map((option) => (
               <button
                 key={option.id}
@@ -100,10 +106,10 @@ const HumanCheckGate = ({
                   markHumanCheck();
                   onPass();
                 }}
-                className="group flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl border border-[#51aaca]/18 bg-[#061a26]/88 text-[#d8f3fb] transition hover:-translate-y-0.5 hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014]"
+                className="group flex min-h-24 flex-col items-center justify-center gap-2 rounded-2xl border border-[#51aaca]/18 bg-[#061a26]/88 px-2 py-3 text-[#d8f3fb] transition hover:-translate-y-0.5 hover:border-[#9ed8ea]/70 hover:bg-[#51aaca] hover:text-[#021014] sm:aspect-square sm:min-h-0"
               >
                 {option.icon}
-                <span className="text-[10px] font-black uppercase tracking-[0.12em]">{option.label}</span>
+                <span className="max-w-full break-words text-center text-[10px] font-black uppercase tracking-[0.1em]">{option.label}</span>
               </button>
             ))}
           </div>
