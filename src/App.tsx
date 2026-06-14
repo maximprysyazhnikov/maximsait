@@ -623,6 +623,7 @@ const AnimatedResume = ({
   const t = copy[language];
   const getInitialAnimatedMobile = () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
   const [isAnimatedMobile, setIsAnimatedMobile] = useState(getInitialAnimatedMobile);
+  const [isAnimatedBgReady, setIsAnimatedBgReady] = useState(false);
   const [showAnimatedIntro, setShowAnimatedIntro] = useState(() => !getInitialAnimatedMobile());
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showAnimatedTop, setShowAnimatedTop] = useState(false);
@@ -801,6 +802,7 @@ const AnimatedResume = ({
     const mediaQuery = window.matchMedia("(max-width: 767px)");
     const updateMobileState = () => {
       setIsAnimatedMobile(mediaQuery.matches);
+      setIsAnimatedBgReady(false);
       if (mediaQuery.matches) setShowAnimatedIntro(false);
     };
     updateMobileState();
@@ -927,6 +929,15 @@ const AnimatedResume = ({
       </AnimatePresence>
 
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#02070d]">
+        <div className={`absolute inset-0 bg-[radial-gradient(circle_at_50%_36%,rgba(81,170,202,0.18),transparent_34%),linear-gradient(180deg,rgba(7,24,39,0.82),rgba(2,7,13,0.96))] transition-opacity duration-700 ${isAnimatedBgReady ? "opacity-0" : "opacity-100"}`} />
+        {isAnimatedMobile && (
+          <img
+            aria-hidden="true"
+            src="/mobile-animated-bg.svg"
+            alt=""
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${isAnimatedBgReady ? "opacity-0" : "opacity-70"}`}
+          />
+        )}
         {!isAnimatedMobile && (
           <video
             aria-hidden="true"
@@ -936,31 +947,24 @@ const AnimatedResume = ({
             muted
             loop
             playsInline
-            className="absolute inset-0 h-full w-full object-cover opacity-55"
+            onLoadedData={() => setIsAnimatedBgReady(true)}
+            onCanPlay={() => setIsAnimatedBgReady(true)}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out ${isAnimatedBgReady ? "opacity-55" : "opacity-0"}`}
           />
         )}
         {isAnimatedMobile && (
           <video
             aria-hidden="true"
             src="/animated-bg-mobile.mp4"
+            poster="/mobile-animated-bg.svg"
             preload="auto"
             autoPlay
             muted
             playsInline
-            onLoadedMetadata={(event) => {
-              const video = event.currentTarget;
-              if (Number.isFinite(video.duration) && video.duration > 1) {
-                video.currentTime = video.duration / 2;
-              }
-            }}
-            onEnded={(event) => {
-              const video = event.currentTarget;
-              if (Number.isFinite(video.duration) && video.duration > 1) {
-                video.currentTime = video.duration / 2;
-                void video.play();
-              }
-            }}
-            className="absolute inset-0 h-full w-full object-cover object-center opacity-78"
+            onLoadedData={() => setIsAnimatedBgReady(true)}
+            onCanPlay={() => setIsAnimatedBgReady(true)}
+            loop
+            className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-700 ease-out ${isAnimatedBgReady ? "opacity-78" : "opacity-0"}`}
           />
         )}
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.48),rgba(3,12,18,0.18)_48%,rgba(0,0,0,0.52)),radial-gradient(circle_at_50%_20%,rgba(81,170,202,0.1),transparent_32%)]" />
