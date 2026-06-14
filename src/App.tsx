@@ -3148,10 +3148,18 @@ export default function App() {
             <div>
               <h3 className="mb-2 flex items-center gap-2 text-xl font-bold text-white"><Cpu className="h-5 w-5 text-[#51aaca]" />{t.about.stack}</h3>
               <p className="mb-6 text-sm text-zinc-500">{t.about.stackHint}</p>
-              <div className="flex flex-wrap gap-3">
+              <div className="mb-5 flex gap-3 rounded-2xl border border-[#51aaca]/18 bg-[#51aaca]/10 px-4 py-3 text-sm leading-6 text-[#d8f3fb]">
+                <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#9ed8ea]" />
+                <span>
+                  {language === "uk"
+                    ? "Обери інструмент, щоб відкрити міні-гайд: як він працює, де використовується в DevOps і що можна уточнити в AI."
+                    : "Choose a tool to open a mini guide: how it works, where it fits DevOps, and what you can ask AI next."}
+                </span>
+              </div>
+              <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:flex sm:flex-wrap">
                 {skills.map((skill, i) => (
-                  <motion.button key={skill.slug} type="button" initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} onClick={() => navigate({ page: "skill", slug: skill.slug })} className="cursor-pointer flex items-center justify-between gap-2 rounded-xl border border-[#51aaca]/28 bg-[#51aaca]/10 px-4 py-3 text-left text-sm font-semibold text-[#d8f3fb] shadow-[0_10px_28px_rgba(81,170,202,0.08)] transition-all hover:-translate-y-0.5 hover:border-[#51aaca]/45 hover:bg-[#51aaca]/14 hover:text-white sm:border-cyan-950/70 sm:bg-[#092231] sm:text-zinc-100 sm:shadow-none">
-                    <span className="flex min-w-0 items-center gap-2">{skill.icon}<span className="truncate">{skill.name}</span></span>
+                  <motion.button key={skill.slug} type="button" initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} onClick={() => navigate({ page: "skill", slug: skill.slug })} className="cursor-pointer flex min-w-0 items-center justify-between gap-3 rounded-xl border border-[#51aaca]/28 bg-[#51aaca]/10 px-4 py-3 text-left text-sm font-semibold text-[#d8f3fb] shadow-[0_10px_28px_rgba(81,170,202,0.08)] transition-all hover:-translate-y-0.5 hover:border-[#51aaca]/45 hover:bg-[#51aaca]/14 hover:text-white sm:border-cyan-950/70 sm:bg-[#092231] sm:text-zinc-100 sm:shadow-none">
+                    <span className="flex min-w-0 items-center gap-2">{skill.icon}<span className="min-w-0"><span className="block truncate">{skill.name}</span><span className="mt-0.5 block text-[10px] font-bold uppercase tracking-[0.16em] text-[#9ed8ea]/75">{language === "uk" ? "AI-гайд" : "AI guide"}</span></span></span>
                     <ChevronRight className="h-4 w-4 shrink-0 text-[#9ed8ea] sm:hidden" />
                   </motion.button>
                 ))}
