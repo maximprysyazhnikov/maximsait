@@ -563,20 +563,25 @@ const cleanChatText = (text: string) => text
   .replace(/[ \t]+\n/g, "\n")
   .trim();
 
+const embeddedChatScrollClass = "max-h-[min(62vh,38rem)] min-h-48 space-y-4 overflow-y-auto px-4 py-5 pr-5 sm:px-6 sm:pr-7 lg:max-h-[min(64vh,42rem)]";
+const floatingChatBubbleClass = (role: ChatMessage["role"]) => `max-w-[96%] whitespace-pre-line break-words rounded-2xl px-4 py-3 text-sm leading-7 sm:max-w-[88%] ${role === "user" ? "ml-auto bg-[#51aaca] text-[#021014]" : "bg-[#0a2635] text-zinc-200"}`;
+const embeddedChatBubbleClass = (role: ChatMessage["role"]) => `whitespace-pre-line break-words rounded-2xl px-4 py-3.5 text-[13px] leading-7 min-[380px]:text-sm sm:px-5 sm:py-4 ${role === "user" ? "ml-auto max-w-[92%] bg-[#51aaca] text-[#021014] sm:max-w-[82%]" : "w-full border border-[#51aaca]/10 bg-[#071b2a]/58 text-zinc-300"}`;
+
 const renderChatContent = (text: string) => {
-  const urlPattern = /(https?:\/\/[^\s)]+)/g;
-  const exactUrlPattern = /^https?:\/\/[^\s)]+$/;
+  const urlPattern = /((?:https?:\/\/|www\.)[^\s|)]+|(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s|)]*)?)/gi;
+  const exactUrlPattern = /^(?:https?:\/\/|www\.|(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s|)]*)?)$/i;
 
   return text.split(urlPattern).map((part, index) => {
     if (!exactUrlPattern.test(part)) return part;
+    const href = /^https?:\/\//i.test(part) ? part : `https://${part}`;
 
     return (
       <a
         key={`${part}-${index}`}
-        href={part}
+        href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="break-all font-semibold text-[#9ed8ea] underline decoration-[#51aaca]/60 underline-offset-4 transition hover:text-white"
+        className="font-semibold text-[#9ed8ea] underline decoration-[#51aaca]/60 underline-offset-4 transition [overflow-wrap:anywhere] hover:text-white"
       >
         {part}
       </a>
@@ -1968,13 +1973,13 @@ const AnimatedSkillDetail = ({
                 <h2 className="text-xl font-black text-white">{techChatCopy.title}</h2>
                 <p className="mt-2 text-sm leading-6 text-zinc-400">{techChatCopy.subtitle}</p>
               </div>
-              <div className="max-h-[min(56vh,34rem)] min-h-48 space-y-4 overflow-y-auto px-5 py-5 pr-6 sm:px-6 sm:pr-7">
+              <div className={embeddedChatScrollClass}>
                 {techChatMessages.map((message, index) => (
-                  <div key={`${message.role}-${index}`} className={`whitespace-pre-line break-words rounded-2xl px-5 py-4 text-sm leading-7 ${message.role === "user" ? "ml-auto max-w-[88%] bg-[#51aaca] text-[#021014]" : "w-full border border-[#51aaca]/10 bg-[#071b2a]/58 text-zinc-300"}`}>
+                  <div key={`${message.role}-${index}`} className={embeddedChatBubbleClass(message.role)}>
                     {renderChatContent(message.content)}
                   </div>
                 ))}
-                {techChatLoading && <div className="w-full rounded-2xl border border-[#51aaca]/10 bg-[#071b2a]/58 px-5 py-4 text-sm text-zinc-400">{language === "uk" ? "AI думає..." : "AI is thinking..."}</div>}
+                {techChatLoading && <div className="w-full rounded-2xl border border-[#51aaca]/10 bg-[#071b2a]/58 px-4 py-3.5 text-sm text-zinc-400 sm:px-5 sm:py-4">{language === "uk" ? "AI думає..." : "AI is thinking..."}</div>}
               </div>
               <div className="flex gap-3 border-t border-[#51aaca]/14 bg-[#02070d]/38 p-5">
                 <input
@@ -2176,13 +2181,13 @@ const FocusedTechChat = ({ language, pageContext }: { language: Language; pageCo
         <h2 className="text-xl font-black text-white">{copyText.title}</h2>
         <p className="mt-2 text-sm leading-6 text-zinc-400">{copyText.subtitle}</p>
       </div>
-      <div className="max-h-[min(56vh,34rem)] min-h-48 space-y-4 overflow-y-auto px-5 py-5 pr-6 sm:px-6 sm:pr-7">
+      <div className={embeddedChatScrollClass}>
         {messages.map((message, index) => (
-          <div key={`${message.role}-${index}`} className={`whitespace-pre-line break-words rounded-2xl px-5 py-4 text-sm leading-7 ${message.role === "user" ? "ml-auto max-w-[88%] bg-[#51aaca] text-[#021014]" : "w-full border border-[#51aaca]/10 bg-[#071b2a]/58 text-zinc-300"}`}>
+          <div key={`${message.role}-${index}`} className={embeddedChatBubbleClass(message.role)}>
             {renderChatContent(message.content)}
           </div>
         ))}
-        {loading && <div className="w-full rounded-2xl border border-[#51aaca]/10 bg-[#071b2a]/58 px-5 py-4 text-sm text-zinc-400">{copyText.thinking}</div>}
+        {loading && <div className="w-full rounded-2xl border border-[#51aaca]/10 bg-[#071b2a]/58 px-4 py-3.5 text-sm text-zinc-400 sm:px-5 sm:py-4">{copyText.thinking}</div>}
       </div>
       <div className="flex gap-3 border-t border-[#51aaca]/14 bg-[#02070d]/38 p-5">
         <input
@@ -2451,13 +2456,13 @@ const AIChatWidget = ({ language, pageContext }: { language: Language; pageConte
               </div>
               <button type="button" onClick={() => setIsOpen(false)} className="rounded-full p-2 text-zinc-400 transition hover:bg-[#0a2635] hover:text-white"><X className="h-4 w-4" /></button>
             </div>
-            <div className="max-h-[420px] space-y-3 overflow-y-auto px-4 py-4">
+            <div className="max-h-[min(68vh,31rem)] space-y-3 overflow-y-auto px-4 py-4 sm:max-h-[420px]">
               {mode === "ai" ? (
                 <>
                   {messages.map((message, index) => (
-                    <div key={`${message.role}-${index}`} className={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "ml-auto bg-[#51aaca] text-[#021014]" : "bg-[#0a2635] text-zinc-200"}`}>{renderChatContent(message.content)}</div>
+                    <div key={`${message.role}-${index}`} className={floatingChatBubbleClass(message.role)}>{renderChatContent(message.content)}</div>
                   ))}
-                  {loading && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm text-zinc-400">{t.loading}</div>}
+                  {loading && <div className="max-w-[96%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm text-zinc-400 sm:max-w-[88%]">{t.loading}</div>}
                 </>
               ) : (
                 <>
@@ -2497,12 +2502,12 @@ const AIChatWidget = ({ language, pageContext }: { language: Language; pageConte
                     </AnimatePresence>
                     {leadStatus !== "idle" && <p className={`mt-3 text-xs ${leadStatus === "success" ? "text-[#9ed8ea]" : "text-red-100"}`}>{leadStatus === "success" ? t.leadSuccess : leadStatus === "required" ? t.leadRequired : leadStatus === "invalidEmail" ? t.leadInvalidEmail : leadStatus === "invalidPhone" ? t.leadInvalidPhone : t.leadError}</p>}
                   </div>
-                  {supportMessages.length === 0 && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm leading-relaxed text-zinc-300">{t.supportEmpty}<br /><span className="mt-2 block text-xs text-zinc-500">{t.supportOffline}</span></div>}
+                  {supportMessages.length === 0 && <div className="max-w-[96%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm leading-7 text-zinc-300 sm:max-w-[88%]">{t.supportEmpty}<br /><span className="mt-2 block text-xs text-zinc-500">{t.supportOffline}</span></div>}
                   {supportMessages.map((message) => (
-                    <div key={message.id} className={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "ml-auto bg-[#51aaca] text-[#021014]" : "bg-[#0a2635] text-zinc-200"}`}>{message.text}</div>
+                    <div key={message.id} className={`max-w-[96%] whitespace-pre-line break-words rounded-2xl px-4 py-3 text-sm leading-7 sm:max-w-[88%] ${message.role === "user" ? "ml-auto bg-[#51aaca] text-[#021014]" : "bg-[#0a2635] text-zinc-200"}`}>{message.text}</div>
                   ))}
-                  {supportStatus === "sent" && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm text-[#9ed8ea]">{t.supportSent}</div>}
-                  {supportStatus === "error" && <div className="max-w-[88%] rounded-2xl bg-red-950/50 px-4 py-3 text-sm text-red-100">{t.supportError}</div>}
+                  {supportStatus === "sent" && <div className="max-w-[96%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm text-[#9ed8ea] sm:max-w-[88%]">{t.supportSent}</div>}
+                  {supportStatus === "error" && <div className="max-w-[96%] rounded-2xl bg-red-950/50 px-4 py-3 text-sm text-red-100 sm:max-w-[88%]">{t.supportError}</div>}
                 </>
               )}
             </div>
