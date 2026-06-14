@@ -853,6 +853,7 @@ const AnimatedResume = ({
     ? isHeroTextHidden ? "Показати текст" : "Сховати текст"
     : isHeroTextHidden ? "Show text" : "Hide text";
   const heroDelay = isAnimatedMobile ? 0 : 0.72;
+  const hiddenHeroContentOffset = isHeroTextHidden ? (isAnimatedMobile ? 72 : 88) : 0;
   const heroPhrase = story.heroPhrases[0];
 
   return (
@@ -1064,7 +1065,7 @@ const AnimatedResume = ({
             <span>{heroTextToggleLabel}</span>
           </button>
           <div className="mx-auto w-full max-w-7xl">
-            <motion.div initial={{ opacity: 0, y: isAnimatedMobile ? 10 : 24 }} animate={{ opacity: 0.82, y: 0 }} transition={{ delay: heroDelay }} className="mb-4 text-center font-bold uppercase text-[#9ed8ea] sm:mb-8">
+            <motion.div initial={{ opacity: 0, y: isAnimatedMobile ? 10 : 24 }} animate={{ opacity: 0.82, y: hiddenHeroContentOffset }} transition={{ delay: heroDelay, duration: 0.62, ease: "easeInOut" }} className="mb-4 text-center font-bold uppercase text-[#9ed8ea] sm:mb-8">
               <p className="mx-auto max-w-[92vw] truncate text-[9px] tracking-[0.2em] min-[380px]:text-[10px] min-[380px]:tracking-[0.24em] sm:text-xs sm:tracking-[0.38em] md:text-sm md:tracking-[0.44em]">DevOps Engineer</p>
               <p className="mx-auto mt-1.5 max-w-[92vw] truncate text-[8px] tracking-[0.2em] min-[380px]:text-[9px] min-[380px]:tracking-[0.24em] sm:mt-2 sm:text-xs sm:tracking-[0.34em]">Maksym Prysiazhnikov</p>
             </motion.div>
@@ -1102,7 +1103,7 @@ const AnimatedResume = ({
                 </AnimatePresence>
               </motion.h1>
             </motion.div>
-            <motion.div initial={{ opacity: 0, y: isAnimatedMobile ? 10 : 22 }} animate={{ opacity: 0.72, y: 0 }} transition={{ delay: heroDelay + (isAnimatedMobile ? 0.16 : 0.36), duration: 0.85, ease: "easeOut" }} className="mx-auto mt-5 flex w-full max-w-4xl items-center justify-center gap-3 text-center sm:mt-6 md:mt-7">
+            <motion.div initial={{ opacity: 0, y: isAnimatedMobile ? 10 : 22 }} animate={{ opacity: 0.72, y: hiddenHeroContentOffset }} transition={{ delay: heroDelay + (isAnimatedMobile ? 0.16 : 0.36), duration: 0.62, ease: "easeInOut" }} className="mx-auto mt-5 flex w-full max-w-4xl items-center justify-center gap-3 text-center sm:mt-6 md:mt-7">
               <span className="hidden h-px min-w-16 flex-1 bg-gradient-to-r from-transparent via-[#d8f3fb]/24 to-[#d8f3fb]/6 sm:block" />
               <p className="mx-auto max-w-[96vw] text-center text-[8px] font-black uppercase leading-5 tracking-[0.1em] text-[#d8f3fb]/72 min-[380px]:text-[9px] min-[380px]:tracking-[0.13em] sm:max-w-none sm:text-[10px] sm:leading-6 sm:tracking-[0.2em] md:text-[11px] md:leading-7 md:tracking-[0.24em]">
                 {story.introLines.map((line) => (
@@ -1113,7 +1114,7 @@ const AnimatedResume = ({
               </p>
               <span className="hidden h-px min-w-16 flex-1 bg-gradient-to-l from-transparent via-[#d8f3fb]/24 to-[#d8f3fb]/6 sm:block" />
             </motion.div>
-            <motion.div initial={{ opacity: 0, y: isAnimatedMobile ? 10 : 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: heroDelay + (isAnimatedMobile ? 0.2 : 0.46) }} className="mx-auto mt-6 grid max-w-[340px] grid-cols-2 gap-2.5 sm:mt-7 sm:gap-3 md:max-w-[930px] md:grid-cols-3 md:gap-4">
+            <motion.div initial={{ opacity: 0, y: isAnimatedMobile ? 10 : 18 }} animate={{ opacity: 1, y: hiddenHeroContentOffset }} transition={{ delay: heroDelay + (isAnimatedMobile ? 0.2 : 0.46), duration: 0.62, ease: "easeInOut" }} className="mx-auto mt-6 grid max-w-[340px] grid-cols-2 gap-2.5 sm:mt-7 sm:gap-3 md:mx-0 md:ml-[clamp(1rem,10vw,9rem)] md:max-w-[680px] md:grid-cols-3 md:gap-4 2xl:mx-auto 2xl:max-w-[930px]">
               <button type="button" onClick={onContact} className={`${animatedButtonPrimary} h-12 w-full px-3 text-xs sm:h-14 sm:px-7 sm:text-base`}>
                 <Mail className="h-5 w-5" />
                 {story.contact}
@@ -1131,10 +1132,18 @@ const AnimatedResume = ({
           <motion.button
             type="button"
             onClick={() => scrollToAnimatedSection("animated-stack")}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: heroDelay + (isAnimatedMobile ? 0.18 : 0.5) }}
-            className={`absolute bottom-4 left-4 z-10 translate-x-0 sm:bottom-3 sm:left-[calc(50%-18px)] sm:-translate-x-1/2 lg:left-[calc(50%-22px)] ${animatedFloatingButton} max-[379px]:gap-2 max-[379px]:pl-3 max-[379px]:pr-1 max-[379px]:tracking-[0.14em]`}
+            initial={{ opacity: 0, x: isAnimatedMobile ? 0 : "-50%", y: 18 }}
+            animate={{
+              opacity: 1,
+              x: isHeroTextHidden ? 0 : isAnimatedMobile ? 0 : "-50%",
+              y: isHeroTextHidden ? "-50%" : 0,
+              left: isHeroTextHidden ? (isAnimatedMobile ? 16 : 32) : isAnimatedMobile ? 16 : "calc(50% - 22px)",
+              top: isAnimatedMobile ? (isHeroTextHidden ? "34%" : "calc(100% - 4.75rem)") : isHeroTextHidden ? "50%" : "auto",
+              bottom: isAnimatedMobile ? "auto" : isHeroTextHidden ? "auto" : 12,
+              scale: isHeroTextHidden ? 1 : 0.98,
+            }}
+            transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
+            className={`absolute z-10 ${animatedFloatingButton} max-[379px]:gap-2 max-[379px]:pl-3 max-[379px]:pr-1 max-[379px]:tracking-[0.14em]`}
           >
             <span>{story.learnAbout}</span>
             <motion.span
