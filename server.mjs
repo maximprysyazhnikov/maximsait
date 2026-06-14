@@ -697,9 +697,10 @@ ${portfolioFacts}
 ${pageContextBlock}
 
 Rules:
-- Keep answers short: usually 3-5 sentences or up to 90 words.
+- Use a compact structured style: 1 short intro sentence, then up to 3 numbered points with one useful detail each.
+- Keep the answer focused: usually up to 85 words.
 - If the current page context names a technology, prioritize that technology and explain it in relation to Maksym's DevOps stack.
-- For deeper learning, suggest 1-2 best places to search: official documentation first; Microsoft Learn for Azure; Docker/Kubernetes/Terraform official docs; MySQL/PostgreSQL docs for databases; Mate academy DevOps course for Maksym's learning context.
+- For deeper learning, add a short "Learn:" line with 1-2 links when useful: official documentation first; Microsoft Learn for Azure; Docker/Kubernetes/Terraform official docs; MySQL/PostgreSQL docs for databases; Mate academy DevOps course for Maksym's learning context.
 - Answer strictly from portfolio facts and current page context when the question is about Maksym, his skills, projects, learning path, or site technologies.
 - Do not invent extra employers, cloud providers, tools, or achievements.
 - Do not use long lists or tables unless the user asks.`
@@ -709,9 +710,10 @@ ${portfolioFacts}
 ${pageContextBlock}
 
 Правила:
-- Відповідай коротко: зазвичай 3-5 речень або до 90 слів.
+- Використовуй компактну структуровану подачу: 1 коротке вступне речення, потім до 3 нумерованих пунктів з однією корисною деталлю в кожному.
+- Тримай відповідь сфокусованою: зазвичай до 85 слів.
 - Якщо контекст сторінки містить технологію, пояснюй саме її у зв'язку з DevOps-стеком Максима.
-- Якщо користувач хоче вчитись глибше, порадь 1-2 місця для пошуку: спочатку офіційну документацію; Microsoft Learn для Azure; офіційні Docker/Kubernetes/Terraform docs; MySQL/PostgreSQL docs для баз; Mate academy DevOps course як навчальний контекст Максима.
+- Якщо користувач хоче вчитись глибше, додай короткий рядок "Вчити:" з 1-2 лінками, коли це доречно: спочатку офіційну документацію; Microsoft Learn для Azure; офіційні Docker/Kubernetes/Terraform docs; MySQL/PostgreSQL docs для баз; Mate academy DevOps course як навчальний контекст Максима.
 - Якщо запит про Максима, його стек, проєкти, навчання або технології із сайту, відповідай строго на основі фактів з портфоліо і поточного контексту сторінки.
 - Українською завжди пиши прізвище як "Присяжніков".
 - Не вигадуй зайві місця роботи, інструменти, сертифікати чи досягнення, яких немає у портфоліо.
@@ -719,7 +721,7 @@ ${pageContextBlock}
 
   const requestBody = {
     model: openRouterModel,
-    max_tokens: 220,
+    max_tokens: 190,
     temperature: 0.35,
     messages: [{ role: 'system', content: systemPrompt }, ...compactMessages],
   };

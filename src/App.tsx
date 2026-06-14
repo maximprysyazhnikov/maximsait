@@ -562,6 +562,27 @@ const cleanChatText = (text: string) => text
   .replace(/[ \t]+\n/g, "\n")
   .trim();
 
+const renderChatContent = (text: string) => {
+  const urlPattern = /(https?:\/\/[^\s)]+)/g;
+  const exactUrlPattern = /^https?:\/\/[^\s)]+$/;
+
+  return text.split(urlPattern).map((part, index) => {
+    if (!exactUrlPattern.test(part)) return part;
+
+    return (
+      <a
+        key={`${part}-${index}`}
+        href={part}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-semibold text-[#9ed8ea] underline decoration-[#51aaca]/60 underline-offset-4 transition hover:text-white"
+      >
+        {part}
+      </a>
+    );
+  });
+};
+
 const splitBullet = (bullet: string) => {
   const separatorIndex = bullet.indexOf(":");
   if (separatorIndex === -1) {
@@ -1948,11 +1969,11 @@ const AnimatedSkillDetail = ({
               </div>
               <div className="max-h-80 min-h-48 space-y-3 overflow-y-auto px-6 py-5">
                 {techChatMessages.map((message, index) => (
-                  <div key={`${message.role}-${index}`} className={`rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-8 bg-[#51aaca] text-[#021014]" : "mr-8 bg-[#092231] text-zinc-100"}`}>
-                    {message.content}
+                  <div key={`${message.role}-${index}`} className={`whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-8 bg-[#51aaca] text-[#021014]" : "mr-8 border border-[#51aaca]/10 bg-[#071b2a]/58 text-zinc-300"}`}>
+                    {renderChatContent(message.content)}
                   </div>
                 ))}
-                {techChatLoading && <div className="mr-8 rounded-2xl bg-[#092231] px-4 py-3 text-sm text-zinc-400">{language === "uk" ? "AI думає..." : "AI is thinking..."}</div>}
+                {techChatLoading && <div className="mr-8 rounded-2xl border border-[#51aaca]/10 bg-[#071b2a]/58 px-4 py-3 text-sm text-zinc-400">{language === "uk" ? "AI думає..." : "AI is thinking..."}</div>}
               </div>
               <div className="flex gap-3 border-t border-[#51aaca]/14 bg-[#02070d]/38 p-5">
                 <input
@@ -2156,11 +2177,11 @@ const FocusedTechChat = ({ language, pageContext }: { language: Language; pageCo
       </div>
       <div className="max-h-80 min-h-48 space-y-3 overflow-y-auto px-6 py-5">
         {messages.map((message, index) => (
-          <div key={`${message.role}-${index}`} className={`rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-8 bg-[#51aaca] text-[#021014]" : "mr-8 bg-[#092231] text-zinc-100"}`}>
-            {message.content}
+          <div key={`${message.role}-${index}`} className={`whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-8 bg-[#51aaca] text-[#021014]" : "mr-8 border border-[#51aaca]/10 bg-[#071b2a]/58 text-zinc-300"}`}>
+            {renderChatContent(message.content)}
           </div>
         ))}
-        {loading && <div className="mr-8 rounded-2xl bg-[#092231] px-4 py-3 text-sm text-zinc-400">{copyText.thinking}</div>}
+        {loading && <div className="mr-8 rounded-2xl border border-[#51aaca]/10 bg-[#071b2a]/58 px-4 py-3 text-sm text-zinc-400">{copyText.thinking}</div>}
       </div>
       <div className="flex gap-3 border-t border-[#51aaca]/14 bg-[#02070d]/38 p-5">
         <input
@@ -2433,7 +2454,7 @@ const AIChatWidget = ({ language, pageContext }: { language: Language; pageConte
               {mode === "ai" ? (
                 <>
                   {messages.map((message, index) => (
-                    <div key={`${message.role}-${index}`} className={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "ml-auto bg-[#51aaca] text-[#021014]" : "bg-[#0a2635] text-zinc-200"}`}>{message.content}</div>
+                    <div key={`${message.role}-${index}`} className={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "ml-auto bg-[#51aaca] text-[#021014]" : "bg-[#0a2635] text-zinc-200"}`}>{renderChatContent(message.content)}</div>
                   ))}
                   {loading && <div className="max-w-[88%] rounded-2xl bg-[#0a2635] px-4 py-3 text-sm text-zinc-400">{t.loading}</div>}
                 </>
